@@ -120,6 +120,13 @@ b, strong { font-weight: 700; }
 .panel-content { flex: 1; overflow: auto; padding: 12px 16px 18px; }
 .cba-foot { padding: 2px 4px 0; font-size: 12px; font-style: italic; color: #f2f8fc; }
 
+.step-nav { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 12px; border-top: 1px solid #e3e9ee; }
+.step-btn { font-size: 16px; font-weight: 700; padding: 8px 26px; border-radius: 6px; cursor: pointer; border: 2px solid var(--prog-edge); }
+.step-next { color: #fff; background: var(--prog); }
+.step-next:hover { filter: brightness(1.07); }
+.step-back { color: var(--prog-edge); background: #fff; margin-right: auto; }
+.step-back:disabled { opacity: 0.4; cursor: not-allowed; }
+
 /* ------------------------------------------------------------- text --- */
 .panel-content p { margin: 0 0 0.7em; }
 .stack { display: flex; flex-direction: column; gap: 10px; }

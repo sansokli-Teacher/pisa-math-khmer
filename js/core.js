@@ -240,19 +240,37 @@
     const b = h('main', { class: 'cba-body' + (scr.full ? ' full' : '') });
     if (scr.full) {
       const p = h('section', { class: 'panel panel-full' });
-      p.append(labelBox(unit, scr));
-      p.append(content(scr.left, ctx));
+      const c = content(scr.left, ctx);
+      c.append(stepNav());
+      p.append(labelBox(unit, scr), c);
       b.append(p);
       return b;
     }
     const left = h('section', { class: 'panel panel-left' });
     left.style.flexBasis = (scr.split || 42) + '%';
-    left.append(labelBox(unit, scr), content(scr.left, ctx));
+    const lc = content(scr.left, ctx);
+    lc.append(stepNav());
+    left.append(labelBox(unit, scr), lc);
     const right = h('section', { class: 'panel panel-right' });
     if (!scr.noTitle) right.append(h('h2', { class: 'rp-title' }, unit.title));
     right.append(content(scr.right, ctx));
     b.append(left, right);
     return b;
+  }
+  // Big Back / Next buttons under the answers, so students need not reach
+  // for the small arrows in the top bar. Back only exists in practice mode,
+  // as the real test is forward-only.
+  function stepNav() {
+    const lastScreen = state.pos.s === curUnit().screens.length - 1;
+    const lastUnit = state.pos.u === state.unitIds.length - 1;
+    const atStart = state.pos.u === 0 && state.pos.s === 0;
+    const nav = h('div', { class: 'step-nav' });
+    if (state.mode === 'practice') {
+      nav.append(h('button', { type: 'button', class: 'step-btn step-back', disabled: atStart, onclick: goBack }, '◀ ថយក្រោយ'));
+    }
+    nav.append(h('button', { type: 'button', class: 'step-btn step-next', onclick: goNext },
+      lastScreen && lastUnit ? 'បញ្ចប់ ✓' : 'បន្ទាប់ ▶'));
+    return nav;
   }
   function labelBox(unit, scr) {
     return h('div', { class: 'label-box' }, h('div', { class: 'lb-title' }, unit.title), h('div', { class: 'lb-tag' }, scr.tag));
