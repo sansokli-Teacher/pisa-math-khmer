@@ -508,6 +508,9 @@ input[type='radio'], input[type='checkbox'] {
 .start-row { display: flex; justify-content: flex-end; align-items: center; gap: 14px; margin-top: 16px; }
 .err { color: #b01818; font-size: 14px; }
 .notice { margin-top: 20px; font-size: 13px; line-height: 1.75; color: var(--muted); }
+.notice p { margin: 0 0 6px; }
+.notice a { color: var(--chrome-dk); word-break: break-all; }
+.notice .en-note { font-size: 12px; font-style: italic; }
 
 /* ---------------------------------------------------------- results --- */
 .app-results { background: var(--page); min-height: 100vh; }

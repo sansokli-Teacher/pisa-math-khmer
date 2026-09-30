@@ -267,7 +267,8 @@
   }
   function footer(unit) {
     return h('footer', { class: 'cba-foot' }, unit.footer ||
-      'គំរូគូរដោយក្រុមការងារ ផ្អែកលើឧទាហរណ៍ «' + unit.en + '» ក្នុងក្របខណ្ឌ PISA ២០២២ — មិនមែនជាកម្មវិធីតេស្តផ្លូវការរបស់ OECD ទេ');
+      'ផ្អែកលើឧទាហរណ៍ «' + unit.en + '» — OECD (2023), PISA 2022 Assessment and Analytical Framework, Annex 2.A, © OECD 2023, CC BY-NC-SA 3.0 IGO · ' +
+      'បកប្រែ និងគូរឡើងវិញដោយក្រុមការងារ — មិនមែនជាកម្មវិធីតេស្តផ្លូវការរបស់ OECD ទេ');
   }
 
   // --------------------------------------------------------- navigation ---

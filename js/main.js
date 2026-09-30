@@ -121,11 +121,21 @@
         'សំណួរទាំងនេះរៀបចំតាមបែប PISA តែមិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ ហើយកម្រិតលំបាកជាការប៉ាន់ស្មានរបស់អ្នករៀបរៀង មិនមែនការក្រិតតាមខ្នាតផ្លូវការឡើយ។' }));
     }
     if (has('oecd')) {
-      page.append(h('p', { class: 'notice', html:
-        '<b>ឧទាហរណ៍គំរូរបស់ OECD៖</b> ឧទាហរណ៍គំរូ (Illustrative examples) នៃក្របខណ្ឌគណិតវិទ្យា PISA ២០២២ របស់ OECD (pisa2022-maths.oecd.org)។ ' +
-        'អត្ថបទសំណួរ ទិន្នន័យ និងជម្រើសចម្លើយ ជាសម្ភារៈរបស់ OECD ដែលបកប្រែជាភាសាខ្មែរ សម្រាប់គោលបំណងអប់រំមិនរកប្រាក់ចំណេញ។ ' +
-        'អេក្រង់ទាំងអស់គូរឡើងវិញដោយក្រុមការងារ ពុំមែនជារូបថតអេក្រង់ទេ ហើយចម្លើយគំរូ និងការដាក់ពិន្ទុ ជាការចងក្រងរបស់គម្រោង (សៀវភៅណែនាំគ្រូ ជំពូកទី ៨)។ ' +
-        'កម្មវិធីនេះមិនមែនជាផលិតផលរបស់ OECD ឬ PISA ទេ។' }));
+      // Attribution, change notice, licence and translation disclaimer as
+      // CC BY-NC-SA 3.0 IGO and the OECD's terms ask for. Do not shorten.
+      page.append(h('div', { class: 'notice', html:
+        '<p><b>ឧទាហរណ៍គំរូរបស់ OECD៖</b> ប្រធានបទទាំងប្រាំពីរនេះ បកប្រែ និងសម្របជាភាសាខ្មែរពី Annex 2.A «Illustrative examples» នៃ ' +
+        'OECD (2023), <i>PISA 2022 Assessment and Analytical Framework</i>, PISA, OECD Publishing, Paris, ' +
+        '<a href="https://doi.org/10.1787/dfe0bf9c-en" target="_blank" rel="noopener">https://doi.org/10.1787/dfe0bf9c-en</a> ' +
+        '© OECD 2023 ដែលចែកចាយក្រោមអាជ្ញាប័ណ្ណ <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/igo/" target="_blank" rel="noopener">CC BY-NC-SA 3.0 IGO</a>។</p>' +
+        '<p><b>ការផ្លាស់ប្ដូរ៖</b> បកប្រែជាភាសាខ្មែរ គូរអេក្រង់ឡើងវិញ (ពុំមែនជារូបថតអេក្រង់ទេ) និងបន្ថែមចម្លើយគំរូ និងការដាក់ពិន្ទុរបស់គម្រោង (សៀវភៅណែនាំគ្រូ ជំពូកទី ៨)។ ' +
+        'ការសម្របជាភាសាខ្មែរនៃប្រធានបទទាំងប្រាំពីរនេះ ចែកចាយក្រោមអាជ្ញាប័ណ្ណ CC BY-NC-SA 3.0 IGO ដូចគ្នា សម្រាប់ការប្រើប្រាស់មិនរកប្រាក់ចំណេញ។</p>' +
+        '<p>ការបកប្រែនេះមិនមែនធ្វើដោយ OECD ទេ ហើយមិនត្រូវចាត់ទុកជាការបកប្រែផ្លូវការរបស់ OECD ឡើយ។ គុណភាពនៃការបកប្រែ ជាទំនួលខុសត្រូវរបស់អ្នកបកប្រែ។ ' +
+        'បើមានភាពខុសគ្នារវាងការបកប្រែ និងអត្ថបទដើម មានតែអត្ថបទដើមប៉ុណ្ណោះដែលមានសុពលភាព។ OECD មិនបានពិនិត្យ ឬគាំទ្រកម្មវិធីនេះទេ។</p>' +
+        '<p lang="en" class="en-note">This translation was not created by the OECD and should not be considered an official OECD translation. ' +
+        'The quality of the translation and its coherence with the original language text of the work are the sole responsibility of the author(s) of the translation. ' +
+        'In the event of any discrepancy between the original work and the translation, only the text of the original work should be considered valid. ' +
+        'This is an adaptation of an original work by the OECD; it is not endorsed by the OECD.</p>' }));
     }
     app.append(page);
     name.focus();
