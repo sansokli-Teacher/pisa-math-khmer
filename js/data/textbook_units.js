@@ -414,14 +414,26 @@ PISA.textbookUnits = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>តើប្រវែងជ្រុងដីរបស់កសិករ ខ ជាចំនួនសនិទានដែរឬទេ?</p><ul class=\"list nobullets\"><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> បាទ/ចាស (Yes)</li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ទេ (No)</li></ul>"
+      "html": "<p>តើប្រវែងជ្រុងដីរបស់កសិករ ខ ជាចំនួនសនិទានដែរឬទេ?</p>"
      },
      {
-      "type": "essay",
-      "label": "ចម្លើយ និងការពន្យល់៖"
+      "type": "options",
+      "style": "letter",
+      "opts": [
+       {
+        "v": "1",
+        "html": "បាទ/ចាស (Yes)"
+       },
+       {
+        "v": "2",
+        "html": "ទេ (No)"
+       }
+      ],
+      "key": "opt"
      }
     ],
-    "key": "<p><b>ចម្លើយ៖</b> ទេ (ព្រោះ <span class=\"mi\">\\(\\displaystyle \\sqrt{20}\\)</span> មិនមែនជាការេប្រាកដ)។</p>"
+    "key": "<p><b>ចម្លើយ៖</b> ទេ (ព្រោះ <span class=\"mi\">\\(\\displaystyle \\sqrt{20}\\)</span> មិនមែនជាការេប្រាកដ)។</p>",
+    "auto": "2"
    },
    {
     "no": 3,
@@ -686,7 +698,26 @@ PISA.textbookUnits = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>សុខសន្សំប្រាក់បាន <span class=\"mi\">\\(\\displaystyle 20\\,000\\)</span> រៀល។ តើគាត់មានប្រាក់គ្រប់គ្រាន់សម្រាប់ទិញខោនេះដែរឬទេ?</p><ul class=\"list nobullets\"><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> បាទ/ចាស (Yes)</li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ទេ (No)</li></ul><p><b>ហេតុផល៖</b></p>"
+      "html": "<p>សុខសន្សំប្រាក់បាន <span class=\"mi\">\\(\\displaystyle 20\\,000\\)</span> រៀល។ តើគាត់មានប្រាក់គ្រប់គ្រាន់សម្រាប់ទិញខោនេះដែរឬទេ?</p>"
+     },
+     {
+      "type": "options",
+      "style": "letter",
+      "opts": [
+       {
+        "v": "1",
+        "html": "បាទ/ចាស (Yes)"
+       },
+       {
+        "v": "2",
+        "html": "ទេ (No)"
+       }
+      ],
+      "key": "opt"
+     },
+     {
+      "type": "html",
+      "html": "<p><b>ហេតុផល៖</b></p>"
      },
      {
       "type": "answer",
@@ -919,7 +950,26 @@ PISA.textbookUnits = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>ក្រោយពីទិញស្បែកជើងរួច គាត់នៅសល់ប្រាក់បាតមួយចំនួន។ ប្រសិនបើគាត់ចង់ប្ដូរប្រាក់ដែលនៅសល់នោះត្រលប់មករៀលវិញ តើគាត់អាចប្រើប្រាស់អត្រា <span class=\"mi\">\\(\\displaystyle 1\\)</span> បាត ស្មើនឹង <span class=\"mi\">\\(\\displaystyle 115\\)</span> រៀលដូចពេលទិញដដែលឬទេ ក្នុងជីវិតជាក់ស្តែង? (សន្មតថាទីផ្សារអត្រាប្ដូរប្រាក់មិនប្រែប្រួល)</p><ul class=\"list nobullets\"><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> បាទ/ចាស (Yes)</li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ទេ (No)</li></ul><p><b>ពន្យល់ហេតុផល៖</b></p>"
+      "html": "<p>ក្រោយពីទិញស្បែកជើងរួច គាត់នៅសល់ប្រាក់បាតមួយចំនួន។ ប្រសិនបើគាត់ចង់ប្ដូរប្រាក់ដែលនៅសល់នោះត្រលប់មករៀលវិញ តើគាត់អាចប្រើប្រាស់អត្រា <span class=\"mi\">\\(\\displaystyle 1\\)</span> បាត ស្មើនឹង <span class=\"mi\">\\(\\displaystyle 115\\)</span> រៀលដូចពេលទិញដដែលឬទេ ក្នុងជីវិតជាក់ស្តែង? (សន្មតថាទីផ្សារអត្រាប្ដូរប្រាក់មិនប្រែប្រួល)</p>"
+     },
+     {
+      "type": "options",
+      "style": "letter",
+      "opts": [
+       {
+        "v": "1",
+        "html": "បាទ/ចាស (Yes)"
+       },
+       {
+        "v": "2",
+        "html": "ទេ (No)"
+       }
+      ],
+      "key": "opt"
+     },
+     {
+      "type": "html",
+      "html": "<p><b>ពន្យល់ហេតុផល៖</b></p>"
      },
      {
       "type": "essay",
@@ -1586,11 +1636,34 @@ PISA.textbookUnits = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>បើតាង <span class=\"mi\">\\(\\displaystyle v\\)</span> ជាចំនួនសំបុត្រ VIP ដែលបានលក់ តើកន្សោមមួយណាតំណាងឱ្យចំនួនសំបុត្រធម្មតាដែលបានលក់?</p><ul class=\"list nobullets\"><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ក. <span class=\"mi\">\\(\\displaystyle v - 100\\)</span></li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ខ. <span class=\"mi\">\\(\\displaystyle 100 - v\\)</span></li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> គ. <span class=\"mi\">\\(\\displaystyle 360 - 5v\\)</span></li><li><span class=\"mi\">\\(\\displaystyle [\\)</span>  <span class=\"mi\">\\(\\displaystyle ]\\)</span> ឃ. <span class=\"mi\">\\(\\displaystyle v + 100\\)</span></li></ul>"
+      "html": "<p>បើតាង <span class=\"mi\">\\(\\displaystyle v\\)</span> ជាចំនួនសំបុត្រ VIP ដែលបានលក់ តើកន្សោមមួយណាតំណាងឱ្យចំនួនសំបុត្រធម្មតាដែលបានលក់?</p>"
      },
      {
-      "type": "essay",
-      "label": "ចម្លើយ និងការពន្យល់៖"
+      "type": "options",
+      "style": "letter",
+      "opts": [
+       {
+        "v": "ក",
+        "letter": "ក",
+        "html": "<span class=\"mi\">\\(\\displaystyle v - 100\\)</span>"
+       },
+       {
+        "v": "ខ",
+        "letter": "ខ",
+        "html": "<span class=\"mi\">\\(\\displaystyle 100 - v\\)</span>"
+       },
+       {
+        "v": "គ",
+        "letter": "គ",
+        "html": "<span class=\"mi\">\\(\\displaystyle 360 - 5v\\)</span>"
+       },
+       {
+        "v": "ឃ",
+        "letter": "ឃ",
+        "html": "<span class=\"mi\">\\(\\displaystyle v + 100\\)</span>"
+       }
+      ],
+      "key": "opt"
      }
     ],
     "key": ""

@@ -199,6 +199,7 @@
     back: '<svg viewBox="0 0 24 24"><path d="M15.5 5.5 8 12l7.5 6.5z" fill="#fff"/></svg>',
     next: '<svg viewBox="0 0 24 24"><path d="M8.5 5.5 16 12l-7.5 6.5z" fill="#fff"/></svg>',
   };
+  PISA.ICON = ICON;   // the tutorial shows the same buttons
   function iconBtn(name, label, onclick, disabled) {
     const b = h('button', { class: 'tb-btn tb-' + name, type: 'button', title: label, 'aria-label': label, html: ICON[name], disabled: !!disabled });
     if (!disabled) b.addEventListener('click', onclick);
@@ -221,6 +222,7 @@
     win.append(topBar(unit), body(unit, scr, ctx), footer(unit));
     app.append(win);
     PISA.typeset(win);
+    if (PISA.mathBar) PISA.mathBar(win);
     enteredAt = Date.now();
     const first = win.querySelector('.panel-content');
     if (first) first.scrollTop = 0;
@@ -461,8 +463,20 @@
     app.innerHTML = '';
     document.title = 'លទ្ធផល — គណិតវិទ្យាតាមបែប PISA';
 
-    let total = 0, max = 0, pending = 0, marked = 0;
     const units = state.unitIds.map((id) => PISA.unit(id));
+    if (units.length === 1 && units[0].results) {
+      const u = units[0];
+      const own = u.results({
+        score: (qid) => scoreOf(u, qid).final,
+        home: () => { state = null; clearHash(); PISA.home(); },
+        again: () => PISA.start({ name: '', mode: 'practice', unitIds: [u.id], preview: true }),
+      });
+      app.append(own);
+      PISA.typeset(own);
+      return;
+    }
+
+    let total = 0, max = 0, pending = 0, marked = 0;
     units.forEach((u) => PISA.questionIds(u).forEach((qid) => {
       const sc = scoreOf(u, qid);
       max += sc.max;
@@ -482,6 +496,8 @@
       h('div', { class: 'tot' + (pending ? ' tot-warn' : '') }, h('div', { class: 'tot-num' }, PISA.km(pending)), h('div', { class: 'tot-lbl' }, 'សំណួររង់ចាំគ្រូដាក់ពិន្ទុ')),
       h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
     page.append(totals);
+    const byProcess = processSection(units);
+    if (byProcess) page.append(byProcess);
 
     const fromTextbook = units.every((u) => u.collection === 'textbook');
     page.append(h('p', { class: 'res-note' },
@@ -528,11 +544,64 @@
     PISA.typeset(page);
   }
 
+  // Points by the PISA process each question tests, and by its estimated
+  // level, for the questions the teacher guide tags (the project's own
+  // units). A question waiting for the teacher is counted once marked.
+  const PROCESSES = [
+    ['ការបម្លែងបញ្ហា', 'Formulate'],
+    ['ការអនុវត្តគណិតវិទ្យា', 'Employ'],
+    ['ការបកស្រាយ និងវាយតម្លៃ', 'Interpret and evaluate'],
+  ];
+  const LEVELS = ['1c', '1b', '1a', '2', '3', '4', '5', '6'];
+  function groupBy(units, tag, order) {
+    const groups = new Map();
+    units.forEach((u) => PISA.questionIds(u).forEach((qid) => {
+      const v = u.questions[qid][tag];
+      if (!v) return;
+      const sc = scoreOf(u, qid);
+      const g = groups.get(v) || { key: v, n: 0, got: 0, max: 0, wait: 0 };
+      g.n += 1;
+      if (sc.final == null) g.wait += 1;
+      else { g.got += sc.final; g.max += sc.max; }
+      groups.set(v, g);
+    }));
+    const rank = (k) => { const i = order.indexOf(k); return i < 0 ? order.length : i; };
+    return [...groups.values()].sort((a, b) => rank(a.key) - rank(b.key));
+  }
+  function meter(label, sub, g) {
+    const share = g.max ? g.got / g.max : 0;
+    const said = g.max ? PISA.km(g.got) + ' / ' + PISA.km(g.max) + ' ពិន្ទុ' : 'មិនទាន់មានពិន្ទុ';
+    const wait = g.wait ? 'រង់ចាំគ្រូ ' + PISA.km(g.wait) + ' សំណួរ' : '';
+    return h('div', { class: 'mt-row', title: label + ': ' + [said, PISA.km(g.n) + ' សំណួរ', wait].filter(Boolean).join(' · ') },
+      h('div', { class: 'mt-lbl' }, label, sub ? h('span', { class: 'mt-sub', lang: 'en' }, sub) : null),
+      h('div', { class: 'mt-track', role: 'img', 'aria-label': label + ' ' + said },
+        h('span', { class: 'mt-fill', style: { width: (share * 100).toFixed(1) + '%' } })),
+      h('div', { class: 'mt-val' }, said, wait ? h('span', { class: 'mt-wait' }, wait) : null));
+  }
+  function processSection(units) {
+    const procs = groupBy(units, 'process', PROCESSES.map((p) => p[0]));
+    if (!procs.length) return null;
+    const levels = groupBy(units, 'level', LEVELS);
+    const english = Object.fromEntries(PROCESSES);
+    const untagged = units.reduce((n, u) => n + PISA.questionIds(u).filter((qid) => !u.questions[qid].process).length, 0);
+    return h('section', { class: 'res-proc' },
+      h('h2', {}, 'លទ្ធផលតាមដំណើរការគណិតវិទ្យា'),
+      h('div', { class: 'mt-cols' },
+        h('div', {}, h('h3', {}, 'ដំណើរការ'), ...procs.map((g) => meter(g.key, english[g.key], g))),
+        h('div', {}, h('h3', {}, 'កម្រិតប៉ាន់ស្មាន'), ...levels.map((g) => meter('កម្រិត ' + PISA.km(g.key), '', g)))),
+      h('p', { class: 'res-note' },
+        'រាប់តែសំណួរដែលសៀវភៅណែនាំគ្រូបានកំណត់ដំណើរការ និងកម្រិត (ឯកតាគំរូ និងតេស្តអនុវត្ត ក–ឍ)។ ' +
+        'ការកំណត់ទាំងនេះ ជាការប៉ាន់ស្មានរបស់អ្នករៀបរៀង មិនមែនការក្រិតតាមខ្នាតផ្លូវការរបស់ PISA ទេ។ សំណួររង់ចាំគ្រូ រាប់បញ្ចូលពេលគ្រូដាក់ពិន្ទុរួច។' +
+        (untagged ? ' សំណួរ ' + PISA.km(untagged) + ' ផ្សេងទៀតក្នុងវគ្គនេះ (ឧទាហរណ៍របស់ OECD ឬភារកិច្ចពីសៀវភៅថ្នាក់ទី ៩) មិនមានការកំណត់នេះទេ។' : '')));
+  }
+
   function resultRow(u, qid) {
     const sc = scoreOf(u, qid);
     const tr = h('tr');
     tr.append(h('td', { class: 'c-q' }, h('b', {}, sc.q.label), h('div', { class: 'fmt' }, sc.q.format || '')));
-    tr.append(h('td', { class: 'c-a' }, answerText(sc.q, sc.r)));
+    const said = answerText(sc.q, sc.r);
+    const drawn = PISA.mathHtml && PISA.mathHtml(said);
+    tr.append(drawn ? h('td', { class: 'c-a', html: drawn }) : h('td', { class: 'c-a' }, said));
     const cell = h('td', { class: 'c-s' });
     const grp = h('div', { class: 'tchr' });
     for (let pts = sc.max; pts >= 0; pts--) {
@@ -585,7 +654,7 @@
     return 'pisa-cba_' + nm + '_' + stamp;
   }
   function downloadCSV() {
-    const rows = [['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds']];
+    const rows = [['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']];
     state.unitIds.forEach((id) => {
       const u = PISA.unit(id);
       PISA.questionIds(u).forEach((qid) => {
@@ -593,7 +662,8 @@
         const si = screenOf(u, qid);
         const secs = si >= 0 ? Math.round((state.times[id + ':' + si] || 0) / 1000) : '';
         rows.push([state.student.name, state.student.klass, state.mode, u.en, sc.q.label, answerText(sc.q, sc.r),
-          sc.auto.pts == null ? '' : sc.auto.pts, sc.teacher == null ? '' : sc.teacher, sc.final == null ? '' : sc.final, sc.max, secs]);
+          sc.auto.pts == null ? '' : sc.auto.pts, sc.teacher == null ? '' : sc.teacher, sc.final == null ? '' : sc.final, sc.max, secs,
+          sc.q.process || '', sc.q.level || '']);
       });
     });
     // BOM so Excel opens the Khmer text as UTF-8.
@@ -602,6 +672,14 @@
   function downloadJSON() {
     download(fileStem() + '.json', JSON.stringify(state, null, 2), 'application/json');
   }
+
+  // Leaves the address without its #tutorial / #unit=… part, so a reload
+  // opens the home page. Browsers refuse replaceState on some file:// pages.
+  function clearHash() {
+    if (!location.hash) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
+  }
+  PISA.clearHash = clearHash;
 
   PISA.showResults = () => showResults();
   PISA.state = () => state;

@@ -73,14 +73,15 @@
 
   // ------------------------------------------------------- typed input ---
   W.textarea = function (ctx, qid, part, placeholder, rows) {
-    const ta = h('textarea', { class: 'resp-text', rows: rows || 4, placeholder: placeholder || 'សូមវាយចម្លើយនៅទីនេះ', 'aria-label': placeholder || 'ចម្លើយ' });
+    // data-math: the maths buttons and preview of js/mathtype.js attach to it
+    const ta = h('textarea', { class: 'resp-text', rows: rows || 4, placeholder: placeholder || 'សូមវាយចម្លើយនៅទីនេះ', 'aria-label': placeholder || 'ចម្លើយ', 'data-math': true });
     ta.value = ctx.val(qid, part) || '';
     ta.addEventListener('input', () => ctx.setVal(qid, part, ta.value));
     return ta;
   };
   W.input = function (ctx, qid, part, placeholder, opts) {
     opts = opts || {};
-    const inp = h('input', { type: 'text', class: 'resp-input' + (opts.cls ? ' ' + opts.cls : ''), placeholder: placeholder || '', autocomplete: 'off', spellcheck: 'false', 'aria-label': opts.label || placeholder || 'ចម្លើយ' });
+    const inp = h('input', { type: 'text', class: 'resp-input' + (opts.cls ? ' ' + opts.cls : ''), placeholder: placeholder || '', autocomplete: 'off', spellcheck: 'false', 'aria-label': opts.label || placeholder || 'ចម្លើយ', 'data-math': !!opts.math });
     if (opts.maxlength) inp.maxLength = opts.maxlength;
     if (opts.width) inp.style.width = opts.width;
     inp.value = ctx.val(qid, part) || '';

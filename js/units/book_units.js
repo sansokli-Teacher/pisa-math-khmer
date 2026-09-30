@@ -85,12 +85,12 @@
   }
 
   // Table with cells to type in (the textbook's "fill in the table" questions).
-  function fillTableNode(ctx, qid, b) {
+  function fillTableNode(ctx, qid, b, math) {
     const t = h('table', { class: 'dtable fill' });
     t.append(h('thead', {}, h('tr', {}, ...b.head.map((c) => h('th', { html: c.html })))));
     const tb = h('tbody');
     b.rows.forEach((row, ri) => tb.append(h('tr', {}, ...row.map((c, ci) => (c.input
-      ? h('td', { class: 'resp' }, W.input(ctx, qid, c.input, '', { cls: 'cell-in', label: plain((row[0] || {}).html) + ' — ' + plain((b.head[ci] || {}).html) }))
+      ? h('td', { class: 'resp' }, W.input(ctx, qid, c.input, '', { cls: 'cell-in', math, label: plain((row[0] || {}).html) + ' — ' + plain((b.head[ci] || {}).html) }))
       : h('td', { html: c.html }))))));
     t.append(tb);
     return h('div', { class: 'dtable-wrap' }, t);
@@ -104,7 +104,7 @@
       switch (b.type) {
         case 'p': box.append(W.p(b.html)); break;
         case 'html': box.append(h('div', { class: 'bhtml', html: b.html })); break;
-        case 'filltable': box.append(fillTableNode(ctx, qid, b)); break;
+        case 'filltable': box.append(fillTableNode(ctx, qid, b, opts.math)); break;
         case 'quote': box.append(h('blockquote', { class: 'bq', html: b.html })); break;
         case 'list': box.append(h(b.ordered ? 'ol' : 'ul', {}, ...b.items.map((x) => h('li', { html: x })))); break;
         case 'dmath': box.append(h('p', { class: 'dm' }, h('span', { class: 'm', html: b.html }))); break;
@@ -126,7 +126,7 @@
           const k = partFor(b)[0].k;
           box.append(h('div', { class: 'ansline' },
             b.pre ? h('span', { class: 'pre', html: b.pre }) : null,
-            W.input(ctx, qid, k, '', { cls: 'ans', label: plain(b.pre) || 'ចម្លើយ' }),
+            W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math, label: plain(b.pre) || 'ចម្លើយ' }),
             b.post ? h('span', { class: 'post', html: b.post }) : null));
           if (opts.workBox && !box.querySelector('.work')) {
             box.append(h('div', { class: 'work' }, h('p', { class: 'small' }, 'វិធីគណនា៖'), W.textarea(ctx, qid, 'work', 'សូមសរសេរវិធីគណនារបស់អ្នកនៅទីនេះ', 4)));
@@ -138,7 +138,7 @@
           break;
         case 'line': {
           const k = partFor(b)[0].k;
-          box.append(h('div', { class: 'ansline wide' }, h('span', { class: 'pre', html: b.label }), W.input(ctx, qid, k, '', { cls: 'ans', label: plain(b.label) })));
+          box.append(h('div', { class: 'ansline wide' }, h('span', { class: 'pre', html: b.label }), W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math, label: plain(b.label) })));
           break;
         }
         case 'grid': box.append(gridNode(ctx, qid, b)); break;
@@ -212,6 +212,8 @@
         label: 'សំណួរ ' + PISA.km(q.no),
         format: formatOf(q),
         max: q.points,
+        process: q.spec && q.spec.process,
+        level: q.spec && q.spec.level,
         parts,
         summary: (r) => summaryOf(q, r, workBox),
         score: PISA.bookScoring[qid] || (q.auto ? autoRule(q, parts) : () => ({ pts: null })),
@@ -222,7 +224,7 @@
         tag: 'សំណួរ ' + PISA.km(q.no) + ' / ' + PISA.km(u.questions.length),
         split: hasWide ? 52 : 45,
         items: [qid],
-        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox }),
+        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox, math: textbook }),
         right: stimulus,
       });
     });
@@ -236,6 +238,8 @@
       en: u.kind === 'gold' ? u.code : textbook ? 'Textbook task ' + PISA.latin(u.code) : 'Practice ' + u.code,
       label: u.kind === 'gold' ? u.code : textbook ? 'ភារកិច្ច ' + u.code : 'ប្រធានបទ ' + u.code,
       blurb: textbook ? 'មេរៀនទី ' + PISA.km(u.lesson) + ' ' + u.lessonTitle : plain(u.stimTitle),
+      lesson: u.lesson,
+      lessonTitle: u.lessonTitle,
       note: u.note,
       footer: textbook ? TEXTBOOK_FOOTER : FOOTER,
       lessonUrl: u.lessonUrl,
