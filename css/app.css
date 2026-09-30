@@ -320,10 +320,7 @@ input[type='radio'], input[type='checkbox'] {
 .pc-bar { position: relative; height: 14px; border: 1px solid #888; }
 .pc-fill { position: absolute; top: 0; bottom: 0; left: 0; background: #afd47d; }
 .pc-n { font: 13px Arial, sans-serif; }
-.earbuds { width: 104px; flex: none; }
-.earbuds .bud { fill: #2b2b2b; }
-.earbuds .mesh { fill: #6b6b6b; }
-.earbuds .cable { fill: none; stroke: #2b2b2b; stroke-width: 2.5; }
+.earbuds { width: 124px; height: auto; flex: none; align-self: center; }
 .reasons { flex: 1; border-collapse: collapse; border: 1px solid #aaa; font-size: 14px; }
 .reasons th { padding: 6px 10px; text-align: left; font-style: italic; color: #fff; background: #3a7dbc; }
 .reasons th:last-child, .reasons td.n { width: 70px; text-align: center; }

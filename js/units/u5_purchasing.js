@@ -34,14 +34,10 @@
       s('polygon', { points: pts.join(' ') }),
       s('text', { x: 44, y: 53, 'text-anchor': 'middle', text: '3.5' }));
   }
+  // Drawn, unbranded earbuds (assets/img/earbuds.svg). The book uses a
+  // HyperX product photo here; a brand's photo and logo cannot be published.
   function earbuds() {
-    return s('svg', { viewBox: '0 0 120 90', class: 'earbuds', 'aria-hidden': 'true' },
-      s('path', { d: 'M34 40 C 34 70, 60 62, 60 82 M86 40 C 86 70, 60 62, 60 82', class: 'cable' }),
-      s('circle', { cx: 30, cy: 26, r: 14, class: 'bud' }), s('circle', { cx: 30, cy: 26, r: 6, class: 'mesh' }),
-      s('rect', { x: 27, y: 36, width: 7, height: 10, rx: 3, class: 'bud' }),
-      s('circle', { cx: 90, cy: 26, r: 14, class: 'bud' }), s('circle', { cx: 90, cy: 26, r: 6, class: 'mesh' }),
-      s('rect', { x: 86, y: 36, width: 7, height: 10, rx: 3, class: 'bud' }),
-      s('rect', { x: 55, y: 70, width: 10, height: 8, rx: 2, class: 'bud' }));
+    return h('img', { src: 'assets/img/earbuds.svg', alt: '', class: 'earbuds' });
   }
 
   function card() {
