@@ -515,7 +515,12 @@
       }, 'ចាប់ផ្ដើមវគ្គថ្មី')));
     // a session opened from a textbook lesson offers the way back to it
     const back = units.every((u) => u.lessonUrl) && units[0].lessonUrl;
-    if (back) page.insertBefore(h('p', { class: 'res-back' }, h('a', { class: 'btn btn-primary', href: back }, '◀ ត្រឡប់ទៅមេរៀន')), page.children[1]);
+    if (back) {
+      page.insertBefore(h('p', { class: 'res-back' },
+        h('a', { class: 'btn btn-primary', href: back }, '◀ ត្រឡប់ទៅមេរៀន'),
+        state.preview ? h('button', { type: 'button', class: 'btn', onclick: () => location.reload() }, '↻ ធ្វើម្ដងទៀត') : null),
+      page.children[1]);
+    }
     app.append(page);
     PISA.typeset(page);
   }

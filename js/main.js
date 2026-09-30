@@ -3,7 +3,8 @@
  * Teacher preview: open index.html#preview=u4:2 to jump straight to unit 4,
  * screen 3 (screens count from 0) in practice mode. Preview sessions are not
  * saved, so they never overwrite a student's session on the same computer.
- * Direct start: index.html#unit=t0101[,t0102...] opens only those units.
+ * Direct start: index.html#unit=t0101[,t0102...] opens only those units in practice mode;
+ * index.html#test=t0101,t0102,... runs them as one test (forward-only, like the real PISA).
  */
 (function () {
   'use strict';
@@ -148,9 +149,18 @@
     if (window.matchMedia && window.matchMedia('print').matches) return;
     window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach((d) => { d.open = true; }));
     // #unit=t0101 or #unit=t0101,t0102: open just those units in practice mode, e.g. from a
-    // textbook lesson's «ធ្វើលើកុំព្យូទ័រ» button. Like a preview, this is not saved.
-    const one = /unit=([a-z0-9,]+)/.exec(location.hash);
-    const pick = one ? one[1].split(',').filter((id) => PISA.unit(id)) : [];
+    // textbook lesson's «សាកធ្វើលំហាត់នេះ» button; #test=… runs them as one forward-only
+    // test («តេស្តពេញ»). Like a preview, neither is saved.
+    const one = /(unit|test)=([a-z0-9,]+)/.exec(location.hash);
+    const pick = one ? one[2].split(',').filter((id) => PISA.unit(id)) : [];
+    if (pick.length && one[1] === 'test') {
+      PISA.start({ name: '', mode: 'test', unitIds: pick, preview: true });
+      PISA.dialog([
+        'តេស្តពេញ៖ ភារកិច្ច ' + PISA.km(pick.length) + ' ជាប់គ្នា តាមរបៀបតេស្ត PISA ពិត។',
+        'ឆ្លើយសំណួរនីមួយៗ រួចចុច «បន្ទាប់»។ អ្នកមិនអាចថយក្រោយ ដើម្បីកែចម្លើយវិញបានទេ។ ពេលចប់ អ្នកនឹងឃើញលទ្ធផល និងចម្លើយគំរូ។',
+      ], [{ label: 'ចាប់ផ្ដើម', primary: true }]);
+      return;
+    }
     if (pick.length) {
       PISA.start({ name: '', mode: 'practice', unitIds: pick, preview: true });
       return;

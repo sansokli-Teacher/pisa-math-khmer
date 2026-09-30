@@ -593,5 +593,5 @@ details summary { cursor: pointer; color: var(--chrome-dk); }
 .dtable.fill td.resp { padding: 3px 6px; }
 .dtable.fill .cell-in { width: 100%; min-width: 7em; }
 .dtable.fill td { text-align: left; }
-.res-back { margin: 0 0 14px; }
+.res-back { margin: 0 0 14px; display: flex; flex-wrap: wrap; gap: 10px; }
 .katex { font-size: 1.08em; }
