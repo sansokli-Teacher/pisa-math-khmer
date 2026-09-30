@@ -3,6 +3,7 @@
  * Teacher preview: open index.html#preview=u4:2 to jump straight to unit 4,
  * screen 3 (screens count from 0) in practice mode. Preview sessions are not
  * saved, so they never overwrite a student's session on the same computer.
+ * Direct start: index.html#unit=t0101[,t0102...] opens only those units.
  */
 (function () {
   'use strict';
@@ -11,6 +12,7 @@
   const COLLECTIONS = [
     { id: 'gold', title: 'ឯកតាគំរូ', sub: 'ឯកតាដើមរបស់គម្រោង ដែលអ្នកនិពន្ធបានអនុម័ត សម្រាប់ថ្នាក់ទី ៧ ៨ និង ៩' },
     { id: 'practice', title: 'តេស្តអនុវត្ត ក–ឍ', sub: 'ប្រធានបទដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ — សេចក្ដីព្រាង រង់ចាំការពិនិត្យពីគ្រូ' },
+    { id: 'textbook', title: 'ភារកិច្ច PISA ពីមេរៀនថ្នាក់ទី ៩', sub: 'ពីសៀវភៅ «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» របស់លោកគ្រូ សាន សុខលី — សៀវភៅកំពុងសរសេរ (សេចក្ដីព្រាង)' },
     { id: 'oecd', title: 'ឧទាហរណ៍គំរូរបស់ OECD', sub: 'ឧទាហរណ៍ទាំងប្រាំពីរពីក្របខណ្ឌគណិតវិទ្យា PISA ២០២២ បកប្រែជាភាសាខ្មែរ' },
   ];
 
@@ -145,6 +147,14 @@
   function boot() {
     if (window.matchMedia && window.matchMedia('print').matches) return;
     window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach((d) => { d.open = true; }));
+    // #unit=t0101 or #unit=t0101,t0102: open just those units in practice mode, e.g. from a
+    // textbook lesson's «ធ្វើលើកុំព្យូទ័រ» button. Like a preview, this is not saved.
+    const one = /unit=([a-z0-9,]+)/.exec(location.hash);
+    const pick = one ? one[1].split(',').filter((id) => PISA.unit(id)) : [];
+    if (pick.length) {
+      PISA.start({ name: '', mode: 'practice', unitIds: pick, preview: true });
+      return;
+    }
     const m = /preview=([a-z0-9]+)(?::(\d+))?/.exec(location.hash);
     if (m) {
       const ids = PISA.units.map((u) => u.id);

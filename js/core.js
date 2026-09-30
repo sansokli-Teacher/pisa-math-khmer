@@ -64,6 +64,17 @@
   // ------------------------------------------------------------ numbers ---
   const KM_DIGITS = '០១២៣៤៥៦៧៨៩';
   PISA.km = (n) => String(n).replace(/[0-9]/g, (d) => KM_DIGITS[d]);
+  // Mathematics written as TeX between \\( \\) or \\[ \\] (the textbook tasks) is drawn by
+  // KaTeX when it is loaded; every screen and the results page call this.
+  PISA.typeset = (el) => {
+    if (!el || !window.renderMathInElement) return;
+    window.renderMathInElement(el, {
+      delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
+      macros: { '\\arc': '\\overset{\\frown}{#1}' },
+      throwOnError: false,
+      strict: 'ignore',
+    });
+  };
   PISA.latin = (str) => String(str == null ? '' : str).replace(/[០-៩]/g, (c) => String(c.charCodeAt(0) - 0x17e0));
 
   // Reads a typed numeric answer. Accepts Khmer digits, a percent sign or the
@@ -209,6 +220,7 @@
     const win = h('div', { class: 'cba-window' });
     win.append(topBar(unit), body(unit, scr, ctx), footer(unit));
     app.append(win);
+    PISA.typeset(win);
     enteredAt = Date.now();
     const first = win.querySelector('.panel-content');
     if (first) first.scrollTop = 0;
@@ -471,8 +483,11 @@
       h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
     page.append(totals);
 
+    const fromTextbook = units.every((u) => u.collection === 'textbook');
     page.append(h('p', { class: 'res-note' },
-      'ចម្លើយគំរូ និងការដាក់ពិន្ទុ យកតាមសៀវភៅណែនាំគ្រូ ដែលជាការចងក្រងរបស់គម្រោង ពុំមែនជាកូនសោដាក់ពិន្ទុផ្លូវការរបស់ OECD ទេ។ ' +
+      (fromTextbook
+        ? 'ចម្លើយគំរូ យកតាមដំណោះស្រាយក្នុងសៀវភៅ «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» (បើសៀវភៅមាន) ពុំមែនជាកូនសោដាក់ពិន្ទុផ្លូវការរបស់ OECD ទេ។ '
+        : 'ចម្លើយគំរូ និងការដាក់ពិន្ទុ យកតាមសៀវភៅណែនាំគ្រូ ដែលជាការចងក្រងរបស់គម្រោង ពុំមែនជាកូនសោដាក់ពិន្ទុផ្លូវការរបស់ OECD ទេ។ ') +
       'សំណួរសរសេរចម្លើយវែង ត្រូវការគ្រូអាន និងដាក់ពិន្ទុដោយប្រើប៊ូតុងនៅជួរនីមួយៗ។ គ្រូក៏អាចកែពិន្ទុស្វ័យប្រវត្តិបានដែរ ពេលអត្រាកំណែផ្តល់ពិន្ទុលើវិធីធ្វើ។'));
 
     units.forEach((u) => {
@@ -498,7 +513,11 @@
           ['ចាប់ផ្ដើមវគ្គថ្មី? លទ្ធផលនេះនឹងត្រូវលុបចេញពីកុំព្យូទ័រនេះ។ សូមទាញយក CSV មុនសិន បើត្រូវការ។'],
           [{ label: 'បោះបង់' }, { label: 'ចាប់ផ្ដើមថ្មី', primary: true, action: () => { store.clear(); state = null; PISA.home(); } }]),
       }, 'ចាប់ផ្ដើមវគ្គថ្មី')));
+    // a session opened from a textbook lesson offers the way back to it
+    const back = units.every((u) => u.lessonUrl) && units[0].lessonUrl;
+    if (back) page.insertBefore(h('p', { class: 'res-back' }, h('a', { class: 'btn btn-primary', href: back }, '◀ ត្រឡប់ទៅមេរៀន')), page.children[1]);
     app.append(page);
+    PISA.typeset(page);
   }
 
   function resultRow(u, qid) {

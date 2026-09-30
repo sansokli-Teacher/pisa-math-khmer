@@ -573,3 +573,25 @@ details summary { cursor: pointer; color: var(--chrome-dk); }
   .sim-unit { display: none; }
   .c-k { width: auto; }
 }
+
+/* ---- textbook tasks: rich text with KaTeX, pictures, fill-in tables ---- */
+.bhtml { line-height: 1.85; }
+.bhtml p { margin: 0 0 .55em; }
+.bhtml .center { text-align: center; }
+.bhtml img.fig, .bhtml img.pic { display: inline-block; max-width: 100%; height: auto; vertical-align: middle; }
+.bhtml img.pic { border-radius: 8px; }
+.bhtml .list { margin: .2em 0 .6em; padding-left: 1.4em; }
+.bhtml .list.nobullets > li, .bhtml li.nobullet { list-style: none; }
+.bhtml .md { overflow-x: auto; overflow-y: hidden; position: relative; }
+.bhtml .tbl { overflow-x: auto; position: relative; margin: 6px 0; }
+.bhtml table { border-collapse: collapse; margin: 0 auto; }
+.bhtml table.ruled td, .bhtml table.booktabs td { border: 1px solid #b9c3cb; padding: 4px 10px; }
+.bhtml .mp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.bhtml .mp { flex: 1 1 calc(var(--w) - 14px); min-width: 160px; }
+.bhtml .ans-line { display: inline-block; width: 10em; border-bottom: 1px dashed #9aa; }
+.bhtml .pisa-title { margin: 0 0 6px; }
+.dtable.fill td.resp { padding: 3px 6px; }
+.dtable.fill .cell-in { width: 100%; min-width: 7em; }
+.dtable.fill td { text-align: left; }
+.res-back { margin: 0 0 14px; }
+.katex { font-size: 1.08em; }

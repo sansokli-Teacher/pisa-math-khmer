@@ -30,6 +30,12 @@ identity.
 Original items by the teacher guide project «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២»
 (សាន សុខលី). Not OECD material.
 
+## The Grade 9 textbook's PISA tasks (collection «ភារកិច្ច PISA ពីមេរៀនថ្នាក់ទី ៩»)
+
+From «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» (draft), © 2026 លោកគ្រូ សាន សុខលី, all rights
+reserved; published here by the author for students to practise. Not OECD
+material. Mathematics drawn with KaTeX (MIT licence, katex/LICENSE).
+
 ## Font
 
 Noto Sans Khmer, SIL Open Font License 1.1 (fonts/OFL.txt).
