@@ -117,6 +117,13 @@
         },
       }, 'ចាប់ផ្ដើម')));
 
+    // live visitors (js/visits.js, online only), and where to report a mistake or support the site
+    page.append(h('div', { class: 'home-help', html:
+      '<p class="vc-foot" data-vc-box hidden><span class="vc-eye" aria-hidden="true">◉</span> អ្នកចូលមើល <b data-vc="visitors">—</b> នាក់ · ' +
+      'ថ្ងៃនេះ <b data-vc="today">—</b> នាក់ · មកពី <b data-vc="countries">—</b> ប្រទេស <span class="vc-flags" data-vc-flags="8"></span></p>' +
+      '<p class="hh-links"><a class="hh-btn" href="https://t.me/pisamathAI" target="_blank" rel="noopener">✎ ឃើញកំហុសក្នុងសំណួរ? ប្រាប់យើងតាម Telegram</a>' +
+      '<a class="hh-btn hh-heart" href="https://khmermath.org/about.html#support" target="_blank" rel="noopener">♥ គាំទ្រ KhmerMath</a></p>' }));
+
     const has = (c) => PISA.units.some((u) => (u.collection || 'oecd') === c);
     if (has('gold') || has('practice')) {
       page.append(h('p', { class: 'notice', html:
@@ -141,6 +148,7 @@
         'This is an adaptation of an original work by the OECD; it is not endorsed by the OECD.</p>' }));
     }
     app.append(page);
+    if (window.kmVisits) window.kmVisits.refresh();
     name.focus();
   }
   PISA.home = home;

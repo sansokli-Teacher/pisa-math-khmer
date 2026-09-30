@@ -521,6 +521,9 @@
         state.preview ? h('button', { type: 'button', class: 'btn', onclick: () => location.reload() }, '↻ ធ្វើម្ដងទៀត') : null),
       page.children[1]);
     }
+    page.append(h('p', { class: 'res-help', html:
+      'ឃើញកំហុសក្នុងសំណួរ ឬចម្លើយគំរូ? <a href="https://t.me/pisamathAI" target="_blank" rel="noopener">ប្រាប់យើងតាម Telegram</a> ដោយសេរី — ' +
+      'ប្រាប់ឈ្មោះប្រធានបទ និងលេខសំណួរ។ · <a href="https://khmermath.org/about.html#support" target="_blank" rel="noopener">♥ គាំទ្រ KhmerMath</a>' }));
     app.append(page);
     PISA.typeset(page);
   }
