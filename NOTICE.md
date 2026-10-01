@@ -36,6 +36,8 @@ From «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំ
 reserved; published here by the author for students to practise. Not OECD
 material. Mathematics drawn with KaTeX (MIT licence, katex/LICENSE).
 
-## Font
+## Fonts
 
-Noto Sans Khmer, SIL Open Font License 1.1 (fonts/OFL.txt).
+Noto Sans Khmer, SIL Open Font License 1.1 (fonts/OFL.txt): the test screens.
+Kantumruy Pro, SIL Open Font License 1.1 (fonts/OFL-KantumruyPro.txt): the home
+and results pages, as on khmermath.org.

@@ -459,9 +459,18 @@
   function showResults() {
     PISA.calc && PISA.calc.close();
     const app = document.getElementById('app');
-    app.className = 'app-results';
+    // a teacher's mark redraws the page: keep the place then, start at the top otherwise
+    const arriving = !app.classList.contains('app-results');
+    app.className = 'app-results km';
     app.innerHTML = '';
-    document.title = 'លទ្ធផល — គណិតវិទ្យាតាមបែប PISA';
+    document.title = 'លទ្ធផល — តេស្តគណិតវិទ្យាលើកុំព្យូទ័រ (CBA)';
+    // the khmermath.org header and footer around the page (js/main.js)
+    const framed = (page) => {
+      if (PISA.siteHeader) app.append(PISA.siteHeader({ label: 'ទំព័រដើមតេស្ត', icon: 'home', onclick: () => { clearHash(); PISA.home(); window.scrollTo(0, 0); } }));
+      app.append(h('main', { class: 'km-res-main' }, h('div', { class: 'km-wrap' }, page)));
+      if (PISA.siteFooter) app.append(PISA.siteFooter());
+      if (arriving) window.scrollTo(0, 0);
+    };
 
     const units = state.unitIds.map((id) => PISA.unit(id));
     if (units.length === 1 && units[0].results) {
@@ -471,7 +480,7 @@
         home: () => { state = null; clearHash(); PISA.home(); },
         again: () => PISA.start({ name: '', mode: 'practice', unitIds: [u.id], preview: true }),
       });
-      app.append(own);
+      framed(own);
       PISA.typeset(own);
       return;
     }
@@ -540,8 +549,9 @@
     page.append(h('p', { class: 'res-help', html:
       'ឃើញកំហុសក្នុងសំណួរ ឬចម្លើយគំរូ? <a href="https://t.me/pisamathAI" target="_blank" rel="noopener">ប្រាប់យើងតាម Telegram</a> ដោយសេរី — ' +
       'ប្រាប់ឈ្មោះប្រធានបទ និងលេខសំណួរ។ · <a href="https://khmermath.org/about.html#support" target="_blank" rel="noopener">♥ គាំទ្រ KhmerMath</a>' }));
-    app.append(page);
+    framed(page);
     PISA.typeset(page);
+    if (window.kmVisits) window.kmVisits.refresh();
   }
 
   // Points by the PISA process each question tests, and by its estimated
