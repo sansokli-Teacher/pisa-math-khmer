@@ -581,9 +581,9 @@
       '<div class="pisa-cert" id="pisa-certificate">' +
         '<div class="cert-inner">' +
           '<div class="cert-head">' +
-            '<div class="cert-kingdom">ព្រះរាជាណាចក្រកម្ពុជា<br><small>ជាតិ សាសនា ព្រះមហាក្សត្រ</small></div>' +
+            '<div class="cert-kingdom">ព្រះរាជាណាចក្រកម្ពុជា<br><span class="cert-motto">ជាតិ សាសនា ព្រះមហាក្សត្រ</span><br><svg class="cert-wave" width="90" height="8" viewBox="0 0 90 8" fill="none"><path d="M2 4 Q 12 1, 22 4 T 42 4 T 62 4 T 82 4" stroke="#b45309" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></div>' +
             '<div class="cert-logo-row">' +
-              '<img src="assets/img/logo.svg" alt="Logo" class="cert-logo">' +
+              '<img src="assets/img/logo.svg" alt="Logo" class="cert-logo" width="36" height="36">' +
               '<div class="cert-org">' +
                 '<h3>KhmerMath · PISA Computer-Based Assessment</h3>' +
                 '<p>ថ្នាលវាយតម្លៃសមត្ថភាពគណិតវិទ្យាតាមបែបអន្តរជាតិ PISA លើកុំព្យូទ័រ</p>' +
@@ -609,10 +609,10 @@
               '<div>រយៈពេលប្រើប្រាស់ ៖ <b>' + durationStr + '</b></div>' +
             '</div>' +
             '<div class="cert-seal">' +
-              '<div class="seal-inner">★ PISA CBA ★<br>KHMERMATH</div>' +
+              '<div class="seal-inner">★ PISA ★<br>CBA<br>KHMERMATH</div>' +
             '</div>' +
             '<div class="cert-foot-col" style="text-align:right;">' +
-              '<div>គេហទំព័រវាយតម្លៃ ៖</div>' +
+              '<div>គណៈកម្មការវាយតម្លៃ KhmerMath</div>' +
               '<b>cba.khmermath.org</b>' +
             '</div>' +
           '</div>' +
@@ -647,8 +647,15 @@
       page.append(sec);
     });
 
+    function printCertificateOnly() {
+      document.body.classList.add('print-cert-only');
+      window.print();
+      setTimeout(() => document.body.classList.remove('print-cert-only'), 800);
+    }
+
     page.append(h('div', { class: 'res-actions' },
-      h('button', { type: 'button', class: 'btn btn-primary', onclick: () => window.print() }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ / PDF'),
+      h('button', { type: 'button', class: 'btn btn-primary', onclick: printCertificateOnly }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ (A4)'),
+      h('button', { type: 'button', class: 'btn', onclick: () => window.print() }, '📄 របាយការណ៍លម្អិត (PDF)'),
       h('button', { type: 'button', class: 'btn', onclick: downloadCSV }, '📥 ទាញយកលទ្ធផល (CSV)'),
       h('button', { type: 'button', class: 'btn', onclick: downloadJSON }, 'ទាញយកទិន្នន័យពេញ (JSON)'),
       h('button', {

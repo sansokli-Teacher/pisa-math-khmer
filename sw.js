@@ -1,5 +1,5 @@
 /* PISA CBA Khmer — Service Worker for Offline PWA Support */
-const CACHE_NAME = 'pisa-cba-khmer-v2026-10-04';
+const CACHE_NAME = 'pisa-cba-khmer-v2026-10-04-cert';
 
 // Pre-cached critical assets
 const CORE_ASSETS = [
@@ -12,6 +12,7 @@ const CORE_ASSETS = [
   'fonts/kantumruy-pro-khmer.woff2',
   'fonts/kantumruy-pro-latin.woff2',
   'assets/img/logo.svg',
+  'assets/img/frame-certificate.png',
   'katex/katex.min.css',
   'katex/katex.min.js',
   'katex/contrib/auto-render.min.js',
