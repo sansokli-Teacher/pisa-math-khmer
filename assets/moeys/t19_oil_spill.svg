@@ -52,6 +52,6 @@
   <!-- Problem note at bottom -->
   <g transform="translate(50, 355)">
     <text x="290" y="20" text-anchor="middle" font-size="12" fill="#0f172a">ដោយប្រើមាត្រដ្ឋានក្នុងផែនទី ចូរប៉ាន់ប្រមាណផ្ទៃប្រេងដែលកំពប់គិតជា <b>គីឡូម៉ែត្រការ៉េ (km²)</b>។</text>
-    <text x="290" y="40" text-anchor="middle" font-size="11" fill="#64748b">ចន្លោះទទួលយកបានតាមស្ដង់ដារ PISA ៖ 2200 km² ដល់ 3300 km²</text>
+    <text x="290" y="40" text-anchor="middle" font-size="11" fill="#64748b">កំណត់សម្គាល់ ៖ ក្រឡាការ៉ូនីមួយៗតំណាងឱ្យផ្ទៃ ១០០០ km² ក្នុងទំហំជាក់ស្ដែង</text>
   </g>
 </svg>

@@ -1,25 +1,18 @@
-/* Unit 17 (MoEYS 2025 / PISA Buying an Apartment) — ការបញ្ជាទិញអាផាតមិន
- * Source: «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥»
- * នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ នៃក្រសួងអប់រំ យុវជន និងកីឡា, ទំព័រ ៤២–៤៣ (ប្រធានបទទី ១៧)។
- */
+/* Unit 17 — ការបញ្ជាទិញអាផាតមិន (Buying an Apartment) */
 (function () {
   'use strict';
   const { h, W } = PISA;
 
-  const TITLE = 'ការបញ្ជាទិញអាផាតមិន';
-  const EN_TITLE = 'Buying an Apartment';
-
   const stimulus = () => h('div', { class: 'stack stim-card', style: 'background: #ffffff; padding: 6px;' },
-    h('h3', { style: 'font-size: 1.15rem; color: #1e3a8a; margin-top: 0; margin-bottom: 6px;' }, 'ប្លង់បាតនៃអាផាតមិន'),
-    h('p', { style: 'margin-bottom: 10px; font-size: 0.95rem; line-height: 1.55;' },
-      'នេះជាប្លង់អាផាតមិន ដែលឪពុកម្តាយរបស់ វី ចង់បញ្ជាទិញពីភ្នាក់ងារលក់អចលនទ្រព្យ។ ' +
-      'មាត្រដ្ឋាន ៖ <b>1 ឯកតាក្នុងប្លង់នេះ ស្មើនឹង 1 ម៉ែត្រ (m)</b>។'
+    h('h3', { style: 'font-size: 1.15rem; color: #1e3a8a; margin: 0 0 6px;' }, 'ប្លង់អាផាតមិន'),
+    h('p', { style: 'margin-bottom: 8px; font-size: 0.95rem; line-height: 1.55;' },
+      'ប្លង់ខាងក្រោមនេះបង្ហាញអំពីវិមាត្រនៃបន្ទប់ផ្សេងៗក្នុងអាផាតមិនមួយ។ វិមាត្រសរុបខាងក្រៅគឺ ៩.៧ ម៉ែត្រ គុណនឹង ៨.៨ ម៉ែត្រ ដោយមានផ្នែកឆកមួយនៅជ្រុងខាងស្តាំទំហំ ២.០ ម៉ែត្រ គុណនឹង ៤.៤ ម៉ែត្រ។'
     ),
     h('div', { class: 'fig-wrap', style: 'text-align: center; margin: 8px 0;' },
       h('img', {
         src: 'assets/moeys/t17_apartment_plan.svg',
-        alt: 'ប្លង់បាតអាផាតមិន បង្ហាញវិមាត្រទាំងបួន',
-        style: 'max-width: 100%; width: 520px; height: auto; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08);'
+        alt: 'ប្លង់អាផាតមិន',
+        style: 'max-width: 100%; width: 540px; height: auto; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08);'
       })
     )
   );
@@ -28,76 +21,56 @@
     id: 'm17',
     no: 17,
     label: 'ប្រធានបទ ១៧',
-    title: TITLE,
-    en: EN_TITLE,
+    title: 'ការបញ្ជាទិញអាផាតមិន',
+    en: 'Buying an Apartment',
     collection: 'moeys',
-    grade: 7,
-    blurb: 'ការវាស់វែង និងការកំណត់ប្រវែងជ្រុង ៤ ដើម្បីគណនាផ្ទៃក្រឡាប្លង់បាតអាផាតមិន (PISA)។',
+    grade: 8,
+    blurb: 'គណនាផ្ទៃក្រឡាកម្រាលឥដ្ឋសរុបនៃអាផាតមិនតាមវិមាត្រប្លង់ស្ថាបត្យកម្ម។',
     questions: {
       m17q1: {
         label: 'សំណួរ ១',
-        format: 'សំណួរសរសេរកំណត់ប្រវែងជ្រុងទាំងបួន',
-        max: 1,
-        parts: [{ k: 'dimensions', label: 'ប្រវែងជ្រុងទាំងបួន និងការគណនា' }],
-        summary: (r) => r.dimensions || '—',
+        format: 'សំណួរបញ្ចូលលេខ និងពន្យល់',
+        max: 2,
+        parts: [{ k: 'area', label: 'ផ្ទៃក្រឡាសរុប (m²)' }],
+        summary: (r) => (r.area ? r.area + ' m²' : '—'),
         score: (r) => {
-          const raw = (r.dimensions || '').trim().toLowerCase();
+          const raw = (r.area || '').trim();
           if (!raw) return { pts: 0, note: 'មិនបានឆ្លើយ' };
-
-          // Key: 4 dimensions needed to calculate floor area:
-          // e.g. 9.7m, 8.8m, 2.0m, 4.4m (Area = 9.7 x 8.8 - 2.0 x 4.4 = 76.56 m²)
-          // or decomposition into rectangles using 4 key side lengths.
-          const has9_7 = /9\.7|9,7/.test(raw);
-          const has8_8 = /8\.8|8,8/.test(raw);
-          const has2 = /2\.0|2m|2\s*m|2/.test(raw);
-          const has4_4 = /4\.4|4,4/.test(raw);
-          const hasArea = /76\.56|76,56|76\.6|77/.test(raw);
-
-          if ((has9_7 && has8_8 && has2 && has4_4) || hasArea) {
-            return { pts: 1, note: 'ត្រឹមត្រូវពេញលេញ (កំណត់ជ្រុងទាំងបួន 9.7m, 8.8m, 2m, 4.4m ឬគណនាបាន 76.56 m²)' };
+          const match = raw.match(/(\d+(?:\.\d+)?)/);
+          if (match) {
+            const val = parseFloat(match[1]);
+            if (val >= 75 && val <= 78) return { pts: 2, note: 'ត្រឹមត្រូវពេញលេញ (ចន្លោះ 75 - 78 m²)' };
+            if (val >= 70 && val <= 85) return { pts: 1, note: 'ត្រឹមត្រូវមួយផ្នែក' };
           }
-          if (has9_7 || has8_8) {
-            return { pts: 0.5, note: 'ពិន្ទុមិនពេញ (បានបញ្ជាក់ប្រវែងសរុប ប៉ុន្តែខ្វះជ្រុងកាត់ចេញ)' };
-          }
-          return { pts: 0, note: 'មិនត្រឹមត្រូវ (ជ្រុងទាំងបួនដែលចាំបាច់គឺ 9.7m, 8.8m, 2m, 4.4m សម្រាប់គណនាផ្ទៃ 76.56 m²)' };
+          return { pts: 0, note: 'មិនត្រឹមត្រូវ' };
         },
-        key: '<b>ចម្លើយត្រឹមត្រូវ ៖</b><br><br>' +
-          'ដើម្បីគណនាផ្ទៃក្រឡាបាតសរុបនៃអាផាតមិនដោយវាស់តែ <b>ជ្រុងចំនួន ៤</b> យើងអាចវាស់ ៖<br>' +
-          '• <b>ប្រវែងបណ្តោយសរុប ៖</b> 9.7 m<br>' +
-          '• <b>ប្រវែងទទឹងសរុប ៖</b> 8.8 m<br>' +
-          '• <b>ប្រវែងទទឹងជ្រុងកាត់ចេញ (រានហាល) ៖</b> 2.0 m<br>' +
-          '• <b>ប្រវែងបណ្តោយជ្រុងកាត់ចេញ (រានហាល) ៖</b> 4.4 m<br><br>' +
-          '<b>រូបមន្តគណនាផ្ទៃក្រឡាសរុប ៖</b><br>' +
-          '$$A = (9.7\text{ m} \times 8.8\text{ m}) - (2.0\text{ m} \times 4.4\text{ m}) = 85.36 - 8.80 = \mathbf{76.56\text{ m}^2}$$',
-      },
+        key: '<b>ចម្លើយត្រឹមត្រូវ (ពិន្ទុពេញ ២) ៖ ចន្លោះពី 75 m² ដល់ 78 m² (ប្រហែល 76.56 m²)</b><br><br>' +
+          '<b>របៀបគណនា ៖</b><br>' +
+          '• ផ្ទៃក្រឡាចតុកោណកែងសរុបខាងក្រៅ = 9.7 m × 8.8 m = 85.36 m²។<br>' +
+          '• ដកផ្ទៃឆកនៅជ្រុង = 2.0 m × 4.4 m = 8.80 m²។<br>' +
+          '• ផ្ទៃក្រឡាសរុបនៃអាផាតមិន = 85.36 - 8.80 = <b>76.56 m²</b> (ទទួលយកចន្លោះ 75 ដល់ 78 m² ដោយរាប់បញ្ចូលកម្រាស់ជញ្ជាំង)។'
+      }
     },
     screens: [
       {
         tag: 'សេចក្ដីណែនាំ',
         split: 44,
         left: () => W.stack(
-          W.instr('សូមពិនិត្យមើលប្លង់អាផាតមិន នៅផ្ទាំងខាងស្ដាំ រួចចុចសញ្ញាព្រួញ «បន្ទាប់» (NEXT) នៅលើរបារខាងលើ ដើម្បីចាប់ផ្ដើមធ្វើសំណួរ។'),
-          h('div', { class: 'note-box', style: 'background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px; margin-top: 12px;' },
-            h('h4', { style: 'margin: 0 0 6px; color: #1e40af; font-size: 0.95rem;' }, 'ព័ត៌មានអំពីប្រធានបទនេះ'),
-            h('p', { style: 'margin: 0; font-size: 0.9rem; line-height: 1.6;', html:
-              'ប្រធានបទនេះដកស្រង់ពី <b>កម្រងសំណួរគំរូនីតិវិធី PISA ២០២៥ (ប្រធានបទទី ១៧)</b> — កូដ OECD PISA: <b>Buying an Apartment</b>។'
-            })
-          )
+          W.instr('សូមពិនិត្យមើលប្លង់អាផាតមិននៅផ្ទាំងខាងស្តាំ រួចចុចសញ្ញាព្រួញ «បន្ទាប់» ដើម្បីឆ្លើយសំណួរ។')
         ),
-        right: stimulus,
+        right: stimulus
       },
       {
         tag: 'សំណួរ ១ / ១',
         split: 44,
         items: ['m17q1'],
         left: (ctx) => W.stack(
-          W.instr('ដើម្បីប៉ាន់ស្មានផ្ទៃក្រឡាអាផាតមិនសរុប អ្នកអាចវាស់ទំហំបន្ទប់នីមួយៗ ហើយបូកបញ្ចូលគ្នា។ ទោះបីយ៉ាងណាក៏ដោយ មានវិធីសាស្ត្រកាន់តែមានប្រសិទ្ធភាព ដោយគ្រាន់តែវាស់ជ្រុងទាំង ៤ ប៉ុណ្ណោះ។'),
-          W.p('<b>ចូរកំណត់សម្គាល់លើប្រវែងជ្រុងបួន តាមរូបប្លង់ខាងស្តាំ ដែលចាំបាច់សម្រាប់ប៉ាន់ស្មានផ្ទៃក្រឡាបាតសរុបនៃអាផាតមិន ៖</b>', 'q-lead'),
-          W.p('<i>(សូមបញ្ជាក់ប្រវែងជ្រុងទាំង ៤ ឬរបៀបគណនាផ្ទៃក្រឡា)</i>', 'hint'),
-          W.textarea(ctx, 'm17q1', 'dimensions', 'ឧ. បណ្តោយសរុប 9.7m, ទទឹងសរុប 8.8m, កាត់ចេញ 2m និង 4.4m...', 5)
+          W.instr('សូមពិនិត្យមើលវិមាត្រនៃប្លង់អាផាតមិននៅផ្ទាំងខាងស្តាំ។'),
+          W.p('<b>គណនាផ្ទៃក្រឡាកម្រាលឥដ្ឋសរុបនៃអាផាតមិននេះគិតជាម៉ែត្រការ៉េ (m²) ដោយបង្ហាញពីរបៀបគណនារបស់អ្នក ៖</b>', 'q-lead'),
+          W.textarea(ctx, 'm17q1', 'area', { rows: 4, placeholder: 'បញ្ចូលផ្ទៃក្រឡា និងរបៀបគណនា...' })
         ),
-        right: stimulus,
-      },
-    ],
+        right: stimulus
+      }
+    ]
   });
 })();

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" width="100%" height="100%">
+  <rect width="700" height="420" fill="#f8fafc" rx="12"/>
+  
+  <!-- Header Banner -->
+  <rect x="30" y="25" width="640" height="46" rx="8" fill="#0d2b45"/>
+  <text x="350" y="54" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="16" font-weight="700" text-anchor="middle">រូបមន្តលាយទឹកជ្រលក់សាលាដិ៍ (Salad Dressing Recipe)</text>
+  
+  <!-- Left Side: Recipe Measuring Cylinder 100 mL -->
+  <rect x="50" y="95" width="260" height="295" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="180" y="125" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">រូបមន្តដើម (សរុប 100 mL)</text>
+  
+  <!-- Cylinder jar -->
+  <rect x="120" y="150" width="120" height="190" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Soy sauce 10 mL -->
+  <rect x="121" y="315" width="118" height="24" fill="#78350f"/>
+  <text x="250" y="332" fill="#78350f" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ទឹកស៊ីអ៊ីវ 10 mL</text>
+  <!-- Vinegar 30 mL -->
+  <rect x="121" y="255" width="118" height="60" fill="#fed7aa"/>
+  <text x="250" y="290" fill="#c2410c" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ទឹកខ្មេះ 30 mL</text>
+  <!-- Salad oil 60 mL -->
+  <rect x="121" y="151" width="118" height="104" rx="6" fill="#fde047"/>
+  <text x="250" y="205" fill="#854d0e" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ប្រេងសាលាដិ៍ 60 mL</text>
+  
+  <!-- Right Side: Proportion Table for 150 mL -->
+  <rect x="340" y="95" width="310" height="295" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="495" y="125" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">សមាមាត្រសម្រាប់ផលិត 150 mL</text>
+  
+  <rect x="360" y="145" width="270" height="35" fill="#0284c7" rx="6"/>
+  <text x="430" y="167" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="middle">គ្រឿងផ្សំ</text>
+  <text x="540" y="167" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="middle">100 mL</text>
+  <text x="600" y="167" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="middle">150 mL</text>
+  
+  <!-- Row 1: Oil -->
+  <rect x="360" y="185" width="270" height="35" fill="#fef9c3"/>
+  <text x="375" y="207" fill="#854d0e" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600">ប្រេងសាលាដិ៍</text>
+  <text x="540" y="207" fill="#854d0e" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600" text-anchor="middle">60 mL</text>
+  <text x="600" y="207" fill="#ea580c" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700" text-anchor="middle">? mL</text>
+  
+  <!-- Row 2: Vinegar -->
+  <rect x="360" y="225" width="270" height="35" fill="#fff7ed"/>
+  <text x="375" y="247" fill="#c2410c" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600">ទឹកខ្មេះ</text>
+  <text x="540" y="247" fill="#c2410c" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600" text-anchor="middle">30 mL</text>
+  <text x="600" y="247" fill="#64748b" font-family="'Noto Sans Khmer', sans-serif" font-size="12" text-anchor="middle">45 mL</text>
+
+  <!-- Row 3: Soy sauce -->
+  <rect x="360" y="265" width="270" height="35" fill="#f8fafc"/>
+  <text x="375" y="287" fill="#78350f" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600">ទឹកស៊ីអ៊ីវ</text>
+  <text x="540" y="287" fill="#78350f" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600" text-anchor="middle">10 mL</text>
+  <text x="600" y="287" fill="#64748b" font-family="'Noto Sans Khmer', sans-serif" font-size="12" text-anchor="middle">15 mL</text>
+
+  <!-- Total Row -->
+  <rect x="360" y="305" width="270" height="35" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="375" y="327" fill="#0f172a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">សរុប</text>
+  <text x="540" y="327" fill="#0f172a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="middle">100 mL</text>
+  <text x="600" y="327" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700" text-anchor="middle">150 mL</text>
+
+  <text x="495" y="365" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="600" text-anchor="middle">មេគុណសមាមាត្រ ៖ × 1.5 (150 ÷ 100)</text>
+</svg>

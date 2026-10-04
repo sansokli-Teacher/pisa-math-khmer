@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="100%" height="100%">
+  <rect width="720" height="420" fill="#f8fafc" rx="12"/>
+  
+  <rect x="30" y="20" width="660" height="42" rx="8" fill="#0d2b45"/>
+  <text x="360" y="47" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">ប្លង់ក្រាលឥដ្ឋទីធ្លាផ្ទះថ្មី (Dina's Patio Paving)</text>
+  
+  <!-- Left Side: Patio Blueprint Diagram -->
+  <rect x="30" y="80" width="370" height="315" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="215" y="110" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">ប្លង់ទំហំទីធ្លាចតុកោណកែង</text>
+  
+  <!-- Patio Rectangle: 5.25m x 3.00m (drawn at 262px x 150px) -->
+  <rect x="85" y="145" width="262" height="150" fill="#fed7aa" stroke="#c2410c" stroke-width="2"/>
+  
+  <!-- Brick Texture Simulation -->
+  <g stroke="#ea580c" stroke-width="0.8" opacity="0.4">
+    <line x1="85" y1="170" x2="347" y2="170"/>
+    <line x1="85" y1="195" x2="347" y2="195"/>
+    <line x1="85" y1="220" x2="347" y2="220"/>
+    <line x1="85" y1="245" x2="347" y2="245"/>
+    <line x1="85" y1="270" x2="347" y2="270"/>
+    <line x1="128" y1="145" x2="128" y2="295"/>
+    <line x1="172" y1="145" x2="172" y2="295"/>
+    <line x1="216" y1="145" x2="216" y2="295"/>
+    <line x1="260" y1="145" x2="260" y2="295"/>
+    <line x1="304" y1="145" x2="304" y2="295"/>
+  </g>
+  
+  <!-- Dimension lines -->
+  <!-- Length: 5.25 m -->
+  <line x1="85" y1="130" x2="347" y2="130" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="216" y="122" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700" text-anchor="middle">បណ្តោយ 5.25 m</text>
+  
+  <!-- Width: 3.00 m -->
+  <line x1="365" y1="145" x2="365" y2="295" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="375" y="225" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700">ទទឹង 3.00 m</text>
+
+  <text x="215" y="335" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="12" text-anchor="middle">
+    ទីធ្លារាងចតុកោណកែង (បណ្តោយ 5.25 m × ទទឹង 3.00 m)
+  </text>
+
+  <!-- Right Side: Patio Paving Specifications -->
+  <rect x="420" y="80" width="270" height="315" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="555" y="110" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">ព័ត៌មានលម្អិតអំពីការក្រាលឥដ្ឋ</text>
+  
+  <rect x="435" y="135" width="240" height="100" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="445" y="162" fill="#1e40af" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ទំហំទីធ្លា ៖</text>
+  <text x="445" y="188" fill="#1e3a8a" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• បណ្តោយ ៖ 5.25 ម៉ែត្រ</text>
+  <text x="445" y="212" fill="#1e3a8a" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ទទឹង ៖ 3.00 ម៉ែត្រ</text>
+
+  <rect x="435" y="255" width="240" height="115" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="445" y="282" fill="#c2410c" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">អត្រាឥដ្ឋប្រើប្រាស់ ៖</text>
+  <text x="445" y="310" fill="#9a3412" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• <b>81 ដុំ</b> ក្នុងមួយម៉ែត្រការ៉េ (1 m²)</text>
+  <text x="445" y="338" fill="#64748b" font-family="'Noto Sans Khmer', sans-serif" font-size="11">• ឌីណាត្រូវក្រាលទីធ្លាទាំងមូល</text>
+</svg>

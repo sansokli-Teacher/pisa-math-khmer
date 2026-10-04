@@ -48,6 +48,6 @@
 
   <!-- Problem Explanation at bottom -->
   <g transform="translate(50, 375)">
-    <text x="300" y="20" text-anchor="middle" font-size="12" fill="#0f172a">💡 រូបមន្តគណនាផ្ទៃក្រឡា ៖ <b>A = (9.7 m × 8.8 m) - (2.0 m × 4.4 m) = 76.56 m²</b></text>
+    <text x="300" y="20" text-anchor="middle" font-size="12" fill="#0f172a">💡 ប្លង់ផ្ទះល្វែង ៖ វិមាត្របន្ទប់ និងផ្នែកផ្សេងៗគិតជាម៉ែត្រ (m)</text>
   </g>
 </svg>

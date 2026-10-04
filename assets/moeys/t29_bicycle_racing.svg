@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="100%" height="100%">
+  <rect width="720" height="420" fill="#f8fafc" rx="12"/>
+  
+  <rect x="30" y="20" width="660" height="42" rx="8" fill="#0d2b45"/>
+  <text x="360" y="47" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">ដំណើរជិះកង់របស់ ឌីណា (Helen the Cyclist)</text>
+  
+  <!-- Left Side: Trip 1 & Trip 2 Speedometers -->
+  <rect x="30" y="80" width="310" height="315" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="185" y="112" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">ដំណើរកម្សាន្តទី ១ &amp; ទី ២</text>
+  
+  <!-- Trip 1 Card -->
+  <rect x="45" y="130" width="280" height="110" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="60" y="152" fill="#1e40af" font-family="'Noto Sans Khmer', sans-serif" font-size="12.5" font-weight="700">សំណួរទី ១ (ដំណាក់កាលពីរ) ៖</text>
+  <text x="60" y="174" fill="#1e3a8a" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• 10 នាទីដំបូង ៖ ចម្ងាយ 4 km (v = 24 km/h)</text>
+  <text x="60" y="194" fill="#1e3a8a" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• 5 នាទីបន្ទាប់ ៖ ចម្ងាយ 2 km (v = 24 km/h)</text>
+  <text x="60" y="222" fill="#16a34a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">→ ល្បឿនមធ្យមទាំងពីរគឺស្មើគ្នា (Option ខ)</text>
+
+  <!-- Trip 2 Card -->
+  <rect x="45" y="255" width="280" height="115" rx="6" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="60" y="277" fill="#166534" font-family="'Noto Sans Khmer', sans-serif" font-size="12.5" font-weight="700">សំណួរទី ២ (ទៅផ្ទះមីង) ៖</text>
+  <text x="60" y="299" fill="#14532d" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• ចម្ងាយ ៖ 6 km | ល្បឿនមធ្យម ៖ 18 km/h</text>
+  <text x="60" y="321" fill="#14532d" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• រយៈពេល = 6 ÷ 18 h = 1/3 h = <b>20 នាទី</b></text>
+  <text x="60" y="350" fill="#16a34a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">→ ចំណាយពេល 20 នាទី (Option ក)</text>
+
+  <!-- Right Side: Trip 3 (Return trip calculation) -->
+  <rect x="365" y="80" width="325" height="315" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="527" y="112" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="14" font-weight="700" text-anchor="middle">សំណួរទី ៣ ៖ ទៅមាត់ទន្លេ និងត្រឡប់មកវិញ</text>
+  
+  <rect x="385" y="130" width="285" height="75" rx="6" fill="#fef9c3" stroke="#fef08a"/>
+  <text x="400" y="152" fill="#854d0e" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ជើងទៅមាត់ទន្លេ ៖</text>
+  <text x="400" y="174" fill="#713f12" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• ចម្ងាយ ៖ 4 km</text>
+  <text x="400" y="194" fill="#713f12" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• រយៈពេល ៖ 9 នាទី</text>
+
+  <rect x="385" y="215" width="285" height="75" rx="6" fill="#fef9c3" stroke="#fef08a"/>
+  <text x="400" y="237" fill="#854d0e" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ជើងត្រឡប់មកវិញ (ផ្លូវកាត់) ៖</text>
+  <text x="400" y="259" fill="#713f12" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• ចម្ងាយ ៖ 3 km</text>
+  <text x="400" y="279" fill="#713f12" font-family="'Noto Sans Khmer', sans-serif" font-size="12">• រយៈពេល ៖ 6 នាទី</text>
+
+  <rect x="385" y="300" width="285" height="80" rx="6" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <text x="400" y="322" fill="#065f46" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">ការគណនាល្បឿនមធ្យមសរុប ៖</text>
+  <text x="400" y="342" fill="#047857" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ចម្ងាយសរុប = 4 + 3 = 7 km</text>
+  <text x="400" y="360" fill="#047857" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ពេលសរុប = 9 + 6 = 15 នាទី = 0.25 ម៉ោង</text>
+  <text x="400" y="375" fill="#059669" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">→ v = 7 km ÷ 0.25 h = 28 km/h</text>
+</svg>

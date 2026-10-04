@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 430" width="100%" height="100%">
+  <rect width="740" height="430" fill="#f8fafc" rx="12"/>
+  
+  <rect x="30" y="20" width="680" height="42" rx="8" fill="#0d2b45"/>
+  <text x="370" y="47" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">តារាងប្រៀបធៀបរថយន្តទាំង ៤ ម៉ូដែល (Which Car?)</text>
+  
+  <!-- Table Container -->
+  <rect x="30" y="80" width="680" height="210" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  
+  <!-- Header -->
+  <rect x="30" y="80" width="680" height="45" fill="#0284c7" rx="8"/>
+  <rect x="30" y="112" width="680" height="13" fill="#0284c7"/>
+  
+  <g fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">
+    <text x="100" y="107" text-anchor="middle">ម៉ាករថយន្ត</text>
+    <text x="220" y="107" text-anchor="middle">ឆ្នាំផលិត</text>
+    <text x="350" y="107" text-anchor="middle">តម្លៃដាក់លក់ (Zeds)</text>
+    <text x="490" y="107" text-anchor="middle">ចម្ងាយបានរត់ (km)</text>
+    <text x="630" y="107" text-anchor="middle">ទំហំស៊ីឡាំង (L)</text>
+  </g>
+  
+  <!-- Rows -->
+  <g font-family="'Noto Sans Khmer', sans-serif" font-size="12.5">
+    <!-- Alpha -->
+    <rect x="30" y="125" width="680" height="35" fill="#f8fafc"/>
+    <text x="100" y="147" fill="#0f172a" font-weight="700" text-anchor="middle">អាល់ហ្វា (Alpha)</text>
+    <text x="220" y="147" fill="#334155" text-anchor="middle">2003</text>
+    <text x="350" y="147" fill="#334155" text-anchor="middle">4 800 (ពន្ធ 2.5% = 120)</text>
+    <text x="490" y="147" fill="#334155" text-anchor="middle">105 000</text>
+    <text x="630" y="147" fill="#334155" text-anchor="middle">1.79</text>
+
+    <!-- Bolte -->
+    <rect x="30" y="160" width="680" height="35" fill="#ecfdf5"/>
+    <text x="100" y="182" fill="#065f46" font-weight="700" text-anchor="middle">បូល (Bolte)</text>
+    <text x="220" y="182" fill="#065f46" text-anchor="middle">2000 (≥ 2000)</text>
+    <text x="350" y="182" fill="#065f46" font-weight="700" text-anchor="middle">4 450 (≤ 4500)</text>
+    <text x="490" y="182" fill="#065f46" text-anchor="middle">115 000 (≤ 120 000)</text>
+    <text x="630" y="182" fill="#065f46" text-anchor="middle">1.796</text>
+
+    <!-- Castel -->
+    <rect x="30" y="195" width="680" height="35" fill="#f8fafc"/>
+    <text x="100" y="217" fill="#0f172a" font-weight="700" text-anchor="middle">កាស្តេល (Castel)</text>
+    <text x="220" y="217" fill="#334155" text-anchor="middle">2001</text>
+    <text x="350" y="217" fill="#334155" text-anchor="middle">4 250</text>
+    <text x="490" y="217" fill="#dc2626" font-weight="700" text-anchor="middle">128 000 (&gt; 120 000)</text>
+    <text x="630" y="217" fill="#334155" text-anchor="middle">1.82</text>
+
+    <!-- Dezal -->
+    <rect x="30" y="230" width="680" height="35" fill="#ffffff"/>
+    <text x="100" y="252" fill="#0f172a" font-weight="700" text-anchor="middle">ឌីហ្សែល (Dezal)</text>
+    <text x="220" y="252" fill="#dc2626" font-weight="700" text-anchor="middle">1999 (&lt; 2000)</text>
+    <text x="350" y="252" fill="#334155" text-anchor="middle">3 990</text>
+    <text x="490" y="252" fill="#334155" text-anchor="middle">109 000</text>
+    <text x="630" y="252" fill="#0284c7" font-weight="700" text-anchor="middle">1.783 (តូចជាងគេ)</text>
+  </g>
+  
+  <!-- Criteria Box -->
+  <rect x="30" y="305" width="680" height="105" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="50" y="328" fill="#0d2b45" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">លក្ខខណ្ឌដែល បុប្ផា ត្រូវការ ៖</text>
+  <text x="50" y="350" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ចម្ងាយរត់ ≤ 120 000 km | ឆ្នាំផលិត ≥ 2000 | តម្លៃ ≤ 4 500 zeds → <b>រថយន្ត Bolte (Option ខ)</b></text>
+  <text x="50" y="370" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ទំហំស៊ីឡាំងតូចជាងគេ ៖ 1.783 L → <b>រថយន្ត Dezal (Option ឃ)</b></text>
+  <text x="50" y="390" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ពន្ធ 2.5% លើឡាន Alpha ៖ 4800 × 0.025 = <b>120 zeds</b></text>
+</svg>

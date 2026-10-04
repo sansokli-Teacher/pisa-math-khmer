@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 450" width="100%" height="100%">
+  <rect width="740" height="450" fill="#f8fafc" rx="12"/>
+  
+  <!-- Header -->
+  <rect x="30" y="20" width="680" height="40" rx="8" fill="#0d2b45"/>
+  <text x="370" y="46" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">កន្ត្រកវិលមាត់ទន្លេ (Ferris Wheel)</text>
+  
+  <!-- River water at bottom -->
+  <rect x="30" y="390" width="680" height="40" fill="#0284c7" opacity="0.8" rx="4"/>
+  <text x="370" y="415" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700" text-anchor="middle">ផ្ទៃទឹកទន្លេ (Water Surface)</text>
+  
+  <!-- Support Frame -->
+  <polygon points="260,390 380,240 500,390" fill="none" stroke="#64748b" stroke-width="4"/>
+  
+  <!-- Outer Wheel: Diameter 140m -> Radius 140px, Center at (380, 240) -->
+  <circle cx="380" cy="240" r="140" fill="none" stroke="#0284c7" stroke-width="4"/>
+  <circle cx="380" cy="240" r="130" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <circle cx="380" cy="240" r="15" fill="#0369a1"/>
+  
+  <!-- Spokes -->
+  <g stroke="#94a3b8" stroke-width="1.5">
+    <line x1="380" y1="100" x2="380" y2="380"/>
+    <line x1="240" y1="240" x2="520" y2="240"/>
+    <line x1="281" y1="141" x2="479" y2="339"/>
+    <line x1="281" y1="339" x2="479" y2="141"/>
+  </g>
+  
+  <!-- Points P, Q, R, S, M -->
+  <!-- Center M -->
+  <circle cx="380" cy="240" r="6" fill="#ea580c"/>
+  <text x="395" y="235" fill="#ea580c" font-family="'Noto Sans Khmer', sans-serif" font-size="16" font-weight="700">M</text>
+  
+  <!-- P: Lowest point (380, 380) -->
+  <circle cx="380" cy="380" r="7" fill="#16a34a"/>
+  <text x="380" y="372" fill="#16a34a" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">P (ចាប់ផ្តើម)</text>
+  
+  <!-- Q: Right point (520, 240) -->
+  <circle cx="520" cy="240" r="7" fill="#0284c7"/>
+  <text x="545" y="245" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700">Q (10 នាទី)</text>
+
+  <!-- R: Top point (380, 100) -->
+  <circle cx="380" cy="100" r="7" fill="#0284c7"/>
+  <text x="380" y="90" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">R (20 នាទី)</text>
+
+  <!-- S: Left point (240, 240) -->
+  <circle cx="240" cy="240" r="7" fill="#0284c7"/>
+  <text x="215" y="245" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="end">S (30 នាទី)</text>
+
+  <!-- Rotation direction arrow -->
+  <path d="M 460 160 A 110 110 0 0 1 480 210" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Dimension lines on right -->
+  <!-- Peak height 150m from river -->
+  <line x1="620" y1="100" x2="620" y2="390" stroke="#0284c7" stroke-width="2"/>
+  <line x1="610" y1="100" x2="630" y2="100" stroke="#0284c7" stroke-width="2"/>
+  <line x1="610" y1="390" x2="630" y2="390" stroke="#0284c7" stroke-width="2"/>
+  <text x="635" y="250" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700">កម្ពស់ខ្ពស់បំផុត 150 m</text>
+  
+  <!-- Center height: 80m from river -->
+  <line x1="120" y1="240" x2="120" y2="390" stroke="#ea580c" stroke-width="2" stroke-dasharray="3 3"/>
+  <line x1="110" y1="240" x2="130" y2="240" stroke="#ea580c" stroke-width="2"/>
+  <line x1="110" y1="390" x2="130" y2="390" stroke="#ea580c" stroke-width="2"/>
+  <text x="105" y="320" fill="#ea580c" font-family="'Noto Sans Khmer', sans-serif" font-size="13" font-weight="700" text-anchor="end">ចម្ងាយ M ពីទឹក ៖ 80 m</text>
+  
+  <text x="370" y="75" fill="#475569" font-family="'Noto Sans Khmer', sans-serif" font-size="12" text-anchor="middle">អង្កត់ផ្ចិត 140 m (កាំ = 70 m) | វិល 1 ជុំពេញ = 40 នាទី</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg23" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="450" fill="url(#bg23)" rx="12"/>
+  
+  <!-- Left Panel: Turbine specs -->
+  <rect x="25" y="25" width="335" height="400" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="25" y="25" width="335" height="42" rx="10" fill="#0d2b45"/>
+  <rect x="25" y="55" width="335" height="12" fill="#0d2b45"/>
+  <text x="192" y="52" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">ទួរប៊ីនខ្យល់ ម៉ូដែល E-82</text>
+  
+  <!-- Turbine drawing -->
+  <!-- Tower -->
+  <polygon points="120,380 140,380 133,180 127,180" fill="#94a3b8"/>
+  <rect x="110" y="380" width="40" height="10" rx="2" fill="#64748b"/>
+  <!-- Nacelle -->
+  <ellipse cx="130" cy="180" rx="12" ry="7" fill="#475569"/>
+  <!-- Hub -->
+  <circle cx="130" cy="180" r="5" fill="#0284c7"/>
+  <!-- Rotor Blades (Diameter 82m, blade length 40m) -->
+  <!-- Upright blade -->
+  <path d="M 130 180 Q 126 130 130 98 Q 134 130 130 180" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+  <!-- Lower right blade -->
+  <path d="M 130 180 Q 165 205 168 220 Q 155 215 130 180" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+  <!-- Lower left blade -->
+  <path d="M 130 180 Q 95 205 92 220 Q 105 215 130 180" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+  <circle cx="130" cy="180" r="4" fill="#0369a1"/>
+  
+  <!-- Dimension lines on left -->
+  <!-- Tower height: 138 m -->
+  <line x1="65" y1="380" x2="65" y2="180" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="60" y1="380" x2="70" y2="380" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="60" y1="180" x2="70" y2="180" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="55" y="285" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="end">កម្ពស់ប៉ម 138 m</text>
+  
+  <!-- Rotor diameter: 82 m -->
+  <line x1="215" y1="98" x2="215" y2="262" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="210" y1="98" x2="220" y2="98" stroke="#ea580c" stroke-width="1.5"/>
+  <line x1="210" y1="262" x2="220" y2="262" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="225" y="185" fill="#ea580c" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700">អង្កត់ផ្ចិតស្លាប 82 m</text>
+  
+  <!-- Spec box at bottom left -->
+  <rect x="40" y="325" width="305" height="85" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="50" y="345" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ប្រវែងស្លាបនីមួយៗ ៖ <b>40 m</b></text>
+  <text x="50" y="365" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ល្បឿនបង្វិលអតិបរមា ៖ <b>20 ជុំ/នាទី</b></text>
+  <text x="50" y="385" fill="#334155" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• តម្លៃសាងសង់ទួរប៊ីន ៖ <b>3 200 000 zeds</b></text>
+  <text x="50" y="403" fill="#0284c7" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5">• ចម្ងាយអប្បបរមា ៖ 5 ដងនៃប្រវែងស្លាប (200 m)</text>
+
+  <!-- Right Panel: Wind farm layout -->
+  <rect x="380" y="25" width="335" height="400" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="380" y="25" width="335" height="42" rx="10" fill="#0d2b45"/>
+  <rect x="380" y="55" width="335" height="12" fill="#0d2b45"/>
+  <text x="547" y="52" fill="#ffffff" font-family="'Noto Sans Khmer', sans-serif" font-size="15" font-weight="700" text-anchor="middle">ប្លង់ទីតាំងកសិដ្ឋានខ្យល់ (500m × 500m)</text>
+  
+  <!-- Field 500m x 500m -->
+  <rect x="425" y="95" width="245" height="245" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  
+  <!-- Dimension labels for field -->
+  <text x="547" y="88" fill="#16a34a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="middle">500 m</text>
+  <text x="415" y="222" fill="#16a34a" font-family="'Noto Sans Khmer', sans-serif" font-size="12" font-weight="700" text-anchor="end">500 m</text>
+  
+  <!-- 5x5 Proposed Grid points -->
+  <g fill="#0284c7">
+    <!-- Row 0 to 4 -->
+    <circle cx="445" cy="115" r="4"/><circle cx="496" cy="115" r="4"/><circle cx="547" cy="115" r="4"/><circle cx="598" cy="115" r="4"/><circle cx="650" cy="115" r="4"/>
+    <circle cx="445" cy="166" r="4"/><circle cx="496" cy="166" r="4"/><circle cx="547" cy="166" r="4"/><circle cx="598" cy="166" r="4"/><circle cx="650" cy="166" r="4"/>
+    <circle cx="445" cy="217" r="4"/><circle cx="496" cy="217" r="4"/><circle cx="547" cy="217" r="4"/><circle cx="598" cy="217" r="4"/><circle cx="650" cy="217" r="4"/>
+    <circle cx="445" cy="268" r="4"/><circle cx="496" cy="268" r="4"/><circle cx="547" cy="268" r="4"/><circle cx="598" cy="268" r="4"/><circle cx="650" cy="268" r="4"/>
+    <circle cx="445" cy="320" r="4"/><circle cx="496" cy="320" r="4"/><circle cx="547" cy="320" r="4"/><circle cx="598" cy="320" r="4"/><circle cx="650" cy="320" r="4"/>
+  </g>
+  
+  <!-- Dimension between points: 125m -->
+  <line x1="445" y1="130" x2="496" y2="130" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="470" y="145" fill="#dc2626" font-family="'Noto Sans Khmer', sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">125 m</text>
+  
+  <rect x="400" y="355" width="295" height="55" rx="6" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="547" y="375" fill="#991b1b" font-family="'Noto Sans Khmer', sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">លក្ខខណ្ឌចម្ងាយអប្បបរមា ៖</text>
+  <text x="547" y="395" fill="#b91c1c" font-family="'Noto Sans Khmer', sans-serif" font-size="11" text-anchor="middle">5 × 40 m = 200 m (គម្លាតក្នុងប្លង់ 125 m &lt; 200 m)</text>
+</svg>
