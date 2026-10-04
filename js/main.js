@@ -11,6 +11,7 @@
   const { h } = PISA;
 
   const COLLECTIONS = [
+    { id: 'moeys', tab: 'សំណួរគំរូ ៣៨', title: 'សំណួរគំរូ PISA ទាំង ៣៨ ប្រធានបទ', sub: 'ដកស្រង់ពីឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥ (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ)' },
     { id: 'gold', tab: 'ឯកតាគំរូ', title: 'ឯកតាគំរូ', sub: 'ឯកតាដើមរបស់គម្រោង ដែលអ្នកនិពន្ធបានអនុម័ត សម្រាប់ថ្នាក់ទី ៧ ៨ និង ៩' },
     { id: 'practice', tab: 'តេស្ត ក–ឍ', title: 'តេស្តអនុវត្ត ក–ឍ', sub: 'ប្រធានបទដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ — សេចក្ដីព្រាង រង់ចាំការពិនិត្យពីគ្រូ' },
     { id: 'textbook', tab: 'ភារកិច្ចថ្នាក់ទី ៩', title: 'ភារកិច្ច PISA ពីមេរៀនថ្នាក់ទី ៩', sub: 'ពីសៀវភៅ «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» របស់លោកគ្រូ សាន សុខលី — សៀវភៅកំពុងសរសេរ (សេចក្ដីព្រាង)' },
@@ -189,7 +190,7 @@
       const qs = Object.values(u.questions);
       const card = h('label', { class: 'ucard' + (inp.checked ? ' on' : '') }, inp, h('div', {},
         h('h3', {}, (u.label || PISA.km(u.no)) + ' · ' + u.title),
-        compact ? null : u.collection ? (u.grade ? h('div', { class: 'en' }, 'ថ្នាក់ទី ' + PISA.km(u.grade)) : null) : h('div', { class: 'en' }, u.en),
+        compact ? null : (u.grade ? h('div', { class: 'en' }, 'ថ្នាក់ទី ' + PISA.km(u.grade) + (u.en ? ' · ' + u.en : '')) : (u.en ? h('div', { class: 'en' }, u.en) : null)),
         !compact && u.blurb ? h('p', {}, u.blurb) : null,
         h('div', { class: 'meta' }, PISA.km(qs.length) + ' សំណួរ · ' + PISA.km(pointsOf(u)) + ' ពិន្ទុ')));
       inp.addEventListener('change', () => {
@@ -306,6 +307,10 @@
 
     app.append(main, siteFooter((box) => {
       const has = (c) => PISA.units.some((u) => (u.collection || 'oecd') === c);
+      if (has('moeys')) {
+        box.append(h('p', { class: 'notice', html:
+          '<b>សំណួរគំរូ PISA ទាំង ៣៨ ប្រធានបទ៖</b> ដកស្រង់ និងរៀបចំឡើងវិញតាមប្រព័ន្ធកុំព្យូទ័រ CBA ពី «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ) ឆ្នាំ ២០២៥។' }));
+      }
       if (has('gold') || has('practice')) {
         box.append(h('p', { class: 'notice', html:
           '<b>ឯកតាគំរូ និងតេស្តអនុវត្ត៖</b> សំណួរដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២» (សាន សុខលី)។ ' +
@@ -345,7 +350,7 @@
     // textbook lesson's «សាកធ្វើលំហាត់នេះ» button; #test=… runs them as one forward-only
     // test («តេស្តពេញ»). Like a preview, neither is saved.
     if (/^#tutorial\b/.test(location.hash) && PISA.unit('tut')) { startTutorial(); return; }
-    const one = /(unit|test)=([a-z0-9,]+)/.exec(location.hash);
+    const one = /(unit|test)=([a-z0-9,_-]+)/i.exec(location.hash);
     const pick = one ? one[2].split(',').filter((id) => PISA.unit(id)) : [];
     if (pick.length && one[1] === 'test') {
       PISA.start({ name: '', mode: 'test', unitIds: pick, preview: true });
@@ -359,7 +364,7 @@
       PISA.start({ name: '', mode: 'practice', unitIds: pick, preview: true });
       return;
     }
-    const m = /preview=([a-z0-9]+)(?::(\d+))?/.exec(location.hash);
+    const m = /preview=([a-z0-9_-]+)(?::(\d+))?/i.exec(location.hash);
     if (m) {
       const ids = PISA.units.map((u) => u.id);
       const ui = Math.max(0, ids.indexOf(m[1]));

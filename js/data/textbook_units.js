@@ -1289,7 +1289,7 @@ PISA.textbookUnits = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>ដោយដឹងថា <span class=\"mi\">\\(\\displaystyle \\text{រយៈពេល} = \\frac{\\text{ចម្ងាយ}}{\\text{ល្បឿន}}\\)</span> តើកន្សោមសនិទានមួយណាជារយៈពេលសរុបនៃការធ្វើដំណើរទៅនិងមក?</p>"
+      "html": "<p>ដោយដឹងថា <span class=\"mi\">\\(\\displaystyle \\text{រយៈពេល} = \\frac{\\text{ចម្ងាយ}\\rule[-0.5em]{0pt}{1.55em}}{\\text{ល្បឿន}\\rule[-0.5em]{0pt}{1.55em}}\\)</span> តើកន្សោមសនិទានមួយណាជារយៈពេលសរុបនៃការធ្វើដំណើរទៅនិងមក?</p>"
      },
      {
       "type": "options",
