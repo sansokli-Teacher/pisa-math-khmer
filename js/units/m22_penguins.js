@@ -109,6 +109,7 @@
   PISA.registerUnit({
     id: 'm22',
     no: 22,
+    label: 'ប្រធានបទ ២២',
     title: TITLE,
     en: 'Penguins',
     collection: 'moeys',
