@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="5" y="5" width="670" height="410" rx="12" fill="url(#bg)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="340" y="32" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#0f172a">ទិន្នន័យវាស់កម្ពស់សិស្សក្នុងថ្នាក់រៀនគណិតវិទ្យា</text>
+  <text x="340" y="52" text-anchor="middle" font-size="12" fill="#64748b">ការប្រៀបធៀបកម្ពស់មធ្យម និងកម្ពស់ខ្ពស់បំផុត/ទបបំផុត</text>
+
+  <!-- Boys Card -->
+  <g transform="translate(30, 70)" filter="url(#sh)">
+    <rect width="295" height="165" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect width="295" height="36" rx="8" fill="#e0f2fe"/>
+    <rect y="26" width="295" height="10" fill="#e0f2fe"/>
+    <text x="16" y="24" font-size="13.5" font-weight="bold" fill="#0369a1">សិស្សប្រុស (Boys)</text>
+    <rect x="205" y="7" width="75" height="22" rx="11" fill="#0284c7"/>
+    <text x="242" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">160 cm</text>
+    
+    <text x="16" y="64" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">កម្ពស់មធ្យមដើម ៖</tspan> 160 cm</text>
+    <text x="16" y="90" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">សិស្សទបជាងគេ ៖</tspan> កុសល (130 cm)</text>
+    <text x="16" y="116" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">ក្រោយវាស់បន្ថែម ៖</tspan> មធ្យមនៅតែ <tspan font-weight="bold" fill="#0369a1">160 cm</tspan></text>
+    <rect x="16" y="130" width="263" height="22" rx="4" fill="#f0f9ff" stroke="#bae6fd" stroke-width="0.8"/>
+    <text x="24" y="145" font-size="10.5" fill="#0284c7">ℹ មធ្យមភាគសិស្សប្រុសមិនប្រែប្រួល</text>
+  </g>
+
+  <!-- Girls Card -->
+  <g transform="translate(355, 70)" filter="url(#sh)">
+    <rect width="295" height="165" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect width="295" height="36" rx="8" fill="#fce7f3"/>
+    <rect y="26" width="295" height="10" fill="#fce7f3"/>
+    <text x="16" y="24" font-size="13.5" font-weight="bold" fill="#be185d">សិស្សស្រី (Girls)</text>
+    <rect x="205" y="7" width="75" height="22" rx="11" fill="#db2777"/>
+    <text x="242" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">150 cm</text>
+    
+    <text x="16" y="64" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">កម្ពស់មធ្យមដើម ៖</tspan> 150 cm</text>
+    <text x="16" y="90" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">សិស្សខ្ពស់ជាងគេ ៖</tspan> ធីតា (180 cm)</text>
+    <text x="16" y="116" font-size="12" fill="#334155"><tspan font-weight="600" fill="#475569">ក្រោយវាស់បន្ថែម ៖</tspan> មធ្យមនៅតែ <tspan font-weight="bold" fill="#be185d">150 cm</tspan></text>
+    <rect x="16" y="130" width="263" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="24" y="145" font-size="10.5" fill="#be185d">ℹ មធ្យមភាគសិស្សស្រីមិនប្រែប្រួល</text>
+  </g>
+
+  <!-- Summary Box -->
+  <g transform="translate(30, 255)" filter="url(#sh)">
+    <rect width="620" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect width="620" height="32" rx="8" fill="#f1f5f9"/>
+    <rect y="22" width="620" height="10" fill="#f1f5f9"/>
+    <text x="16" y="22" font-size="13" font-weight="bold" fill="#334155">ព្រឹត្តិការណ៍បន្ថែមនៅថ្ងៃបន្ទាប់ ៖</text>
+    
+    <text x="20" y="58" font-size="12" fill="#334155">• សិស្សអវត្តមានចំនួន <tspan font-weight="bold" fill="#0f172a">២ នាក់</tspan> បានចូលរៀនវិញ ហើយត្រូវបានវាស់កម្ពស់បញ្ចូលបន្ថែម។</text>
+    <text x="20" y="84" font-size="12" fill="#334155">• អស្ចារ្យណាស់៖ កម្ពស់មធ្យមរបស់ក្មេងស្រីនៅតែ <tspan font-weight="bold" fill="#be185d">150 cm</tspan> ដដែល និងកម្ពស់មធ្យមរបស់ក្មេងប្រុសនៅតែ <tspan font-weight="bold" fill="#0284c7">160 cm</tspan> ដដែល!</text>
+    <text x="20" y="112" font-size="11.5" fill="#64748b">⚠ ចំណាំ៖ គេមិនបានបញ្ជាក់ថាសិស្សទាំងពីរនាក់នោះ ជាក្មេងប្រុស ឬក្មេងស្រី ឬមានកម្ពស់ប៉ុន្មានពិតប្រាកដឡើយ។</text>
+  </g>
+</svg>
