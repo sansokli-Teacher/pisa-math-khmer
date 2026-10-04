@@ -90,15 +90,15 @@
           h('div', { style: 'display: flex; flex-direction: column; gap: 4px;' },
             h('div', { style: 'display: flex; align-items: center; gap: 8px;' },
               h('span', { style: 'display: inline-block; width: 14px; height: 14px; background: #64748b; border-radius: 2px;' }),
-              h('span', {}, '<b>ហ្សេនតូ (Gentoo)៖</b> សសរពណ៌ប្រផេះចាស់ (ខាងឆ្វេង)')
+              h('span', { html: '<b>ហ្សេនតូ (Gentoo)៖</b> សសរពណ៌ប្រផេះចាស់ (ខាងឆ្វេង)' })
             ),
             h('div', { style: 'display: flex; align-items: center; gap: 8px;' },
               h('span', { style: 'display: inline-block; width: 14px; height: 14px; background: #cbd5e1; border: 1px solid #94a3b8; border-radius: 2px;' }),
-              h('span', {}, '<b>រ៉ុកខបភ័រ / រ៉ុកហូបភើរ (Rockhopper)៖</b> សសរពណ៌ប្រផេះខ្ចី (កណ្ដាល)')
+              h('span', { html: '<b>រ៉ុកខបភ័រ / រ៉ុកហូបភើរ (Rockhopper)៖</b> សសរពណ៌ប្រផេះខ្ចី (កណ្ដាល)' })
             ),
             h('div', { style: 'display: flex; align-items: center; gap: 8px;' },
               h('span', { style: 'display: inline-block; width: 14px; height: 14px; background: #0f172a; border-radius: 2px;' }),
-              h('span', {}, '<b>ម៉ាជឺឡេនិក (Magellanic)៖</b> សសរពណ៌ខ្មៅ (ខាងស្ដាំ)')
+              h('span', { html: '<b>ម៉ាជឺឡេនិក (Magellanic)៖</b> សសរពណ៌ខ្មៅ (ខាងស្ដាំ)' })
             )
           )
         )
@@ -253,9 +253,9 @@
           W.instr('សូមពិនិត្យមើលព័ត៌មានខាងក្រោម។ អ្នកអាចប្រើម៉ាស៊ីនគិតលេខនៅលើរបារខាងលើបាន។'),
           W.p('ធារិទ្ធឆ្ងល់ថាតើទំហំនៃអាណាចក្រភេនឃ្វីននឹងផ្លាស់ប្ដូរយ៉ាងដូចម្ដេចក្នុងរយៈពេលប៉ុន្មានឆ្នាំខាងមុខនេះ។ លោកធ្វើការសន្មតដូចខាងក្រោម៖'),
           h('ul', { style: 'margin: 8px 0 12px 20px; font-size: 0.95rem; line-height: 1.6;' },
-            h('li', {}, 'នៅដើមឆ្នាំ អាណាចក្រភេនឃ្វីនមាន <b>10 000 ក្បាល (5 000 គូ)</b>។'),
+            h('li', { html: 'នៅដើមឆ្នាំ អាណាចក្រភេនឃ្វីនមាន <b>10 000 ក្បាល (5 000 គូ)</b>។' }),
             h('li', {}, 'គូភេនឃ្វីននីមួយៗចិញ្ចឹមកូនមួយនៅរដូវផ្ការីកជារៀងរាល់ឆ្នាំ។'),
-            h('li', {}, 'នៅចុងឆ្នាំ <b>20%</b> នៃសត្វភេនឃ្វីនទាំងអស់ (ភេនឃ្វីនពេញវ័យ និងកូន) នឹងស្លាប់។')
+            h('li', { html: 'នៅចុងឆ្នាំ <b>20%</b> នៃសត្វភេនឃ្វីនទាំងអស់ (ភេនឃ្វីនពេញវ័យ និងកូន) នឹងស្លាប់។' })
           ),
           W.p('<b>តើនៅចុងឆ្នាំដំបូង មានសត្វភេនឃ្វីនប៉ុន្មានក្បាល (ពេញវ័យ និងកូន) នៅក្នុងអាណាចក្រ?</b>', 'q-lead'),
           h('div', { class: 'answer-line-wrap', style: 'margin: 14px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;' },
