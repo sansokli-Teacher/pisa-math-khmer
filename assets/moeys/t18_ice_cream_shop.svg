@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#f1f5f9"/></linearGradient>
+  </defs>
+  <rect x="5" y="5" width="670" height="420" rx="12" fill="url(#bg)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="340" y="30" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#0f172a">ប្លង់បាតតូបការ៉េម ម៉ារី (Mary's Ice Cream Shop)</text>
+  <text x="340" y="50" text-anchor="middle" font-size="12" fill="#64748b">ក្រឡាចត្រង្គ (Grid) ៖ ១ ការ៉េតូច = 0.5 m × 0.5 m</text>
+
+  <!-- Grid Layout -->
+  <g transform="translate(40, 70)" filter="url(#sh)">
+    <rect width="600" height="270" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    
+    <!-- Shop boundary: Width 7.5m (15 grid cells), Height 5m (10 grid cells) -->
+    <!-- Scale: 26px per 0.5m. Total width = 390px, height = 260px -->
+    <g transform="translate(25, 5)">
+      <!-- Grid lines -->
+      <rect width="390" height="260" fill="#fafafa" stroke="#e2e8f0" stroke-width="1"/>
+      <!-- Counter area in top left -->
+      <!-- Triangular/trapezoid service counter -->
+      <path d="M 0,0 L 156,0 L 156,65 L 78,130 L 0,130 Z" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="70" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">តំបន់បម្រើ</text>
+      <text x="70" y="75" text-anchor="middle" font-size="11" fill="#dc2626">សេវាកម្ម</text>
+      
+      <!-- Counter edge (Question 1) -->
+      <line x1="156" y1="0" x2="156" y2="65" stroke="#b91c1c" stroke-width="3"/>
+      <line x1="156" y1="65" x2="78" y2="130" stroke="#b91c1c" stroke-width="3"/>
+      <line x1="78" y1="130" x2="0" y2="130" stroke="#b91c1c" stroke-width="3"/>
+
+      <!-- Customer Seating Area -->
+      <text x="260" y="140" text-anchor="middle" font-size="14" font-weight="bold" fill="#0369a1">តំបន់អង្គុយរបស់អតិថិជន</text>
+      <text x="260" y="165" text-anchor="middle" font-size="11.5" fill="#64748b">ក្រាលឥដ្ឋថ្មី ផ្ទៃក្រឡា 31.5 m²</text>
+    </g>
+
+    <!-- Table Set Icon Legend (Right side) -->
+    <g transform="translate(440, 30)">
+      <rect width="140" height="200" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="70" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">ឈុតតុ ១ + កៅអី ៤</text>
+      <circle cx="70" cy="80" r="35" fill="none" stroke="#0284c7" stroke-width="2" stroke-dasharray="3,3"/>
+      <rect x="55" y="65" width="30" height="30" rx="4" fill="#0284c7"/>
+      <!-- 4 Chairs around table -->
+      <circle cx="70" cy="35" r="6" fill="#94a3b8"/>
+      <circle cx="70" cy="125" r="6" fill="#94a3b8"/>
+      <circle cx="25" cy="80" r="6" fill="#94a3b8"/>
+      <circle cx="115" cy="80" r="6" fill="#94a3b8"/>
+      <text x="70" y="150" text-anchor="middle" font-size="10.5" fill="#64748b">អង្កត់ផ្ចិតត្រូវការ 1.5 m</text>
+      <text x="70" y="175" text-anchor="middle" font-size="10.5" fill="#059669">គម្លាត ≥ 0.5 m ពីជញ្ជាំង</text>
+      <text x="70" y="190" text-anchor="middle" font-size="10.5" fill="#059669">និងពីឈុតផ្សេង</text>
+    </g>
+  </g>
+
+  <!-- Footer rules -->
+  <g transform="translate(40, 355)">
+    <text x="300" y="20" text-anchor="middle" font-size="11.5" fill="#334155">វិមាត្រសរុប ៖ បណ្តោយ 7.5 m, ទទឹង 5.0 m | គែមបញ្ជរបម្រើ ៖ 4.5 m (រួមទាំងជ្រុងទ្រេតតាមពីតាករ)</text>
+  </g>
+</svg>

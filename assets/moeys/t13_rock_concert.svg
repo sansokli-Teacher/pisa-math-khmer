@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#f1f5f9"/></linearGradient>
+  </defs>
+  <rect x="5" y="5" width="670" height="420" rx="12" fill="url(#bg)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="340" y="32" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#0f172a">ប្លង់ទីធ្លាកម្មវិធីប្រគំតន្ត្រីរ៉ក់ (Rock Concert)</text>
+  <text x="340" y="52" text-anchor="middle" font-size="12" fill="#64748b">ទីធ្លារាងចតុកោណកែង វិមាត្រ 100 m × 50 m មានអ្នកឈរពេញទាំងអស់</text>
+
+  <!-- Concert Field Diagram -->
+  <g transform="translate(50, 75)" filter="url(#sh)">
+    <rect width="580" height="245" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    
+    <!-- Stage at left: 40x160 -->
+    <rect x="30" y="42" width="50" height="160" rx="4" fill="#3730a3" stroke="#1e1b4b" stroke-width="1.5"/>
+    <text x="55" y="126" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff" transform="rotate(-90 55 126)">វេទិកា (STAGE)</text>
+
+    <!-- Standing Crowd Area: 440 x 160 -->
+    <rect x="95" y="42" width="450" height="160" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+    <text x="320" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#334155">ទីធ្លាទស្សនិកជនឈរទស្សនា</text>
+    <text x="320" y="138" text-anchor="middle" font-size="12" fill="#64748b">សំបុត្រលក់អស់ និងមានមនុស្សឈរពេញផ្ទៃក្រឡា</text>
+
+    <!-- Dimensions -->
+    <!-- Width: 100 m -->
+    <line x1="95" y1="220" x2="545" y2="220" stroke="#0284c7" stroke-width="1.5"/>
+    <polyline points="100,216 95,220 100,224" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+    <polyline points="540,216 545,220 540,224" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="320" y="238" text-anchor="middle" font-size="12" font-weight="bold" fill="#0284c7">បណ្តោយ 100 m</text>
+
+    <!-- Height: 50 m -->
+    <line x1="565" y1="42" x2="565" y2="202" stroke="#0284c7" stroke-width="1.5"/>
+    <polyline points="561,47 565,42 569,47" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+    <polyline points="561,197 565,202 569,197" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="572" y="126" font-size="12" font-weight="bold" fill="#0284c7" transform="rotate(90 572 126)" text-anchor="middle">ទទឹង 50 m</text>
+  </g>
+
+  <!-- Question Footer Note -->
+  <g transform="translate(50, 335)" filter="url(#sh)">
+    <rect width="580" height="75" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="16" y="26" font-size="12" font-weight="bold" fill="#0f172a">ការប៉ាន់ស្មានដង់ស៊ីតេមនុស្សឈរ ៖</text>
+    <text x="16" y="48" font-size="11.5" fill="#334155">ផ្ទៃក្រឡាសរុប 100 m × 50 m = 5000 m²។ នៅក្នុងការប្រគំតន្ត្រីដែលមានមនុស្សឈរពេញណែន ដង់ស៊ីតេទូទៅគឺប្រហែល 4 នាក់ក្នុង 1 m²។</text>
+  </g>
+</svg>

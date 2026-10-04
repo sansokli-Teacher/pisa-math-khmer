@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#f1f5f9"/></linearGradient>
+  </defs>
+  <rect x="5" y="5" width="670" height="420" rx="12" fill="url(#bg)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="340" y="32" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#0f172a">ស្ថានភាពផ្ទុកទិន្នន័យលើឧបករណ៍ អង្គចងចាំ (USB Flash Drive 1 GB)</text>
+  <text x="340" y="52" text-anchor="middle" font-size="12" fill="#64748b">ទំហំផ្ទុកសរុប 1 GB (1000 MB) ៖ តន្ត្រី, រូបថត និងទំហំទំនេរ</text>
+
+  <!-- Memory Bar Visual -->
+  <g transform="translate(40, 75)" filter="url(#sh)">
+    <rect width="600" height="75" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="16" y="24" font-size="12" font-weight="bold" fill="#0f172a">ការបែងចែកទំហំផ្ទុកបច្ចុប្បន្ន (សរុប 1000 MB) ៖</text>
+    
+    <!-- Stacked bar: width 568px -->
+    <!-- Music: 650 MB (369px), Photos: 198 MB (112px), Free: 152 MB (86px) -->
+    <g transform="translate(16, 35)">
+      <rect width="369" height="26" rx="4" fill="#3b82f6"/>
+      <text x="184" y="17" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ffffff">តន្ត្រី (Music) ៖ 650 MB</text>
+      
+      <rect x="371" width="112" height="26" rx="4" fill="#10b981"/>
+      <text x="427" y="17" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ffffff">រូបថត ៖ 198 MB</text>
+      
+      <rect x="485" width="83" height="26" rx="4" fill="#94a3b8"/>
+      <text x="526" y="17" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ffffff">ទំនេរ ៖ 152 MB</text>
+    </g>
+  </g>
+
+  <!-- Album Table and Problem -->
+  <g transform="translate(40, 168)" filter="url(#sh)">
+    <rect width="600" height="235" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect width="600" height="30" rx="8" fill="#e0e7ff"/>
+    <rect y="22" width="600" height="8" fill="#e0e7ff"/>
+    <text x="16" y="20" font-size="12.5" font-weight="bold" fill="#3730a3">តារាងទំហំអាល់ប៊ុមតន្ត្រីទាំង ៨ របស់សុខា ៖</text>
+
+    <!-- Table 8 albums in 2 columns of 4 -->
+    <g font-size="11.5" fill="#334155" transform="translate(20, 42)">
+      <text y="18">• អាល់ប៊ុម ១ ៖ <tspan font-weight="bold">100 MB</tspan></text>
+      <text y="42">• អាល់ប៊ុម ២ ៖ <tspan font-weight="bold">75 MB</tspan></text>
+      <text y="66">• អាល់ប៊ុម ៣ ៖ <tspan font-weight="bold">80 MB</tspan></text>
+      <text y="90">• អាល់ប៊ុម ៤ ៖ <tspan font-weight="bold">55 MB</tspan></text>
+
+      <text x="300" y="18">• អាល់ប៊ុម ៥ ៖ <tspan font-weight="bold">60 MB</tspan></text>
+      <text x="300" y="42">• អាល់ប៊ុម ៦ ៖ <tspan font-weight="bold">80 MB</tspan></text>
+      <text x="300" y="66">• អាល់ប៊ុម ៧ ៖ <tspan font-weight="bold">75 MB</tspan></text>
+      <text x="300" y="90">• អាល់ប៊ុម ៨ ៖ <tspan font-weight="bold">125 MB</tspan></text>
+    </g>
+
+    <line x1="16" y1="150" x2="584" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+
+    <text x="16" y="174" font-size="12" font-weight="bold" fill="#b91c1c">បញ្ហាប្រឈម ៖</text>
+    <text x="16" y="196" font-size="11.5" fill="#334155">សុខា ចង់បញ្ចូលថតឯកសារថ្មីទំហំ <tspan font-weight="bold" fill="#b91c1c">350 MB</tspan> ប៉ុន្តែទំហំទំនេរមានត្រឹមតែ <tspan font-weight="bold" fill="#0284c7">152 MB</tspan> ប៉ុណ្ណោះ។</text>
+    <text x="16" y="218" font-size="11.5" fill="#334155">គាត់ត្រូវការលុបទំហំយ៉ាងតិច ៖ <tspan font-weight="bold" fill="#b91c1c">350 - 152 = 198 MB</tspan> ដោយជ្រើសរើសលុបអាល់ប៊ុមតន្ត្រីយ៉ាងច្រើន ២។</text>
+  </g>
+</svg>

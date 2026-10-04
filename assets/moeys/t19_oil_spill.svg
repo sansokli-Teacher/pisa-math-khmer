@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#f1f5f9"/></linearGradient>
+    <linearGradient id="seaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient>
+  </defs>
+  <rect x="5" y="5" width="670" height="420" rx="12" fill="url(#bg)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="340" y="30" text-anchor="middle" font-size="15.5" font-weight="bold" fill="#0f172a">ផែនទីនៃការកំពប់ប្រេងលើផ្ទៃសមុទ្រ (Oil Spill)</text>
+  <text x="340" y="50" text-anchor="middle" font-size="12" fill="#64748b">ក្រឡាចត្រង្គមាត្រដ្ឋាន ៖ ១ ការ៉េ = 10 km × 10 km = 100 km²</text>
+
+  <!-- Map with Grid -->
+  <g transform="translate(50, 70)" filter="url(#sh)">
+    <rect width="580" height="270" rx="8" fill="url(#seaGrad)" stroke="#94a3b8" stroke-width="1.5"/>
+    
+    <!-- Grid overlay (10km x 10km grid cells: 45px each) -->
+    <g stroke="#7dd3fc" stroke-width="0.8" stroke-dasharray="2,2">
+      <line x1="45" y1="0" x2="45" y2="270"/><line x1="90" y1="0" x2="90" y2="270"/>
+      <line x1="135" y1="0" x2="135" y2="270"/><line x1="180" y1="0" x2="180" y2="270"/>
+      <line x1="225" y1="0" x2="225" y2="270"/><line x1="270" y1="0" x2="270" y2="270"/>
+      <line x1="315" y1="0" x2="315" y2="270"/><line x1="360" y1="0" x2="360" y2="270"/>
+      <line x1="405" y1="0" x2="405" y2="270"/><line x1="450" y1="0" x2="450" y2="270"/>
+      <line x1="495" y1="0" x2="495" y2="270"/><line x1="540" y1="0" x2="540" y2="270"/>
+      <line x1="0" y1="45" x2="580" y2="45"/><line x1="0" y1="90" x2="580" y2="90"/>
+      <line x1="0" y1="135" x2="580" y2="135"/><line x1="0" y1="180" x2="580" y2="180"/>
+      <line x1="0" y1="225" x2="580" y2="225"/>
+    </g>
+
+    <!-- Coastline shape on left -->
+    <path d="M 0,0 Q 80,60 50,135 T 20,270 L 0,270 Z" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="30" y="200" font-size="12" font-weight="bold" fill="#92400e" transform="rotate(-90 30 200)">ឆ្នេរសមុទ្រ (Coastline)</text>
+
+    <!-- Oil Spill organic shape (approx 26-28 grid squares area = 2600-2800 km²) -->
+    <path d="M 200,90 C 240,40 380,50 420,100 C 460,150 430,220 360,230 C 280,240 230,210 190,170 C 160,130 170,110 200,90 Z" 
+          fill="#334155" fill-opacity="0.75" stroke="#0f172a" stroke-width="2"/>
+    
+    <text x="310" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">ផ្ទៃកំពប់ប្រេង</text>
+    <text x="310" y="168" text-anchor="middle" font-size="11" fill="#cbd5e1">រាប់ក្រឡាចត្រង្គប៉ាន់ស្មាន</text>
+
+    <!-- Tanker icon / marker -->
+    <circle cx="315" cy="90" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="315" y="78" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#dc2626">កប៉ាល់ធ្លាយប្រេង (៦៥ km ពីឆ្នេរ)</text>
+
+    <!-- Scale box in bottom right -->
+    <g transform="translate(440, 215)">
+      <rect width="125" height="45" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="10" y="12" width="25" height="25" fill="#e2e8f0" stroke="#0f172a" stroke-width="1"/>
+      <text x="42" y="25" font-size="10.5" font-weight="bold" fill="#0f172a">1 ក្រឡា = 100 km²</text>
+      <text x="42" y="39" font-size="9.5" fill="#64748b">(10 km × 10 km)</text>
+    </g>
+  </g>
+
+  <!-- Problem note at bottom -->
+  <g transform="translate(50, 355)">
+    <text x="290" y="20" text-anchor="middle" font-size="12" fill="#0f172a">ដោយប្រើមាត្រដ្ឋានក្នុងផែនទី ចូរប៉ាន់ប្រមាណផ្ទៃប្រេងដែលកំពប់គិតជា <b>គីឡូម៉ែត្រការ៉េ (km²)</b>។</text>
+    <text x="290" y="40" text-anchor="middle" font-size="11" fill="#64748b">ចន្លោះទទួលយកបានតាមស្ដង់ដារ PISA ៖ 2200 km² ដល់ 3300 km²</text>
+  </g>
+</svg>
