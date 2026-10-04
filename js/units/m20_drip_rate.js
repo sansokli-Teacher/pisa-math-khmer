@@ -18,7 +18,7 @@
         h('img', {
           src: 'assets/moeys/t20_drip_rate.jpg',
           alt: 'ដបសេរ៉ូម និងឧបករណ៍ចាក់បញ្ចូលតាមសរសៃឈាម (IV Drip)',
-          style: 'max-width: 270px; width: 100%; height: auto; border-radius: 6px; border: 1px solid #cbd5e1; box-shadow: 0 2px 5px rgba(0,0,0,0.08);'
+          style: 'max-width: 320px; width: 100%; height: auto; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 14px rgba(0,0,0,0.12);'
         }),
         h('p', { style: 'font-size: 0.82rem; color: #64748b; margin-top: 5px;' }, 'ដបសេរ៉ូម និងបំពង់ដំណក់ទឹកតាមសរសៃឈាម (Intravenous Drip)')
       ),
@@ -140,7 +140,7 @@
             h('p', { style: 'margin: 0; font-size: 0.9rem; line-height: 1.6;', html:
               'ប្រធានបទនេះដកស្រង់ពី <b>កម្រងសំណួរគំរូនីតិវិធី PISA ២០២៥ (ប្រធានបទទី ២០)</b> របស់ក្រសួងអប់រំ យុវជន និងកីឡា (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ)។<br><br>' +
               'អ្នកអាចប្រើប្រាស់<b>ម៉ាស៊ីនគិតលេខ</b>នៅលើរបារឧបករណ៍ខាងលើបាន ពេលកំពុងដោះស្រាយសំណួរ។'
-            )
+            })
           )
         ),
         right: stimulus,
