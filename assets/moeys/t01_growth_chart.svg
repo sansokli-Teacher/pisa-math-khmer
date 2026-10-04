@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 540" width="100%" height="100%" style="background:#ffffff; font-family:'Kantumruy Pro', 'Noto Sans Khmer', -apple-system, sans-serif;">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card Background -->
+  <rect x="5" y="5" width="670" height="530" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title & Context -->
+  <text x="340" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">កម្ពស់ជាមធ្យមរបស់យុវជនក្នុងប្រទេសហូឡង់ (ឆ្នាំ 1998)</text>
+
+  <!-- Plot Area: x from 90 to 480 (width 390), y from 70 to 460 (height 390) -->
+  <!-- X: 10 yrs = 90, 20 yrs = 480. (dx = 390 / 10 = 39 px per year) -->
+  <!-- Y: 130 cm = 460, 140 cm = 410, 150 = 350, 160 = 290, 170 = 230, 180 = 170, 190 = 110 -->
+  <!-- Y: 140 to 190 is 300 px for 50 cm -> 6 px per cm. 130 to 140 is 50 px with break -->
+
+  <!-- Plot Background -->
+  <rect x="90" y="80" width="390" height="380" fill="url(#gridGrad)" stroke="#334155" stroke-width="2"/>
+
+  <!-- Grid lines Horizontal (cm) -->
+  <!-- 190 cm -->
+  <line x1="90" y1="110" x2="480" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+  <!-- 180 cm -->
+  <line x1="90" y1="170" x2="480" y2="170" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 170 cm -->
+  <line x1="90" y1="230" x2="480" y2="230" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 160 cm -->
+  <line x1="90" y1="290" x2="480" y2="290" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 150 cm -->
+  <line x1="90" y1="350" x2="480" y2="350" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 140 cm -->
+  <line x1="90" y1="410" x2="480" y2="410" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 130 cm (bottom border at 460) -->
+
+  <!-- Grid lines Vertical (Age: 10 to 20) -->
+  <!-- 10: 90 -->
+  <!-- 11: 129 -->
+  <line x1="129" y1="80" x2="129" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 12: 168 -->
+  <line x1="168" y1="80" x2="168" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 13: 207 -->
+  <line x1="207" y1="80" x2="207" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 14: 246 -->
+  <line x1="246" y1="80" x2="246" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 15: 285 -->
+  <line x1="285" y1="80" x2="285" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 16: 324 -->
+  <line x1="324" y1="80" x2="324" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 17: 363 -->
+  <line x1="363" y1="80" x2="363" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 18: 402 -->
+  <line x1="402" y1="80" x2="402" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 19: 441 -->
+  <line x1="441" y1="80" x2="441" y2="460" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- 20: 480 -->
+
+  <!-- Axis Break on left border (between 460 and 410, around y=435) -->
+  <path d="M88,430 L94,435 L86,441 L92,446" fill="none" stroke="#334155" stroke-width="2.5"/>
+
+  <!-- Y-Axis Labels -->
+  <text x="80" y="114" text-anchor="end" font-size="13" font-weight="600" fill="#334155">190</text>
+  <text x="80" y="174" text-anchor="end" font-size="13" font-weight="600" fill="#334155">180</text>
+  <text x="80" y="234" text-anchor="end" font-size="13" font-weight="600" fill="#334155">170</text>
+  <text x="80" y="294" text-anchor="end" font-size="13" font-weight="600" fill="#334155">160</text>
+  <text x="80" y="354" text-anchor="end" font-size="13" font-weight="600" fill="#334155">150</text>
+  <text x="80" y="414" text-anchor="end" font-size="13" font-weight="600" fill="#334155">140</text>
+  <text x="80" y="464" text-anchor="end" font-size="13" font-weight="600" fill="#334155">130</text>
+
+  <!-- Y-Axis Title -->
+  <text x="42" y="82" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">កម្ពស់</text>
+  <text x="42" y="100" text-anchor="middle" font-size="12" fill="#64748b">(cm)</text>
+
+  <!-- X-Axis Labels (Age) -->
+  <text x="90" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">10</text>
+  <text x="129" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">11</text>
+  <text x="168" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">12</text>
+  <text x="207" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">13</text>
+  <text x="246" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">14</text>
+  <text x="285" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">15</text>
+  <text x="324" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">16</text>
+  <text x="363" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">17</text>
+  <text x="402" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">18</text>
+  <text x="441" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">19</text>
+  <text x="480" y="482" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">20</text>
+
+  <!-- X-Axis Title -->
+  <text x="285" y="515" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">អាយុ (គិតជាឆ្នាំ)</text>
+
+  <!-- CURVES -->
+  <!-- Boys: solid blue (#2563eb) -->
+  <!-- Formula for y: y_px = 410 - (height - 140) * 6 -->
+  <!-- (10, 142) -> (90, 398) -->
+  <!-- (11, 145.5) -> (129, 377) -->
+  <!-- (12, 152.5) -> (168, 335) -->
+  <!-- (13, 161.0) -> (207, 284) -->
+  <!-- (14, 168.0) -> (246, 242) -->
+  <!-- (15, 173.0) -> (285, 212) -->
+  <!-- (16, 177.0) -> (324, 188) -->
+  <!-- (17, 180.0) -> (363, 170) -->
+  <!-- (18, 182.0) -> (402, 158) -->
+  <!-- (19, 183.5) -> (441, 149) -->
+  <!-- (20, 184.0) -> (480, 146) -->
+
+  <!-- Girls: dashed rose (#e11d48) -->
+  <!-- (10, 140.0) -> (90, 410) -->
+  <!-- (11, 147.0) -> (129, 368) -->
+  <!-- (12, 155.0) -> (168, 320) -->
+  <!-- (13, 161.0) -> (207, 284) -->
+  <!-- (14, 164.5) -> (246, 263) -->
+  <!-- (15, 166.5) -> (285, 251) -->
+  <!-- (16, 168.0) -> (324, 242) -->
+  <!-- (17, 169.2) -> (363, 234.8) -->
+  <!-- (18, 170.0) -> (402, 230) -->
+  <!-- (19, 170.4) -> (441, 227.6) -->
+  <!-- (20, 170.6) -> (480, 226.4) -->
+
+  <!-- Girls Area Highlight between age 11 and 13 (Girls taller than Boys) -->
+  <!-- Age 11.2 (137) to 13.0 (207) -->
+  <path d="M137,372 C150,345 168,320 168,320 C185,302 207,284 207,284 C190,305 168,335 168,335 C150,355 137,372 137,372 Z" fill="#ffe4e6" opacity="0.7"/>
+
+  <!-- Girls Curve (Pink/Rose) -->
+  <path d="M 90,410 C 105,395 117,380 129,368 C 145,348 155,332 168,320 C 182,305 195,292 207,284 C 220,274 233,267 246,263 C 265,257 275,253 285,251 C 305,246 315,244 324,242 C 344,238 353,236 363,234.8 C 383,232 392,231 402,230 C 422,228.5 431,228 441,227.6 C 460,227 470,226.6 480,226.4"
+        fill="none" stroke="#e11d48" stroke-width="3.5" stroke-dasharray="7,4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Boys Curve (Vibrant Blue) -->
+  <path d="M 90,398 C 105,390 117,382 129,377 C 145,362 155,348 168,335 C 182,316 195,298 207,284 C 220,268 233,252 246,242 C 265,228 275,218 285,212 C 305,200 315,192 324,188 C 344,178 353,173 363,170 C 383,164 392,160 402,158 C 422,153 431,150 441,149 C 460,147 470,146.5 480,146"
+        fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Point dots for clarity -->
+  <!-- Boys points -->
+  <circle cx="90" cy="398" r="3.5" fill="#2563eb"/>
+  <circle cx="129" cy="377" r="3.5" fill="#2563eb"/>
+  <circle cx="168" cy="335" r="3.5" fill="#2563eb"/>
+  <circle cx="207" cy="284" r="3.5" fill="#2563eb"/>
+  <circle cx="246" cy="242" r="3.5" fill="#2563eb"/>
+  <circle cx="285" cy="212" r="3.5" fill="#2563eb"/>
+  <circle cx="324" cy="188" r="3.5" fill="#2563eb"/>
+  <circle cx="363" cy="170" r="3.5" fill="#2563eb"/>
+  <circle cx="402" cy="158" r="3.5" fill="#2563eb"/>
+  <circle cx="441" cy="149" r="3.5" fill="#2563eb"/>
+  <circle cx="480" cy="146" r="4" fill="#2563eb" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- Girls points -->
+  <circle cx="90" cy="410" r="3.5" fill="#e11d48"/>
+  <circle cx="129" cy="368" r="3.5" fill="#e11d48"/>
+  <circle cx="168" cy="320" r="3.5" fill="#e11d48"/>
+  <circle cx="207" cy="284" r="3.5" fill="#e11d48"/>
+  <circle cx="246" cy="263" r="3.5" fill="#e11d48"/>
+  <circle cx="285" cy="251" r="3.5" fill="#e11d48"/>
+  <circle cx="324" cy="242" r="3.5" fill="#e11d48"/>
+  <circle cx="363" cy="234.8" r="3.5" fill="#e11d48"/>
+  <circle cx="402" cy="230" r="3.5" fill="#e11d48"/>
+  <circle cx="441" cy="227.6" r="3.5" fill="#e11d48"/>
+  <circle cx="480" cy="226.4" r="4" fill="#e11d48" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- Side Labels (Right Panel / Legend) -->
+  <!-- Boys Legend Box -->
+  <g transform="translate(495, 130)">
+    <rect x="0" y="0" width="165" height="52" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <line x1="8" y1="18" x2="32" y2="18" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="20" cy="18" r="3.5" fill="#2563eb"/>
+    <text x="38" y="18" font-size="11.5" font-weight="bold" fill="#1e40af">ក្មេងប្រុស (Boys)</text>
+    <text x="10" y="38" font-size="10.5" fill="#3b82f6">កម្ពស់ជាមធ្យម ឆ្នាំ 1998</text>
+  </g>
+
+  <!-- Girls Legend Box -->
+  <g transform="translate(495, 205)">
+    <rect x="0" y="0" width="165" height="52" rx="6" fill="#fff1f2" stroke="#fecdd3" stroke-width="1"/>
+    <line x1="8" y1="18" x2="32" y2="18" stroke="#e11d48" stroke-width="3.5" stroke-dasharray="6,3" stroke-linecap="round"/>
+    <circle cx="20" cy="18" r="3.5" fill="#e11d48"/>
+    <text x="38" y="18" font-size="11.5" font-weight="bold" fill="#9f1239">ក្មេងស្រី (Girls)</text>
+    <text x="10" y="38" font-size="10.5" fill="#e11d48">កម្ពស់ជាមធ្យម ឆ្នាំ 1998</text>
+  </g>
+
+  <!-- Age 20 Value Callout -->
+  <g transform="translate(495, 275)">
+    <rect x="0" y="0" width="165" height="44" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="10" y="18" font-size="10.5" font-weight="600" fill="#475569">នៅអាយុ 20 ឆ្នាំ (1998)៖</text>
+    <text x="10" y="34" font-size="10" fill="#64748b">ក្មេងស្រី: <tspan font-weight="bold" fill="#e11d48">170.6 cm</tspan></text>
+  </g>
+</svg>

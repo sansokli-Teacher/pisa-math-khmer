@@ -209,7 +209,8 @@
     }
     function drawPanel() {
       const col = cols.find((c) => c.id === tab);
-      const list = PISA.units.filter((u) => colOf(u) === col.id);
+      let list = PISA.units.filter((u) => colOf(u) === col.id);
+      if (col.id === 'moeys') list.sort((a, b) => (Number(a.no) || 0) - (Number(b.no) || 0));
       panel.innerHTML = '';
       panel.append(h('div', { class: 'col-head' },
         h('div', {}, h('h4', {}, col.title), h('p', { class: 'col-sub' }, col.sub)), allOrNone(list)));
