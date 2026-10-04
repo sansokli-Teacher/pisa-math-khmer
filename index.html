@@ -4,11 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="ហាត់ធ្វើតេស្តគណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ ជាភាសាខ្មែរ">
+  <meta name="theme-color" content="#0d2b45">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo.svg">
   <title>គណិតវិទ្យាតាមបែប PISA — ការវាយតម្លៃលើកុំព្យូទ័រ</title>
   <link rel="stylesheet" href="katex/katex.min.css?v=3f94e1b737">
   <link rel="stylesheet" href="css/app.css?v=af4caf0a76">
   <!-- home and results pages in the khmermath.org look (the test screens keep app.css) -->
-  <link rel="stylesheet" href="css/site.css?v=bfb8345275">
+  <link rel="stylesheet" href="css/site.css?v=ab0dd61cd6">
 </head>
 <body>
   <div id="app">
@@ -19,7 +23,7 @@
   <!-- KaTeX draws the textbook tasks' mathematics and students' typed maths (MIT licence, katex/LICENSE) -->
   <script src="katex/katex.min.js?v=4881bfc93a"></script>
   <script src="katex/contrib/auto-render.min.js?v=61e52860f7"></script>
-  <script src="js/core.js?v=6430a3a3b7"></script>
+  <script src="js/core.js?v=189ad1cc66"></script>
   <script src="js/widgets.js?v=e2b2e9442e"></script>
   <!-- maths buttons and preview for answer boxes -->
   <script src="js/mathtype.js?v=cf56913e61"></script>
@@ -79,7 +83,18 @@
   <script src="js/units/u7_savings.js?v=b1592a98d8"></script>
   <!-- the tutorial: how to answer on the screen -->
   <script src="js/units/tutorial.js?v=67771de5d3"></script>
-  <script src="js/main.js?v=13026ee75b"></script>
+  <script src="js/main.js?v=1c8a15e304"></script>
   <script src="js/visits.js?v=96ec68e49a" data-site="cba" defer></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          console.log('[PWA] ServiceWorker registered with scope:', reg.scope);
+        }).catch((err) => {
+          console.warn('[PWA] ServiceWorker registration failed:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

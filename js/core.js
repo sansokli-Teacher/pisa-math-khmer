@@ -128,6 +128,61 @@
   PISA.unit = (id) => PISA.units.find((u) => u.id === id);
   PISA.questionIds = (u) => Object.keys(u.questions || {});
 
+  
+  // ----------------------------------------------------------- mock exam ---
+  PISA.sampleMockUnits = function (count) {
+    const moeys = PISA.units.filter((u) => u.collection === 'moeys');
+    const shuffled = moeys.slice().sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(count, shuffled.length)).map((u) => u.id);
+  };
+
+  function getPisaProficiency(pct) {
+    if (pct >= 85) return { lvl: 6, title: 'កម្រិត ៦ (Level 6)', rank: 'កំពូល / ស្ទាត់ជំនាញខ្ពស់', desc: 'អាចបង្កើតគំរូ និងយុទ្ធសាស្ត្រគិតដោះស្រាយបញ្ហាស្មុគស្មាញ និងទាញសេចក្តីសន្និដ្ឋានស៊ីជម្រៅ' };
+    if (pct >= 70) return { lvl: 5, title: 'កម្រិត ៥ (Level 5)', rank: 'កម្រិតខ្ពស់', desc: 'អាចធ្វើការជាមួយគំរូស្មុគស្មាញ ភ្ជាប់ទំនាក់ទំនងទិន្នន័យចម្រុះ និងវាយតម្លៃបានត្រឹមត្រូវ' };
+    if (pct >= 55) return { lvl: 4, title: 'កម្រិត ៤ (Level 4)', rank: 'កម្រិតល្អ', desc: 'អាចរួមបញ្ចូលតំណាងទិន្នន័យផ្សេងៗ និងដោះស្រាយបញ្ហាពាក់ព័ន្ធបរិបទជាក់ស្ដែង' };
+    if (pct >= 40) return { lvl: 3, title: 'កម្រិត ៣ (Level 3)', rank: 'មូលដ្ឋានរឹងមាំ', desc: 'អាចអនុវត្តនីតិវិធីច្បាស់លាស់ បកស្រាយ និងប្រើប្រាស់រូបមន្តមូលដ្ឋានបានត្រឹមត្រូវ' };
+    if (pct >= 25) return { lvl: 2, title: 'កម្រិត ២ (Level 2)', rank: 'មូលដ្ឋានអប្បបរមា PISA', desc: 'កម្រិតមូលដ្ឋានអប្បបរមា PISA ៖ អាចស្គាល់ស្ថានភាពទាមទារការសន្និដ្ឋានត្រង់ និងអនុវត្តក្បួនគណនាសាមញ្ញ' };
+    return { lvl: 1, title: 'កម្រិត ១ (Level 1)', rank: 'កម្រិតដំបូង', desc: 'កម្រិតដំបូង ៖ អាចឆ្លើយសំណួរក្នុងបរិបទដែលធ្លាប់ស្គាល់ និងមានព័ត៌មានជាក់ស្តែងផ្ទាល់' };
+  }
+  PISA.getPisaProficiency = getPisaProficiency;
+
+  let mockTimerInterval = null;
+  function startMockTimer() {
+    if (mockTimerInterval) clearInterval(mockTimerInterval);
+    const update = () => {
+      if (!state || !state.mock || state.finishedAt) {
+        clearInterval(mockTimerInterval);
+        return;
+      }
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const remaining = Math.max(0, state.mock.duration - elapsed);
+      state.mock.remaining = remaining;
+      const el = document.getElementById('mock-countdown');
+      if (el) {
+        const mm = Math.floor(remaining / 60);
+        const ss = remaining % 60;
+        const timeStr = String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+        el.innerHTML = '<span class="t-icon">⏱</span> <span class="t-label">នៅសល់ </span><b>' + PISA.km(timeStr) + '</b>';
+        if (remaining <= 60) {
+          el.className = 'tb-timer timer-danger';
+        } else if (remaining <= 300) {
+          el.className = 'tb-timer timer-warn';
+        } else {
+          el.className = 'tb-timer';
+        }
+      }
+      if (remaining <= 0) {
+        clearInterval(mockTimerInterval);
+        dialog(
+          ['អស់ពេលប្រឡងហើយ!', 'ពេលវេលាដែលបានកំណត់ត្រូវបានបញ្ចប់។ ប្រព័ន្ធនឹងគណនាពិន្ទុ និងបង្ហាញលទ្ធផលដោយស្វ័យប្រវត្តិ។'],
+          [{ label: 'ពិនិត្យលទ្ធផល', primary: true, action: finish }]
+        );
+      }
+    };
+    update();
+    mockTimerInterval = setInterval(update, 1000);
+  }
+
   // --------------------------------------------------------- session ---
   PISA.start = function (opts) {
     state = {
@@ -143,6 +198,11 @@
       startedAt: Date.now(),
       finishedAt: null,
       preview: !!opts.preview,
+      mock: opts.mock ? {
+        duration: opts.mock.durationSeconds || 1800,
+        title: opts.mock.title || 'តេស្តគំរូ PISA',
+        remaining: opts.mock.durationSeconds || 1800,
+      } : null,
     };
     save();
     showScreen();
@@ -224,6 +284,7 @@
     PISA.typeset(win);
     if (PISA.mathBar) PISA.mathBar(win);
     enteredAt = Date.now();
+    if (state && state.mock) startMockTimer();
     const first = win.querySelector('.panel-content');
     if (first) first.scrollTop = 0;
   }
@@ -237,6 +298,10 @@
     });
     bar.append(prog);
     bar.append(iconBtn('clock', 'ពេលវេលា', toggleClock));
+    if (state.mock) {
+      const timerPill = h('div', { class: 'tb-timer', id: 'mock-countdown', title: 'ពេលវេលាប្រឡងនៅសល់' });
+      bar.append(timerPill);
+    }
     if (state.unitIds.length > 1) {
       bar.append(h('div', { class: 'unit-count' }, 'ប្រធានបទ ' + PISA.km(state.pos.u + 1) + ' / ' + PISA.km(state.unitIds.length)));
     }
@@ -505,6 +570,56 @@
       h('div', { class: 'tot' + (pending ? ' tot-warn' : '') }, h('div', { class: 'tot-num' }, PISA.km(pending)), h('div', { class: 'tot-lbl' }, 'សំណួររង់ចាំគ្រូដាក់ពិន្ទុ')),
       h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
     page.append(totals);
+
+    const pct = max > 0 ? Math.round((total / max) * 100) : 0;
+    const pisaProf = getPisaProficiency(pct);
+    const durationStr = fmtElapsed((state.finishedAt || Date.now()) - state.startedAt);
+
+    // Certificate card
+    const certWrap = h('div', { class: 'pisa-cert-wrap' });
+    certWrap.innerHTML =
+      '<div class="pisa-cert" id="pisa-certificate">' +
+        '<div class="cert-inner">' +
+          '<div class="cert-head">' +
+            '<div class="cert-kingdom">ព្រះរាជាណាចក្រកម្ពុជា<br><small>ជាតិ សាសនា ព្រះមហាក្សត្រ</small></div>' +
+            '<div class="cert-logo-row">' +
+              '<img src="assets/img/logo.svg" alt="Logo" class="cert-logo">' +
+              '<div class="cert-org">' +
+                '<h3>KhmerMath · PISA Computer-Based Assessment</h3>' +
+                '<p>ថ្នាលវាយតម្លៃសមត្ថភាពគណិតវិទ្យាតាមបែបអន្តរជាតិ PISA លើកុំព្យូទ័រ</p>' +
+              '</div>' +
+            '</div>' +
+            '<h1 class="cert-title">វិញ្ញាបនបត្រសមត្ថភាពគណិតវិទ្យា</h1>' +
+            '<div class="cert-subtitle">CERTIFICATE OF MATHEMATICAL LITERACY ACHIEVEMENT</div>' +
+          '</div>' +
+          '<div class="cert-body">' +
+            '<p class="cert-intro">វិញ្ញាបនបត្រនេះបញ្ជាក់ជូនដល់ ៖</p>' +
+            '<div class="cert-name">' + (state.student.name || 'សិស្សានុសិស្ស') + (state.student.klass ? ' <span class="cert-klass">(ថ្នាក់ ' + state.student.klass + ')</span>' : '') + '</div>' +
+            '<p class="cert-text">បានបំពេញការប្រឡងតេស្តគណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ (CBA) ដោយទទួលបានលទ្ធផលផ្លូវការដូចខាងក្រោម ៖</p>' +
+            '<div class="cert-grid">' +
+              '<div class="c-box"><div class="c-val">' + PISA.km(total) + ' / ' + PISA.km(max) + '</div><div class="c-lbl">ពិន្ទុសរុប</div></div>' +
+              '<div class="c-box"><div class="c-val">' + PISA.km(pct) + '%</div><div class="c-lbl">អត្រាជោគជ័យ</div></div>' +
+              '<div class="c-box c-gold"><div class="c-val">' + pisaProf.title + '</div><div class="c-lbl">កម្រិតសមត្ថភាព PISA</div></div>' +
+            '</div>' +
+            '<div class="cert-level-desc"><b>ការពិពណ៌នាសមត្ថភាព ៖</b> ' + pisaProf.desc + '</div>' +
+          '</div>' +
+          '<div class="cert-foot">' +
+            '<div class="cert-foot-col" style="text-align:left;">' +
+              '<div>កាលបរិច្ឆេទ ៖ <b>' + new Date().toLocaleDateString('km-KH') + '</b></div>' +
+              '<div>រយៈពេលប្រើប្រាស់ ៖ <b>' + durationStr + '</b></div>' +
+            '</div>' +
+            '<div class="cert-seal">' +
+              '<div class="seal-inner">★ PISA CBA ★<br>KHMERMATH</div>' +
+            '</div>' +
+            '<div class="cert-foot-col" style="text-align:right;">' +
+              '<div>គេហទំព័រវាយតម្លៃ ៖</div>' +
+              '<b>cba.khmermath.org</b>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    page.append(certWrap);
+
     const byProcess = processSection(units);
     if (byProcess) page.append(byProcess);
 
@@ -533,9 +648,9 @@
     });
 
     page.append(h('div', { class: 'res-actions' },
-      h('button', { type: 'button', class: 'btn btn-primary', onclick: downloadCSV }, 'ទាញយកលទ្ធផល (CSV)'),
+      h('button', { type: 'button', class: 'btn btn-primary', onclick: () => window.print() }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ / PDF'),
+      h('button', { type: 'button', class: 'btn', onclick: downloadCSV }, '📥 ទាញយកលទ្ធផល (CSV)'),
       h('button', { type: 'button', class: 'btn', onclick: downloadJSON }, 'ទាញយកទិន្នន័យពេញ (JSON)'),
-      h('button', { type: 'button', class: 'btn', onclick: () => window.print() }, 'បោះពុម្ព'),
       h('button', {
         type: 'button', class: 'btn btn-quiet', onclick: () => dialog(
           ['ចាប់ផ្ដើមវគ្គថ្មី? លទ្ធផលនេះនឹងត្រូវលុបចេញពីកុំព្យូទ័រនេះ។ សូមទាញយក CSV មុនសិន បើត្រូវការ។'],
@@ -667,7 +782,26 @@
     return 'pisa-cba_' + nm + '_' + stamp;
   }
   function downloadCSV() {
-    const rows = [['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']];
+    let totEarned = 0, totMax = 0;
+    state.unitIds.forEach((id) => {
+      const u = PISA.unit(id);
+      PISA.questionIds(u).forEach((qid) => {
+        const sc = scoreOf(u, qid);
+        totMax += sc.max;
+        if (sc.final != null) totEarned += sc.final;
+      });
+    });
+    const sPct = totMax > 0 ? Math.round((totEarned / totMax) * 100) : 0;
+    const pProf = getPisaProficiency(sPct);
+
+    const rows = [
+      ['របាយការណ៍លទ្ធផលតេស្តគណិតវិទ្យា PISA CBA (cba.khmermath.org)'],
+      ['ឈ្មោះសិស្ស', state.student.name || 'សិស្ស', 'ថ្នាក់', state.student.klass || '—'],
+      ['កាលបរិច្ឆេទ', new Date(state.startedAt).toLocaleDateString('km-KH'), 'របៀបតេស្ត', state.mock ? state.mock.title : (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន')],
+      ['ពិន្ទុសរុប', totEarned + ' / ' + totMax, 'ភាគរយ', sPct + '%', 'កម្រិត PISA', pProf.title + ' (' + pProf.rank + ')'],
+      [''],
+      ['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']
+    ];
     state.unitIds.forEach((id) => {
       const u = PISA.unit(id);
       PISA.questionIds(u).forEach((qid) => {

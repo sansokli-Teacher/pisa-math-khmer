@@ -53,6 +53,7 @@
         h('img', { src: 'assets/img/logo.svg', alt: '', width: 38, height: 38 }),
         h('span', { class: 'km-brand-t' }, h('b', {}, 'KhmerMath'), h('small', {}, 'តេស្តលើកុំព្យូទ័រ (CBA)'))),
       h('nav', { class: 'km-nav', 'aria-label': 'KhmerMath' },
+        h('span', { class: 'pwa-status-pill', id: 'pwa-badge' }, '📶 ប្រើពេលគ្មានអ៊ីនធឺណិតបាន'),
         h('a', { href: SITE, ...ext }, 'ទំព័រដើម KhmerMath'),
         h('a', { href: 'https://pisa.khmermath.org/', ...ext }, 'សៀវភៅ PISA ២០២២'),
         h('a', { href: SITE + 'cba.html#lab', ...ext }, 'ប្រើក្នុងបន្ទប់កុំព្យូទ័រ')),
@@ -128,6 +129,57 @@
           h('img', { src: 'assets/img/shot-unit.webp', width: 1600, height: 950, loading: 'lazy', alt: 'អេក្រង់តេស្ត៖ សំណួរនៅខាងឆ្វេង ស្ថានភាព និងរូបភាពនៅខាងស្ដាំ' })),
         h('div', { class: 'km-float km-float-b', html: '<span class="fi">' + ic('layers') + '</span><span><b>' + PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ</b><small>តាមរបៀបអេក្រង់ PISA</small></span>' }),
         h('div', { class: 'km-float km-float-a', html: '<span class="fi">' + ic('calc') + '</span><span><b>ម៉ាស៊ីនគិតលេខ</b><small>និងការណែនាំ នៅលើអេក្រង់</small></span>' })))));
+
+    
+    // --- Mock Exam Section ---
+    const startMock = (qCount, mins) => {
+      const sName = (document.getElementById('mock-name') ? document.getElementById('mock-name').value.trim() : '') || name.value.trim() || 'សិស្សានុសិស្ស';
+      const sKlass = (document.getElementById('mock-class') ? document.getElementById('mock-class').value.trim() : '') || klass.value.trim() || '';
+      const uids = PISA.sampleMockUnits(qCount);
+      PISA.start({
+        name: sName,
+        klass: sKlass,
+        mode: 'test',
+        unitIds: uids,
+        mock: {
+          durationSeconds: mins * 60,
+          title: 'តេស្តគំរូ PISA (' + PISA.km(qCount) + ' សំណួរ · ' + PISA.km(mins) + ' នាទី)',
+        }
+      });
+    };
+
+    const mockSec = h('section', { class: 'km-section km-mock-section' }, h('div', { class: 'km-wrap' },
+      h('div', { class: 'mock-hero-card' },
+        h('div', { class: 'mock-badge' }, '⏱ មុខងារថ្មី · របៀបប្រឡងកំណត់ម៉ោង PISA'),
+        h('h2', {}, 'ប្រឡងសាកល្បងកំណត់ម៉ោង (Timed Mock Exam)'),
+        h('p', { class: 'mock-desc' },
+          'ប្រព័ន្ធនឹងជ្រើសរើសប្រធានបទដោយចៃដន្យពីចំណោម ៣៨ ប្រធានបទ PISA របស់ក្រសួងអប់រំ ដោយមាននាឡិការាប់ថយក្រោយជាក់ស្ដែង ' +
+          'និងចេញវិញ្ញាបនបត្រសមត្ថភាព PISA ផ្លូវការ (រួមទាំងការកំណត់កម្រិត ១ ដល់ ៦) នៅពេលបញ្ចប់។'
+        ),
+        h('div', { class: 'mock-inputs' },
+          h('input', { type: 'text', id: 'mock-name', placeholder: 'ឈ្មោះសិស្ស (ឧ. សុខ ដារ៉ា)', value: name.value }),
+          h('input', { type: 'text', id: 'mock-class', placeholder: 'ថ្នាក់ (ឧ. ៩ក)', value: klass.value })
+        ),
+        h('div', { class: 'mock-btn-grid' },
+          h('button', {
+            type: 'button', class: 'mock-btn',
+            onclick: () => startMock(10, 30),
+            html: '⚡ <b>តេស្តរហ័ស (១០ សំណួរ)</b><small>រយៈពេល ៣០ នាទី</small>'
+          }),
+          h('button', {
+            type: 'button', class: 'mock-btn mock-btn-std',
+            onclick: () => startMock(15, 45),
+            html: '🎯 <b>តេស្តស្តង់ដារ (១៥ សំណួរ)</b><small>រយៈពេល ៤៥ នាទី</small>'
+          }),
+          h('button', {
+            type: 'button', class: 'mock-btn mock-btn-full',
+            onclick: () => startMock(20, 60),
+            html: '🏆 <b>តេស្តពេញលេញ (២០ សំណួរ)</b><small>រយៈពេល ៦០ នាទី</small>'
+          })
+        )
+      )
+    ));
+    main.append(mockSec);
 
     // --- setting up a session: who, how, what
     const setup = h('section', { class: 'km-section km-alt', id: 'start' });
@@ -377,3 +429,14 @@
   }
   document.addEventListener('DOMContentLoaded', boot);
 })();
+
+
+  // PWA online/offline status listener
+  window.addEventListener('online', () => {
+    const el = document.getElementById('pwa-badge');
+    if (el) { el.textContent = '📶 ប្រើពេលគ្មានអ៊ីនធឺណិតបាន'; el.className = 'pwa-status-pill'; }
+  });
+  window.addEventListener('offline', () => {
+    const el = document.getElementById('pwa-badge');
+    if (el) { el.textContent = '📡 ក្រៅបណ្ដាញ (Offline Mode)'; el.className = 'pwa-status-pill offline'; }
+  });
