@@ -30,7 +30,7 @@ identity.
 Original items by the teacher guide project «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២»
 (សាន សុខលី). Not OECD material.
 
-## The Grade 9 textbook's PISA tasks (collection «ភារកិច្ច PISA ពីមេរៀនថ្នាក់ទី ៩»)
+## The Grade 9 textbook's PISA tasks (collection «លំហាត់តាមកម្រិតថ្នាក់»)
 
 From «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» (draft), © 2026 លោកគ្រូ សាន សុខលី, all rights
 reserved; published here by the author for students to practise. Not OECD

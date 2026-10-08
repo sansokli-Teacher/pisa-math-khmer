@@ -1,0 +1,150 @@
+/* Home page: a plain page like the front of an exercise book. Paper, ink, ruled lines, one teal and one red.
+ * No gradients, no shadows, no rounded cards, no badges. Everything sits under .hm. */
+.hm {
+  --paper: #fbf9f3;
+  --ink: #1d2733;
+  --ink-2: #4a5663;
+  --rule: #d9d3c2;
+  --rule-2: #bdb6a0;
+  --teal: #2e7a70;
+  --teal-dk: #226058;
+  --red: #b3402f;
+  --blue-pen: #2d5f9a;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--km-font);
+}
+.hm .hm-wrap { max-width: 1040px; margin: 0 auto; padding: 0 22px; box-sizing: border-box; }
+.hm a { color: var(--teal-dk); }
+.hm h1, .hm h2, .hm h3, .hm h4 { font-family: var(--km-font); color: var(--ink); letter-spacing: 0; }
+
+/* top bar: one line, a rule under it */
+.hm .hm-top { border-bottom: 1px solid var(--rule-2); background: var(--paper); }
+.hm .hm-top-in { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 54px; flex-wrap: wrap; padding-top: 6px; padding-bottom: 6px; }
+.hm .hm-brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-size: 16px; }
+.hm .hm-brand b { font-weight: 700; }
+.hm .hm-nav { display: flex; gap: 20px; flex-wrap: wrap; font-size: 15px; }
+.hm .hm-nav a, .hm .hm-link { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--rule-2); text-underline-offset: 3px; }
+.hm .hm-nav a:hover, .hm .hm-link:hover { color: var(--teal-dk); text-decoration-color: var(--teal-dk); }
+.hm .hm-link { background: none; border: 0; padding: 0; font: inherit; font-size: 15px; cursor: pointer; }
+
+/* intro */
+.hm .hm-intro { padding: 44px 0 18px; max-width: 760px; }
+.hm .hm-intro h1 { margin: 0 0 12px; font-size: 40px; line-height: 1.25; font-weight: 700; }
+.hm .hm-lead { margin: 0 0 12px; font-size: 19px; line-height: 1.75; color: var(--ink); }
+.hm .hm-facts { margin: 0; font-size: 15px; color: var(--ink-2); border-top: 1px solid var(--rule); padding-top: 10px; }
+
+/* name and class: two plain lines */
+.hm .hm-who { display: flex; flex-wrap: wrap; align-items: end; gap: 14px 22px; padding: 14px 0 10px; }
+.hm .hm-who label { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--ink-2); }
+.hm .hm-who input { font: inherit; font-size: 17px; width: 210px; max-width: 100%; padding: 6px 2px; border: 0; border-bottom: 1.5px solid var(--rule-2); background: transparent; color: var(--ink); border-radius: 0; }
+.hm .hm-who input:focus { outline: none; border-bottom-color: var(--teal); }
+.hm .hm-who p { margin: 0; font-size: 14px; color: var(--ink-2); flex: 1 1 260px; }
+
+/* buttons: flat, square-ish, one filled */
+.hm .hm-btn { font: inherit; font-size: 16px; font-weight: 600; padding: 8px 18px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); border-radius: 3px; cursor: pointer; white-space: nowrap; }
+.hm .hm-btn:hover { background: var(--ink); color: var(--paper); }
+.hm .hm-btn-main { background: var(--teal); border-color: var(--teal); color: #fff; }
+.hm .hm-btn-main:hover { background: var(--teal-dk); border-color: var(--teal-dk); color: #fff; }
+.hm :focus-visible { outline: 2px solid var(--blue-pen); outline-offset: 2px; }
+
+/* a session left on this computer */
+.hm .hm-resume { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 14px 0 6px; padding: 12px 14px; border: 1.5px solid var(--red); border-radius: 3px; }
+.hm .hm-resume p { margin: 0; flex: 1 1 280px; }
+
+/* two columns: start now / my practice */
+.hm .hm-cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; padding: 22px 0 8px; }
+.hm .hm-cols h2, .hm .hm-topics h2, .hm .hm-teach h2 { font-size: 22px; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+.hm .hm-rows { list-style: none; margin: 0; padding: 0; }
+.hm .hm-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.hm .hm-row-t { flex: 1 1 250px; display: flex; flex-direction: column; }
+.hm .hm-row-t b { font-size: 17px; }
+.hm .hm-row-t span { font-size: 14.5px; color: var(--ink-2); }
+.hm .hm-row-a { display: flex; align-items: center; gap: 8px; }
+.hm .hm-row select { font: inherit; font-size: 15px; padding: 7px 8px; border: 1.5px solid var(--rule-2); background: var(--paper); border-radius: 3px; color: var(--ink); }
+.hm .hm-mine h3 { font-size: 16px; margin: 18px 0 6px; color: var(--ink-2); }
+.hm .hm-empty { margin: 8px 0; color: var(--ink-2); font-size: 15px; }
+.hm .hm-hist, .hm .hm-weak { list-style: none; margin: 0; padding: 0; }
+.hm .hm-hist li { display: grid; grid-template-columns: 78px 1fr 62px; grid-template-areas: "d t s" "m t b"; gap: 0 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 15px; align-items: center; }
+.hm .hm-hd { grid-area: d; color: var(--ink-2); font-size: 14px; }
+.hm .hm-hm { grid-area: m; color: var(--ink-2); font-size: 13px; }
+.hm .hm-ht { grid-area: t; font-weight: 600; }
+.hm .hm-hs { grid-area: s; text-align: right; font-weight: 700; }
+.hm .hm-bar { grid-area: b; display: block; height: 5px; background: var(--rule); align-self: end; margin-bottom: 4px; }
+.hm .hm-bar i { display: block; height: 100%; background: var(--teal); }
+.hm .hm-weak li { display: flex; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+.hm .hm-weak li span { flex: 1; }
+.hm .hm-weak em { font-style: normal; color: var(--red); font-weight: 700; }
+.hm .hm-clear { margin-top: 12px; display: inline-block; }
+
+/* choosing topics */
+.hm .hm-topics { padding: 30px 0 8px; }
+.hm .hm-topics-h { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; }
+.hm .hm-topics-h h2 { flex: 1 1 260px; border: 0; padding: 0; margin: 0; }
+.hm .hm-topics-h input { font: inherit; font-size: 16px; padding: 7px 10px; width: 250px; max-width: 100%; border: 1.5px solid var(--rule-2); background: #fff; border-radius: 3px; }
+.hm .hm-modes { margin: 8px 0 14px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); color: var(--ink-2); font-size: 15px; }
+.hm .hm-tabs { display: flex; flex-wrap: wrap; gap: 0 4px; border-bottom: 1px solid var(--rule-2); }
+.hm .hm-tab { font: inherit; font-size: 15.5px; padding: 9px 14px 8px; background: transparent; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; color: var(--ink-2); cursor: pointer; }
+.hm .hm-tab small { margin-left: 6px; font-size: 13px; color: var(--ink-2); }
+.hm .hm-tab.on { color: var(--ink); font-weight: 700; border-bottom-color: var(--teal); }
+.hm .hm-tab:hover { color: var(--ink); }
+.hm .hm-col-head { display: flex; justify-content: space-between; align-items: start; gap: 14px; flex-wrap: wrap; padding: 14px 0 6px; }
+.hm .hm-col-head h3 { margin: 0; font-size: 18px; }
+.hm .hm-col-head p { margin: 2px 0 0; font-size: 14px; color: var(--ink-2); max-width: 640px; }
+.hm .hm-allnone { display: flex; gap: 14px; }
+.hm .hm-units { border-top: 1px solid var(--rule); }
+.hm .hm-unit { display: grid; grid-template-columns: 22px 92px 1fr auto; gap: 0 12px; align-items: center; padding: 9px 6px; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.hm .hm-unit:hover { background: #f3efe3; }
+.hm .hm-unit.on { background: #eef4ef; }
+.hm .hm-unit input { width: 18px; height: 18px; accent-color: var(--teal); margin: 0; }
+.hm .hm-no { color: var(--ink-2); font-size: 14px; }
+.hm .hm-ut { display: flex; flex-direction: column; min-width: 0; }
+.hm .hm-ut b { font-weight: 600; font-size: 16px; }
+.hm .hm-ut small { color: var(--ink-2); font-size: 13px; }
+.hm .hm-un { color: var(--ink-2); font-size: 14px; white-space: nowrap; }
+.hm .hm-lesson { margin-top: 14px; }
+.hm .hm-lesson-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 4px 0; }
+.hm .hm-lesson-h h4 { margin: 0; font-size: 16px; color: var(--teal-dk); }
+/* the start bar stays at the bottom of the screen while the topics are in view */
+.hm .hm-bar-start { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px 16px; padding: 12px 6px; margin-top: 10px; background: var(--paper); border-top: 2px solid var(--ink); }
+.hm .hm-sum { margin-right: auto; font-weight: 600; font-size: 15.5px; }
+.hm .hm-err { color: var(--red); font-size: 15px; }
+
+/* teachers */
+.hm .hm-teach { padding: 34px 0 36px; max-width: 760px; }
+.hm .hm-teach p { margin: 10px 0; font-size: 16px; line-height: 1.8; }
+
+@media (max-width: 820px) {
+  .hm .hm-cols { grid-template-columns: 1fr; gap: 10px; }
+  .hm .hm-intro h1 { font-size: 31px; }
+  .hm .hm-lead { font-size: 17px; }
+  .hm .hm-unit { grid-template-columns: 22px 1fr auto; }
+  .hm .hm-no { display: none; }
+  .hm .hm-btn { padding: 11px 18px; }
+  .hm .hm-link { padding: 6px 0; }
+}
+
+/* results page: the same paper, ink and ruled lines */
+.hm .km-res-main { padding: 22px 0 40px; }
+.hm .results { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; max-width: 1040px; }
+.hm .res-head h1 { font-size: 32px; margin: 0 0 4px; }
+.hm .res-sub { margin: 0 0 10px; color: var(--ink-2); }
+.hm .res-totals { display: flex; flex-wrap: wrap; gap: 0 34px; margin: 10px 0 6px; padding: 10px 0; border-top: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule-2); }
+.hm .tot, .hm .tot-warn { background: transparent; border: 0; border-radius: 0; padding: 4px 0; }
+.hm .tot-num { font-size: 26px; }
+.hm .tot-warn .tot-num { color: var(--red); }
+.hm .res-proc h2, .hm .res-unit h2 { font-size: 20px; padding-bottom: 5px; border-bottom: 1px solid var(--rule-2); }
+.hm .res-actions .btn { border-radius: 3px; }
+@media (max-width: 820px) { .hm .results { padding: 0 2px; } }
+
+@media (max-width: 820px) {
+  .hm .hm-opt { display: none; }
+  .hm .hm-top-in { min-height: 48px; }
+  .hm .hm-nav { gap: 14px; }
+  .hm .hm-who label { flex: 1 1 140px; }
+  .hm .hm-who input { width: 100%; }
+  .hm .hm-intro { padding-top: 26px; }
+}
+
+.hm .hm-grade { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 22px; padding: 4px 0; border-bottom: 2px solid var(--ink); }
+.hm .hm-grade h4 { margin: 0; font-size: 19px; }

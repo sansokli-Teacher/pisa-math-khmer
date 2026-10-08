@@ -1,0 +1,49 @@
+/* The answer-checking tray under a practice screen (PISA-blue like the screen around it) and the student's
+ * review on the results page (paper and ink like the home page). */
+.lt { flex: none; background: #fff; border-top: 3px solid var(--chrome-dk); }
+.lt-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; width: 100%; padding: 7px 14px; border: 0; background: #e6f0f8; cursor: pointer; font: 700 15px/1.4 var(--font); color: #1f4f7a; text-align: left; box-sizing: border-box; }
+.lt-chip { padding: 0 9px; border: 1.5px solid #9bb7cf; background: #fff; border-radius: 3px; font-weight: 600; font-size: 14px; color: var(--ink); }
+.lt-chip.ok { border-color: #4f8a3c; background: #eef7e8; color: #2f6a1f; }
+.lt-chip.part { border-color: #c9862b; background: #fbf0df; color: #84540f; }
+.lt-chip.no { border-color: #b4403a; background: #fbeceb; color: #9a2f29; }
+.lt-caret { margin-left: auto; }
+.lt-body { display: none; max-height: 40vh; overflow: auto; padding: 8px 16px 14px; }
+.lt.open .lt-body { display: block; }
+.lt-q + .lt-q { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #b7c6d4; }
+.lt-q h3 { margin: 0 0 4px; font-size: 16px; }
+.lt-say { margin: 2px 0 6px; font-weight: 700; }
+.lt-say.ok { color: #2f6a1f; } .lt-say.part { color: #84540f; } .lt-say.no { color: #9a2f29; }
+.lt-say.open { color: #1f4f7a; } .lt-say.blank { color: #6b6b6b; font-weight: 600; }
+.lt-note { margin: 0 0 6px; font-size: 14px; color: #555; }
+.lt-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0; }
+.lt-btn { font: 600 15px var(--font); padding: 6px 14px; border: 1.5px solid #4a9ad0; background: #fff; color: #1f4f7a; border-radius: 3px; cursor: pointer; }
+.lt-btn:hover { background: #e6f0f8; }
+.lt-primary { background: #2c76b0; border-color: #2c76b0; color: #fff; }
+.lt-primary:hover { background: #1f5f94; }
+.lt-hint { margin-top: 6px; padding: 8px 12px; border-left: 4px solid #c9862b; background: #fbf0df; }
+.lt-key { margin-top: 8px; padding: 8px 12px; border-left: 4px solid #8ea662; background: #f6f9ef; }
+.lt-key-h { font-weight: 700; color: #4a6a28; margin-bottom: 2px; }
+.lt-link { display: inline-block; margin-top: 8px; font-weight: 600; color: #1f4f7a; }
+@media (max-width: 860px) {
+  .lt { position: sticky; bottom: 0; z-index: 20; box-shadow: 0 -3px 10px rgba(0, 0, 0, .18); }
+  .lt-body { max-height: 52vh; }
+  .lt-btn { padding: 10px 14px; }
+}
+@media print { .lt { display: none; } }
+
+/* the student's review (results page) */
+.km .rv { margin: 28px 0; font-family: var(--km-font); }
+.km .rv h2 { margin: 0 0 6px; padding-bottom: 6px; border-bottom: 2px solid #1d2733; font-size: 24px; }
+.km .rv-sum { margin: 8px 0 14px; font-size: 17px; }
+.km .rv-none { padding: 12px 0; font-size: 17px; color: #2f6a1f; }
+.km .rv-card { margin: 14px 0; padding: 14px 18px; background: #fffefa; border: 1px solid #d9d3c2; border-left: 4px solid #b3402f; }
+.km .rv-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.km .rv-unit { font-size: 14px; color: #4a5663; }
+.km .rv-card h3 { margin: 4px 0 8px; font-size: 18px; }
+.km .rv-said { margin-bottom: 10px; }
+.km .rv-key { padding: 8px 12px; border-left: 4px solid #8ea662; background: #f6f9ef; }
+.km .rv-key-h { font-weight: 700; color: #4a6a28; margin-bottom: 2px; }
+.km .rv-link { display: inline-block; margin-top: 10px; font-weight: 600; }
+.km .rv-act { margin: 18px 0 0; }
+.km .res-teacher-h { margin: 38px 0 6px; padding-top: 14px; border-top: 3px double #bdb6a0; font-size: 20px; color: #4a5663; }
+@media print { .km .rv-act { display: none; } }

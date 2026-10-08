@@ -29,6 +29,9 @@
     return list;
   };
 
+  // A multiple-choice list as the MoEYS topics write it: options [{ k: 'A', text }], the key is what is stored.
+  W.mcq = (ctx, qid, part, options) => W.radios(ctx, qid, part, options.map((o) => ({ v: o.k, html: o.text })));
+
   // ------------------------------------------------------ choice table ---
   // One radio row per statement: True/False, or Always/Sometimes/Never.
   // Each row is stored as part "0", "1", ... of the question.

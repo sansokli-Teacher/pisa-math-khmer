@@ -185,7 +185,7 @@
 
   // ---------------------------------------------------------- register ---
   const FOOTER = 'សំណួរដើមរបស់គម្រោង តាមបែប PISA — មិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ';
-  const TEXTBOOK_FOOTER = '«គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» © លោកគ្រូ សាន សុខលី — ភារកិច្ចតាមបែប PISA មិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ';
+  const TEXTBOOK_FOOTER = '«គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» © លោកគ្រូ សាន សុខលី — លំហាត់តាមបែប PISA មិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ';
   const NO_KEY = '<p class="knote">សៀវភៅមិនទាន់មានចម្លើយគំរូសម្រាប់សំណួរនេះទេ — គ្រូជាអ្នកដាក់ពិន្ទុ។</p>';
   // Textbook tasks: the right option scores; with more to answer, the teacher reads the rest.
   const autoRule = (q, parts) => (r) => {
@@ -236,7 +236,7 @@
       grade: u.grade,
       title: u.title,
       en: u.kind === 'gold' ? u.code : textbook ? 'Textbook task ' + PISA.latin(u.code) : 'Practice ' + u.code,
-      label: u.kind === 'gold' ? u.code : textbook ? 'ភារកិច្ច ' + u.code : 'ប្រធានបទ ' + u.code,
+      label: u.kind === 'gold' ? u.code : textbook ? 'លំហាត់ ' + u.code : 'ប្រធានបទ ' + u.code,
       blurb: textbook ? 'មេរៀនទី ' + PISA.km(u.lesson) + ' ' + u.lessonTitle : plain(u.stimTitle),
       lesson: u.lesson,
       lessonTitle: u.lessonTitle,

@@ -26,10 +26,32 @@
       else el.setAttribute(k, v);
     }
   }
+  // Text written with a few formatting tags (<b>, <i>, <br>) and the entities &nbsp; &gt; &lt; &amp; is drawn
+  // as formatted text, not as the raw tags. Nothing else is read as markup, so what a student types can
+  // never add anything but bold, italic or a line break.
+  const FMT_TEST = /<\/?(?:b|i|br)\s*\/?>|&(?:nbsp|gt|lt|amp);/i;
+  const ENT = { nbsp: '\u00a0', gt: '>', lt: '<', amp: '&' };
+  const unent = (s) => s.replace(/&(nbsp|gt|lt|amp);/gi, (m, e) => ENT[e.toLowerCase()]);
+  function formatted(str) {
+    if (!FMT_TEST.test(str)) return document.createTextNode(str);
+    const frag = document.createDocumentFragment(), stack = [frag], tag = /<(\/?)(b|i|br)\s*\/?>/gi;
+    let last = 0, m;
+    const text = (s) => { if (s) stack[stack.length - 1].appendChild(document.createTextNode(unent(s))); };
+    while ((m = tag.exec(str))) {
+      text(str.slice(last, m.index));
+      last = m.index + m[0].length;
+      const name = m[2].toLowerCase();
+      if (name === 'br') { if (!m[1]) stack[stack.length - 1].appendChild(document.createElement('br')); continue; }
+      if (!m[1]) { const e = document.createElement(name); stack[stack.length - 1].appendChild(e); stack.push(e); }
+      else if (stack.length > 1 && stack[stack.length - 1].tagName.toLowerCase() === name) stack.pop();
+    }
+    text(str.slice(last));
+    return frag;
+  }
   function appendKids(el, kids) {
     for (const k of kids.flat(Infinity)) {
       if (k == null || k === false) continue;
-      el.appendChild(k instanceof Node ? k : document.createTextNode(String(k)));
+      el.appendChild(k instanceof Node ? k : formatted(String(k)));
     }
   }
   function h(tag, attrs, ...kids) {
@@ -136,15 +158,6 @@
     return shuffled.slice(0, Math.min(count, shuffled.length)).map((u) => u.id);
   };
 
-  function getPisaProficiency(pct) {
-    if (pct >= 85) return { lvl: 6, title: 'កម្រិត ៦ (Level 6)', rank: 'កំពូល / ស្ទាត់ជំនាញខ្ពស់', desc: 'អាចបង្កើតគំរូ និងយុទ្ធសាស្ត្រគិតដោះស្រាយបញ្ហាស្មុគស្មាញ និងទាញសេចក្តីសន្និដ្ឋានស៊ីជម្រៅ' };
-    if (pct >= 70) return { lvl: 5, title: 'កម្រិត ៥ (Level 5)', rank: 'កម្រិតខ្ពស់', desc: 'អាចធ្វើការជាមួយគំរូស្មុគស្មាញ ភ្ជាប់ទំនាក់ទំនងទិន្នន័យចម្រុះ និងវាយតម្លៃបានត្រឹមត្រូវ' };
-    if (pct >= 55) return { lvl: 4, title: 'កម្រិត ៤ (Level 4)', rank: 'កម្រិតល្អ', desc: 'អាចរួមបញ្ចូលតំណាងទិន្នន័យផ្សេងៗ និងដោះស្រាយបញ្ហាពាក់ព័ន្ធបរិបទជាក់ស្ដែង' };
-    if (pct >= 40) return { lvl: 3, title: 'កម្រិត ៣ (Level 3)', rank: 'មូលដ្ឋានរឹងមាំ', desc: 'អាចអនុវត្តនីតិវិធីច្បាស់លាស់ បកស្រាយ និងប្រើប្រាស់រូបមន្តមូលដ្ឋានបានត្រឹមត្រូវ' };
-    if (pct >= 25) return { lvl: 2, title: 'កម្រិត ២ (Level 2)', rank: 'មូលដ្ឋានអប្បបរមា PISA', desc: 'កម្រិតមូលដ្ឋានអប្បបរមា PISA ៖ អាចស្គាល់ស្ថានភាពទាមទារការសន្និដ្ឋានត្រង់ និងអនុវត្តក្បួនគណនាសាមញ្ញ' };
-    return { lvl: 1, title: 'កម្រិត ១ (Level 1)', rank: 'កម្រិតដំបូង', desc: 'កម្រិតដំបូង ៖ អាចឆ្លើយសំណួរក្នុងបរិបទដែលធ្លាប់ស្គាល់ និងមានព័ត៌មានជាក់ស្តែងផ្ទាល់' };
-  }
-  PISA.getPisaProficiency = getPisaProficiency;
 
   let mockTimerInterval = null;
   function startMockTimer() {
@@ -279,7 +292,7 @@
     document.title = unit.title + ' — ' + scr.tag;
 
     const win = h('div', { class: 'cba-window' });
-    win.append(topBar(unit), body(unit, scr, ctx), footer(unit));
+    win.append(topBar(unit), body(unit, scr, ctx), learnTray(unit, scr), footer(unit));
     app.append(win);
     PISA.typeset(win);
     if (PISA.mathBar) PISA.mathBar(win);
@@ -287,6 +300,94 @@
     if (state && state.mock) startMockTimer();
     const first = win.querySelector('.panel-content');
     if (first) first.scrollTop = 0;
+  }
+
+  // ------------------------------------------------- the answer-checking tray ---
+  // Practice mode only. Under the screen, a slim bar opens a tray where the student checks an answer, tries
+  // again, and sees the book's model answer. Test mode has no tray. The tutorial has its own checks.
+  PISA.lessonLink = (u) => u.lessonUrl || (u.collection === 'textbook' && u.grade && u.lesson
+    ? 'https://khmermath.org/lesson/g' + u.grade + '/L' + String(u.lesson).padStart(2, '0') + '.html' : null);
+  function hasAnswer(unit, qid) {
+    const q = unit.questions[qid], r = state.responses[qid] || {};
+    if (q.answered && q.answered(r)) return true;
+    return (q.parts || []).some((p) => r[p.k] != null && String(r[p.k]).trim() !== '');
+  }
+  function checkOf(unit, qid) {
+    const q = unit.questions[qid], r = state.responses[qid] || {};
+    if (!hasAnswer(unit, qid)) return { res: 'blank' };
+    const a = q.score ? q.score(r) : { pts: null };
+    if (a.pts == null) return { res: 'open', note: a.note };
+    const max = q.max || 1;
+    return { res: a.pts >= max ? 'full' : a.pts > 0 ? 'partial' : 'none', pts: a.pts, max, note: a.note };
+  }
+  const TRAY_WORDS = {
+    full: ['ត្រឹមត្រូវ', 'ok'], partial: ['ត្រូវខ្លះ', 'part'], none: ['មិនទាន់ត្រឹមត្រូវ', 'no'],
+    open: ['ប្រៀបធៀបចម្លើយរបស់អ្នកជាមួយចម្លើយគំរូ', 'open'], blank: ['សូមឆ្លើយសិន ហើយចុចពិនិត្យ', 'blank'],
+  };
+  function learnTray(unit, scr) {
+    if (state.mode !== 'practice' || unit.collection === 'tutorial') return null;
+    const ids = (scr.items || []).filter((qid) => unit.questions[qid]);
+    if (!ids.length) return null;
+    state.checks = state.checks || {};
+    const tray = h('section', { class: 'lt', 'aria-label': 'ពិនិត្យចម្លើយ' });
+    const head = h('button', { type: 'button', class: 'lt-head', 'aria-expanded': 'false' });
+    const body = h('div', { class: 'lt-body' });
+    tray.append(head, body);
+    const isOpen = () => !!state.ui['lt-open'];
+    function draw() {
+      tray.classList.toggle('open', isOpen());
+      head.setAttribute('aria-expanded', isOpen() ? 'true' : 'false');
+      head.innerHTML = '';
+      head.append(h('span', { class: 'lt-title' }, 'ពិនិត្យចម្លើយ'));
+      ids.forEach((qid) => {
+        const c = state.checks[qid];
+        head.append(h('span', { class: 'lt-chip' + (c && c.res ? ' ' + TRAY_WORDS[c.res][1] : '') },
+          unit.questions[qid].label, c && c.res === 'full' ? ' ✓' : c && (c.res === 'none' || c.res === 'partial') ? ' ✗' : ''));
+      });
+      head.append(h('span', { class: 'lt-caret', 'aria-hidden': 'true' }, isOpen() ? '▾' : '▴'));
+      body.innerHTML = '';
+      if (!isOpen()) return;
+      ids.forEach((qid) => body.append(block(qid)));
+      PISA.typeset(body);
+    }
+    function block(qid) {
+      const q = unit.questions[qid], c = state.checks[qid] || {};
+      const box = h('div', { class: 'lt-q' });
+      box.append(h('h3', {}, q.label));
+      if (!c.res || c.res === 'blank') {
+        const row = h('div', { class: 'lt-row' });
+        row.append(h('button', { type: 'button', class: 'lt-btn lt-primary', onclick: () => {
+          const r = checkOf(unit, qid);
+          state.checks[qid] = { res: r.res, pts: r.pts, max: r.max, note: r.note, n: (c.n || 0) + (r.res === 'blank' ? 0 : 1), shown: r.res === 'open' };
+          save(); draw();
+        } }, 'ពិនិត្យចម្លើយនេះ'));
+        if (q.hint) row.append(h('button', { type: 'button', class: 'lt-btn', onclick: () => { c.hint = !c.hint; state.checks[qid] = c; draw(); } }, 'គន្លឹះ'));
+        box.append(row);
+        if (c.res === 'blank') box.append(h('p', { class: 'lt-say blank' }, TRAY_WORDS.blank[0]));
+        if (c.hint && q.hint) box.append(h('div', { class: 'lt-hint', html: q.hint }));
+        return box;
+      }
+      const [word, cls] = TRAY_WORDS[c.res];
+      box.append(h('p', { class: 'lt-say ' + cls }, c.res === 'partial' ? word + ' (' + PISA.km(c.pts) + ' / ' + PISA.km(c.max) + ')' : word));
+      if (c.note) box.append(h('p', { class: 'lt-note' }, c.note));
+      const row = h('div', { class: 'lt-row' });
+      if (c.res === 'none' || c.res === 'partial') {
+        row.append(h('button', { type: 'button', class: 'lt-btn lt-primary', onclick: () => {
+          delete state.responses[qid]; state.checks[qid] = { res: null, n: c.n }; save(); showScreen();
+        } }, 'ព្យាយាមម្ដងទៀត'));
+        if (!c.shown) row.append(h('button', { type: 'button', class: 'lt-btn', onclick: () => { c.shown = true; save(); draw(); } }, 'មើលចម្លើយគំរូ'));
+      }
+      if (row.childNodes.length) box.append(row);
+      if (c.res === 'full' || c.shown) {
+        box.append(h('div', { class: 'lt-key' }, h('div', { class: 'lt-key-h' }, 'ចម្លើយគំរូ'), raw(q.key || '')));
+        const link = PISA.lessonLink(unit);
+        if (link) box.append(h('a', { class: 'lt-link', href: link, target: '_blank', rel: 'noopener' }, 'រៀនមេរៀននេះឡើងវិញ ▸'));
+      }
+      return box;
+    }
+    head.addEventListener('click', () => { state.ui['lt-open'] = !isOpen(); save(); draw(); });
+    draw();
+    return tray;
   }
 
   function topBar(unit) {
@@ -507,6 +608,57 @@
   }
   const unitHeading = (u) => (u.label || PISA.km(u.no)) + ' · ' + u.title;
 
+  // What a student has done, kept in this browser only (no account): one line per finished session.
+  const HKEY = 'pisa-cba-khmer:history';
+  PISA.history = () => { try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch (e) { return []; } };
+  PISA.clearHistory = () => { try { localStorage.removeItem(HKEY); } catch (e) { /* ignore */ } };
+  function recordHistory(units) {
+    if (state.preview || state.recorded || units.some((u) => u.collection === 'tutorial')) return;
+    const per = units.map((u) => {
+      let got = 0, max = 0, pend = 0;
+      PISA.questionIds(u).forEach((qid) => { const sc = scoreOf(u, qid); if (sc.final != null) { got += sc.final; max += sc.max; } else pend += 1; });
+      return { id: u.id, got, max, pend };
+    });
+    const list = PISA.history();
+    list.push({
+      t: state.finishedAt || Date.now(), name: state.student.name || '', mode: state.mock ? 'mock' : state.mode,
+      got: per.reduce((n, x) => n + x.got, 0), max: per.reduce((n, x) => n + x.max, 0), units: per,
+    });
+    try { localStorage.setItem(HKEY, JSON.stringify(list.slice(-60))); } catch (e) { /* ignore */ }
+    state.recorded = true;
+    save();
+  }
+
+  // For the student: the questions to look at again, each with the answer given, the book's model answer
+  // and the way back to the lesson. Questions answered in full are only counted.
+  function reviewSection(units) {
+    const all = [];
+    units.forEach((u) => PISA.questionIds(u).forEach((qid) => all.push({ u, qid, sc: scoreOf(u, qid) })));
+    const done = (x) => x.sc.final != null && x.sc.final >= x.sc.max;
+    const good = all.filter(done), again = all.filter((x) => !done(x));
+    const sec = h('section', { class: 'rv' });
+    sec.append(h('h2', {}, 'ពិនិត្យឡើងវិញ'),
+      h('p', { class: 'rv-sum' }, h('b', {}, PISA.km(good.length)), ' សំណួរត្រឹមត្រូវ · ', h('b', {}, PISA.km(again.length)), ' សំណួរត្រូវមើលម្ដងទៀត'));
+    if (!again.length) { sec.append(h('p', { class: 'rv-none' }, 'សំណួរទាំងអស់ត្រឹមត្រូវ។')); return sec; }
+    again.forEach(({ u, qid, sc }) => {
+      const wait = sc.final == null;
+      const said = answerText(sc.q, sc.r), drawn = PISA.mathHtml && PISA.mathHtml(said);
+      const card = h('article', { class: 'rv-card' });
+      card.append(h('div', { class: 'rv-top' }, h('span', { class: 'rv-unit' }, unitHeading(u)),
+        h('span', { class: 'pill ' + (wait ? 'wait' : sc.final > 0 ? 'part' : 'no') }, wait ? 'ប្រៀបធៀបជាមួយចម្លើយគំរូ' : PISA.km(sc.final) + ' / ' + PISA.km(sc.max))));
+      card.append(h('h3', {}, sc.q.label),
+        h('div', { class: 'rv-said' }, h('b', {}, 'ចម្លើយរបស់អ្នក៖ '), drawn ? h('span', { html: drawn }) : h('span', {}, said)),
+        h('div', { class: 'rv-key' }, h('div', { class: 'rv-key-h' }, 'ចម្លើយគំរូ'), raw(sc.q.key || '')));
+      const link = PISA.lessonLink(u);
+      if (link) card.append(h('a', { class: 'rv-link', href: link, target: '_blank', rel: 'noopener' }, 'រៀនមេរៀននេះឡើងវិញ ▸'));
+      sec.append(card);
+    });
+    const ids = [...new Set(again.map((x) => x.u.id))];
+    sec.append(h('p', { class: 'rv-act' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, mode: 'practice', unitIds: ids }) },
+      'ហាត់ម្ដងទៀត ' + PISA.km(ids.length) + ' ប្រធានបទនេះ (មានចម្លើយភ្លាមៗ)')));
+    return sec;
+  }
+
   function screenOf(unit, qid) {
     return unit.screens.findIndex((sc) => (sc.items || []).includes(qid));
   }
@@ -526,18 +678,19 @@
     const app = document.getElementById('app');
     // a teacher's mark redraws the page: keep the place then, start at the top otherwise
     const arriving = !app.classList.contains('app-results');
-    app.className = 'app-results km';
+    app.className = 'app-results km hm';
     app.innerHTML = '';
     document.title = 'លទ្ធផល — តេស្តគណិតវិទ្យាលើកុំព្យូទ័រ (CBA)';
     // the khmermath.org header and footer around the page (js/main.js)
     const framed = (page) => {
-      if (PISA.siteHeader) app.append(PISA.siteHeader({ label: 'ទំព័រដើមតេស្ត', icon: 'home', onclick: () => { clearHash(); PISA.home(); window.scrollTo(0, 0); } }));
+      if (PISA.siteHeader) app.append(PISA.siteHeader({ label: 'ទំព័រដើមតេស្ត', onclick: () => { clearHash(); PISA.home(); window.scrollTo(0, 0); } }));
       app.append(h('main', { class: 'km-res-main' }, h('div', { class: 'km-wrap' }, page)));
       if (PISA.siteFooter) app.append(PISA.siteFooter());
       if (arriving) window.scrollTo(0, 0);
     };
 
     const units = state.unitIds.map((id) => PISA.unit(id));
+    recordHistory(units);
     if (units.length === 1 && units[0].results) {
       const u = units[0];
       const own = u.results({
@@ -572,7 +725,6 @@
     page.append(totals);
 
     const pct = max > 0 ? Math.round((total / max) * 100) : 0;
-    const pisaProf = getPisaProficiency(pct);
     const durationStr = fmtElapsed((state.finishedAt || Date.now()) - state.startedAt);
 
     // Certificate card
@@ -589,19 +741,19 @@
                 '<p>ថ្នាលវាយតម្លៃសមត្ថភាពគណិតវិទ្យាតាមបែបអន្តរជាតិ PISA លើកុំព្យូទ័រ</p>' +
               '</div>' +
             '</div>' +
-            '<h1 class="cert-title">វិញ្ញាបនបត្រសមត្ថភាពគណិតវិទ្យា</h1>' +
-            '<div class="cert-subtitle">CERTIFICATE OF MATHEMATICAL LITERACY ACHIEVEMENT</div>' +
+            '<h1 class="cert-title">វិញ្ញាបនបត្រការហាត់គណិតវិទ្យា</h1>' +
+            '<div class="cert-subtitle">CERTIFICATE OF MATHEMATICS PRACTICE</div>' +
           '</div>' +
           '<div class="cert-body">' +
             '<p class="cert-intro">វិញ្ញាបនបត្រនេះបញ្ជាក់ជូនដល់ ៖</p>' +
             '<div class="cert-name">' + (state.student.name || 'សិស្សានុសិស្ស') + (state.student.klass ? ' <span class="cert-klass">(ថ្នាក់ ' + state.student.klass + ')</span>' : '') + '</div>' +
-            '<p class="cert-text">បានបំពេញការប្រឡងតេស្តគណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ (CBA) ដោយទទួលបានលទ្ធផលផ្លូវការដូចខាងក្រោម ៖</p>' +
+            '<p class="cert-text">បានបំពេញការប្រឡងតេស្តគណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ (CBA) ដោយទទួលបានលទ្ធផលដូចខាងក្រោម ៖</p>' +
             '<div class="cert-grid">' +
               '<div class="c-box"><div class="c-val">' + PISA.km(total) + ' / ' + PISA.km(max) + '</div><div class="c-lbl">ពិន្ទុសរុប</div></div>' +
               '<div class="c-box"><div class="c-val">' + PISA.km(pct) + '%</div><div class="c-lbl">អត្រាជោគជ័យ</div></div>' +
-              '<div class="c-box c-gold"><div class="c-val">' + pisaProf.title + '</div><div class="c-lbl">កម្រិតសមត្ថភាព PISA</div></div>' +
+              '<div class="c-box c-gold"><div class="c-val">ការហាត់សាកល្បង</div><div class="c-lbl">មិនមែនលទ្ធផល PISA ផ្លូវការ</div></div>' +
             '</div>' +
-            '<div class="cert-level-desc"><b>ការពិពណ៌នាសមត្ថភាព ៖</b> ' + pisaProf.desc + '</div>' +
+            '<div class="cert-level-desc">ពិន្ទុនេះជាលទ្ធផលនៃការហាត់នៅលើគេហទំព័រ KhmerMath ដើម្បីរៀន។ វាមិនមែនជាកម្រិតសមត្ថភាព PISA ផ្លូវការ ហើយមិនត្រូវប្រៀបធៀបជាមួយលទ្ធផល PISA ពិតទេ។</div>' +
           '</div>' +
           '<div class="cert-foot">' +
             '<div class="cert-foot-col" style="text-align:left;">' +
@@ -612,16 +764,16 @@
               '<div class="seal-inner">★ PISA ★<br>CBA<br>KHMERMATH</div>' +
             '</div>' +
             '<div class="cert-foot-col" style="text-align:right;">' +
-              '<div>គណៈកម្មការវាយតម្លៃ KhmerMath</div>' +
+              '<div>ការហាត់នៅលើ KhmerMath</div>' +
               '<b>cba.khmermath.org</b>' +
             '</div>' +
           '</div>' +
         '</div>' +
       '</div>';
-    page.append(certWrap);
-
+    page.append(reviewSection(units));
     const byProcess = processSection(units);
     if (byProcess) page.append(byProcess);
+    page.append(certWrap);
 
     const fromMoeys = units.every((u) => u.collection === 'moeys');
     const fromTextbook = units.every((u) => u.collection === 'textbook');
@@ -633,6 +785,7 @@
         : 'ចម្លើយគំរូ និងការដាក់ពិន្ទុ យកតាមសៀវភៅណែនាំគ្រូ ដែលជាការចងក្រងរបស់គម្រោង ពុំមែនជាកូនសោដាក់ពិន្ទុផ្លូវការរបស់ OECD ទេ។ ') +
       'សំណួរសរសេរចម្លើយវែង ត្រូវការគ្រូអាន និងដាក់ពិន្ទុដោយប្រើប៊ូតុងនៅជួរនីមួយៗ។ គ្រូក៏អាចកែពិន្ទុស្វ័យប្រវត្តិបានដែរ ពេលអត្រាកំណែផ្តល់ពិន្ទុលើវិធីធ្វើ។'));
 
+    page.append(h('h2', { class: 'res-teacher-h' }, 'សម្រាប់គ្រូ៖ តារាងពិន្ទុ និងការដាក់ពិន្ទុ'));
     units.forEach((u) => {
       const sec = h('section', { class: 'res-unit' });
       sec.append(h('h2', {}, unitHeading(u) + ' ', u.en && u.en !== u.label ? h('span', { class: 'en' }, '(' + u.en + ')') : null));
@@ -725,9 +878,9 @@
         h('div', {}, h('h3', {}, 'ដំណើរការ'), ...procs.map((g) => meter(g.key, english[g.key], g))),
         h('div', {}, h('h3', {}, 'កម្រិតប៉ាន់ស្មាន'), ...levels.map((g) => meter('កម្រិត ' + PISA.km(g.key), '', g)))),
       h('p', { class: 'res-note' },
-        'រាប់តែសំណួរដែលសៀវភៅណែនាំគ្រូបានកំណត់ដំណើរការ និងកម្រិត (ឯកតាគំរូ និងតេស្តអនុវត្ត ក–ឍ)។ ' +
+        'រាប់តែសំណួរដែលសៀវភៅណែនាំគ្រូបានកំណត់ដំណើរការ និងកម្រិត (ប្រធានបទគំរូ និងប្រធានបទគម្រោង)។ ' +
         'ការកំណត់ទាំងនេះ ជាការប៉ាន់ស្មានរបស់អ្នករៀបរៀង មិនមែនការក្រិតតាមខ្នាតផ្លូវការរបស់ PISA ទេ។ សំណួររង់ចាំគ្រូ រាប់បញ្ចូលពេលគ្រូដាក់ពិន្ទុរួច។' +
-        (untagged ? ' សំណួរ ' + PISA.km(untagged) + ' ផ្សេងទៀតក្នុងវគ្គនេះ (ឧទាហរណ៍របស់ OECD ឬភារកិច្ចពីសៀវភៅថ្នាក់ទី ៩) មិនមានការកំណត់នេះទេ។' : '')));
+        (untagged ? ' សំណួរ ' + PISA.km(untagged) + ' ផ្សេងទៀតក្នុងវគ្គនេះ (From PISA 2022 ឬលំហាត់តាមកម្រិតថ្នាក់) មិនមានការកំណត់នេះទេ។' : '')));
   }
 
   function resultRow(u, qid) {
@@ -799,13 +952,12 @@
       });
     });
     const sPct = totMax > 0 ? Math.round((totEarned / totMax) * 100) : 0;
-    const pProf = getPisaProficiency(sPct);
 
     const rows = [
       ['របាយការណ៍លទ្ធផលតេស្តគណិតវិទ្យា PISA CBA (cba.khmermath.org)'],
       ['ឈ្មោះសិស្ស', state.student.name || 'សិស្ស', 'ថ្នាក់', state.student.klass || '—'],
       ['កាលបរិច្ឆេទ', new Date(state.startedAt).toLocaleDateString('km-KH'), 'របៀបតេស្ត', state.mock ? state.mock.title : (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន')],
-      ['ពិន្ទុសរុប', totEarned + ' / ' + totMax, 'ភាគរយ', sPct + '%', 'កម្រិត PISA', pProf.title + ' (' + pProf.rank + ')'],
+      ['ពិន្ទុសរុប', totEarned + ' / ' + totMax, 'ភាគរយ', sPct + '%'],
       [''],
       ['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']
     ];

@@ -11,13 +11,12 @@
   const { h } = PISA;
 
   const COLLECTIONS = [
-    { id: 'moeys', tab: 'សំណួរគំរូ ៣៨', title: 'សំណួរគំរូ PISA ទាំង ៣៨ ប្រធានបទ', sub: 'ដកស្រង់ពីឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥ (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ)' },
-    { id: 'gold', tab: 'ឯកតាគំរូ', title: 'ឯកតាគំរូ', sub: 'ឯកតាដើមរបស់គម្រោង ដែលអ្នកនិពន្ធបានអនុម័ត សម្រាប់ថ្នាក់ទី ៧ ៨ និង ៩' },
-    { id: 'practice', tab: 'តេស្ត ក–ឍ', title: 'តេស្តអនុវត្ត ក–ឍ', sub: 'ប្រធានបទដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ — សេចក្ដីព្រាង រង់ចាំការពិនិត្យពីគ្រូ' },
-    { id: 'textbook', tab: 'ភារកិច្ចថ្នាក់ទី ៩', title: 'ភារកិច្ច PISA ពីមេរៀនថ្នាក់ទី ៩', sub: 'ពីសៀវភៅ «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំនើប» របស់លោកគ្រូ សាន សុខលី — សៀវភៅកំពុងសរសេរ (សេចក្ដីព្រាង)' },
-    { id: 'oecd', tab: 'ឧទាហរណ៍ OECD', title: 'ឧទាហរណ៍គំរូរបស់ OECD', sub: 'ឧទាហរណ៍ទាំងប្រាំពីរពីក្របខណ្ឌគណិតវិទ្យា PISA ២០២២ បកប្រែជាភាសាខ្មែរ' },
+    { id: 'gold', tab: 'ប្រធានបទគំរូ', title: 'ប្រធានបទគំរូ', sub: 'ប្រធានបទដើមរបស់គម្រោង ដែលអ្នកនិពន្ធបានអនុម័ត សម្រាប់ថ្នាក់ទី ៧ ៨ និង ៩' },
+    { id: 'textbook', tab: 'លំហាត់តាមកម្រិតថ្នាក់', title: 'លំហាត់តាមកម្រិតថ្នាក់', sub: 'លំហាត់ PISA ពីមេរៀននីមួយៗ ក្នុងសៀវភៅរបស់លោកគ្រូ សាន សុខលី តាមថ្នាក់ទី ៧ ដល់ ១២។ ឥឡូវមានតែថ្នាក់ទី ៩ ប៉ុណ្ណោះ ថ្នាក់ផ្សេងទៀតកំពុងរៀបចំ (សេចក្ដីព្រាង)។' },
+    { id: 'practice', tab: 'ប្រធានបទគម្រោង', title: 'ប្រធានបទគម្រោង', sub: 'ប្រធានបទ ក–ឍ ដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ — សេចក្ដីព្រាង រង់ចាំការពិនិត្យពីគ្រូ' },
+    { id: 'moeys', tab: 'PISA TEST (MoEYS)', title: 'PISA TEST (MoEYS)', sub: 'ប្រធានបទ ៣៨ ដកស្រង់ពីឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥ (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ)' },
+    { id: 'oecd', tab: 'From PISA 2022', title: 'From PISA 2022', sub: 'ឧទាហរណ៍ទាំងប្រាំពីរពីក្របខណ្ឌគណិតវិទ្យា PISA ២០២២ របស់ OECD បកប្រែជាភាសាខ្មែរ' },
   ];
-  const TAB_KEY = 'pisa-cba-khmer:tab';
   const colOf = (u) => u.collection || 'oecd';
   const pointsOf = (u) => Object.values(u.questions).reduce((s, q) => s + (q.max || 1), 0);
 
@@ -46,19 +45,8 @@
   const TG = 'https://t.me/pisamathAI';
   const ext = { target: '_blank', rel: 'noopener' };
 
-  // action: { label, icon, onclick } for the button at the right of the bar
-  function siteHeader(action) {
-    return h('header', { class: 'km-header' }, h('div', { class: 'km-wrap km-header-in' },
-      h('a', { class: 'km-brand', href: SITE, ...ext },
-        h('img', { src: 'assets/img/logo.svg', alt: '', width: 38, height: 38 }),
-        h('span', { class: 'km-brand-t' }, h('b', {}, 'KhmerMath'), h('small', {}, 'តេស្តលើកុំព្យូទ័រ (CBA)'))),
-      h('nav', { class: 'km-nav', 'aria-label': 'KhmerMath' },
-        h('span', { class: 'pwa-status-pill', id: 'pwa-badge' }, '📶 ប្រើពេលគ្មានអ៊ីនធឺណិតបាន'),
-        h('a', { href: SITE, ...ext }, 'ទំព័រដើម KhmerMath'),
-        h('a', { href: 'https://pisa.khmermath.org/', ...ext }, 'សៀវភៅ PISA ២០២២'),
-        h('a', { href: SITE + 'cba.html#lab', ...ext }, 'ប្រើក្នុងបន្ទប់កុំព្យូទ័រ')),
-      action ? h('button', { type: 'button', class: 'km-btn km-btn-primary km-btn-sm', onclick: action.onclick, html: ic(action.icon) + '<span>' + action.label + '</span>' }) : null));
-  }
+  // action: { label, onclick } for the button at the right of the bar (the results page)
+  function siteHeader(action) { return homeHeader(null, action); }
   PISA.siteHeader = siteHeader;
 
   // notices(box) adds the licence notices a page must show (the home page's)
@@ -92,189 +80,188 @@
   PISA.siteFooter = siteFooter;
 
   // ----------------------------------------------------------- home ---
+  // A plain page, like the front of an exercise book: the start options as a ruled list, the student's own
+  // practice kept on the computer, then the topic list. No cards, no banners.
+  const WHO_KEY = 'pisa-cba-khmer:who';
+  const MODE_WORDS = { practice: 'ហាត់រៀន', test: 'តេស្ត', mock: 'ប្រឡងកំណត់ម៉ោង' };
+  const dateKm = (t) => { const d = new Date(t); return PISA.km(d.getDate()) + '/' + PISA.km(d.getMonth() + 1) + '/' + PISA.km(d.getFullYear()); };
+  const pctOf = (got, max) => (max ? Math.round((got / max) * 100) : 0);
+
+  function homeHeader(tutorial, action) {
+    return h('header', { class: 'hm-top' }, h('div', { class: 'hm-wrap hm-top-in' },
+      h('a', { class: 'hm-brand', href: SITE, ...ext }, h('img', { src: 'assets/img/logo.svg', alt: '', width: 30, height: 30 }),
+        h('span', {}, h('b', {}, 'KhmerMath'), ' · តេស្តលើកុំព្យូទ័រ')),
+      h('nav', { class: 'hm-nav', 'aria-label': 'KhmerMath' },
+        tutorial ? h('button', { type: 'button', class: 'hm-link', onclick: tutorial }, 'មេរៀនណែនាំ') : null,
+        h('a', { href: SITE, ...ext }, 'ទំព័រដើម KhmerMath'),
+        h('a', { class: 'hm-opt', href: 'https://pisa.khmermath.org/', ...ext }, 'សៀវភៅ PISA ២០២២'),
+        h('a', { class: 'hm-opt', href: SITE + 'cba.html#lab', ...ext }, 'សម្រាប់បន្ទប់កុំព្យូទ័រ')),
+      action ? h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: action.onclick }, action.label) : null));
+  }
+
   function home() {
     const app = document.getElementById('app');
-    app.className = 'app-home km';
+    app.className = 'app-home km hm';
     app.innerHTML = '';
-    document.title = 'តេស្តគណិតវិទ្យាលើកុំព្យូទ័រ (CBA) — KhmerMath';
+    document.title = 'ហាត់គណិតវិទ្យាតាមបែប PISA — KhmerMath';
 
-    const name = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. សុខ ដារ៉ា' });
-    const klass = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. ៩ក' });
+    let who = {};
+    try { who = JSON.parse(localStorage.getItem(WHO_KEY)) || {}; } catch (e) { who = {}; }
+    const name = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. សុខ ដារ៉ា', value: who.name || '' });
+    const klass = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. ៩ក', value: who.klass || '' });
+    const remember = () => { try { localStorage.setItem(WHO_KEY, JSON.stringify({ name: name.value.trim(), klass: klass.value.trim() })); } catch (e) { /* ignore */ } };
+    name.addEventListener('change', remember); klass.addEventListener('change', remember);
+    const start = (opts) => { remember(); PISA.start(Object.assign({ name: name.value.trim(), klass: klass.value.trim() }, opts)); };
+
     const gold = PISA.units.filter((u) => colOf(u) === 'gold');
     const goldQs = gold.reduce((n, u) => n + PISA.questionIds(u).length, 0);
     const all = PISA.units.filter((u) => u.collection !== 'tutorial');
     const allQs = all.reduce((n, u) => n + PISA.questionIds(u).length, 0);
-    const quick = () => PISA.start({ name: name.value.trim(), klass: klass.value.trim(), mode: 'test', unitIds: gold.map((u) => u.id) });
     const hasTutorial = !!PISA.unit('tut');
+    const goldIds = gold.map((u) => u.id);
 
-    app.append(siteHeader(hasTutorial ? { label: 'មេរៀនណែនាំ', icon: 'target', onclick: startTutorial } : null));
-    const main = h('main', { id: 'main' });
+    app.append(homeHeader(hasTutorial ? startTutorial : null));
+    const main = h('main', { id: 'main', class: 'hm-main' });
+    const wrap = h('div', { class: 'hm-wrap' });
+    main.append(wrap);
 
-    // --- hero: what this is, and the two quickest ways in
-    main.append(h('section', { class: 'km-hero' }, h('div', { class: 'km-wrap km-hero-grid' },
-      h('div', { class: 'km-hero-text' },
-        h('span', { class: 'km-eyebrow' }, h('span', { class: 'dot' }), 'ជាភាសាខ្មែរ តាមរបៀបអេក្រង់ PISA'),
-        h('h1', {}, 'តេស្តគណិតវិទ្យា ', h('span', { class: 'hl' }, 'លើកុំព្យូទ័រ')),
-        h('p', { class: 'km-lead' }, 'សិស្សអាចហាត់ធ្វើតេស្តលើអេក្រង់ ដែលរៀបចំតាមរបៀបអេក្រង់ PISA ជាភាសាខ្មែរ មុនពេលជួបតេស្តពិត។ ' +
-          'សិស្សដែលធ្លាប់ប្រើអេក្រង់តេស្ត អាចផ្ដោតលើគណិតវិទ្យា ជំនួសឱ្យការរករបៀបចុចប៊ូតុង។'),
-        h('div', { class: 'km-actions' },
-          gold.length ? h('button', { type: 'button', class: 'km-btn km-btn-primary', onclick: quick, html: ic('monitor') + '<span>ធ្វើតេស្តគំរូភ្លាម</span>' }) : null,
-          hasTutorial ? h('button', { type: 'button', class: 'km-btn km-btn-ghost', onclick: startTutorial, html: ic('target') + '<span>មេរៀនណែនាំ</span>' }) : null),
-        gold.length ? h('p', { class: 'km-hint' }, 'តេស្តគំរូ៖ ឯកតាគំរូ ' + PISA.km(gold.length) + ' · ' + PISA.km(goldQs) + ' សំណួរ · របៀបតេស្ត — ឬ ',
-          h('a', { href: '#start' }, 'ជ្រើសប្រធានបទខ្លួនឯង')) : null,
-        h('ul', { class: 'km-meta', html: '<li>' + ic('free') + 'ឥតគិតថ្លៃ</li><li>' + ic('globe') + 'ជាភាសាខ្មែរ</li><li>' + ic('phone') + 'ប្រើលើទូរស័ព្ទ និងកុំព្យូទ័រ</li>' })),
-      h('div', { class: 'km-visual' },
-        h('div', { class: 'km-browser' },
-          h('div', { class: 'km-browser-bar' }, h('i'), h('i'), h('i'), h('span', {}, 'cba.khmermath.org')),
-          h('img', { src: 'assets/img/shot-unit.webp', width: 1600, height: 950, loading: 'lazy', alt: 'អេក្រង់តេស្ត៖ សំណួរនៅខាងឆ្វេង ស្ថានភាព និងរូបភាពនៅខាងស្ដាំ' })),
-        h('div', { class: 'km-float km-float-b', html: '<span class="fi">' + ic('layers') + '</span><span><b>' + PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ</b><small>តាមរបៀបអេក្រង់ PISA</small></span>' }),
-        h('div', { class: 'km-float km-float-a', html: '<span class="fi">' + ic('calc') + '</span><span><b>ម៉ាស៊ីនគិតលេខ</b><small>និងការណែនាំ នៅលើអេក្រង់</small></span>' })))));
+    // --- what this is
+    wrap.append(h('section', { class: 'hm-intro' },
+      h('h1', {}, 'ហាត់គណិតវិទ្យាតាមបែប PISA'),
+      h('p', { class: 'hm-lead' }, 'សំណួរតាមបែប PISA ជាភាសាខ្មែរ លើអេក្រង់ដែលរៀបចំដូចតេស្តពិត។ ហាត់ម្ដងមួយសំណួរ ហើយពិនិត្យចម្លើយភ្លាមៗ ឬធ្វើជាតេស្តដូចពិត។'),
+      h('p', { class: 'hm-facts' }, PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ · ឥតគិតថ្លៃ · ប្រើលើទូរស័ព្ទបាន · ប្រើពេលគ្មានអ៊ីនធឺណិតបាន')));
 
-    
-    // --- Mock Exam Section ---
-    const startMock = (qCount, mins) => {
-      const sName = (document.getElementById('mock-name') ? document.getElementById('mock-name').value.trim() : '') || name.value.trim() || 'សិស្សានុសិស្ស';
-      const sKlass = (document.getElementById('mock-class') ? document.getElementById('mock-class').value.trim() : '') || klass.value.trim() || '';
-      const uids = PISA.sampleMockUnits(qCount);
-      PISA.start({
-        name: sName,
-        klass: sKlass,
-        mode: 'test',
-        unitIds: uids,
-        mock: {
-          durationSeconds: mins * 60,
-          title: 'តេស្តគំរូ PISA (' + PISA.km(qCount) + ' សំណួរ · ' + PISA.km(mins) + ' នាទី)',
-        }
-      });
-    };
+    // --- who (optional)
+    wrap.append(h('div', { class: 'hm-who' },
+      h('label', {}, h('span', {}, 'ឈ្មោះ'), name), h('label', {}, h('span', {}, 'ថ្នាក់'), klass),
+      h('p', {}, 'មិនបំពេញក៏បាន។ ឈ្មោះនឹងចេញលើលទ្ធផល ហើយនឹងមិនត្រូវបានផ្ញើទៅកន្លែងណាទេ។')));
 
-    const mockSec = h('section', { class: 'km-section km-mock-section' }, h('div', { class: 'km-wrap' },
-      h('div', { class: 'mock-hero-card' },
-        h('div', { class: 'mock-badge' }, '⏱ មុខងារថ្មី · របៀបប្រឡងកំណត់ម៉ោង PISA'),
-        h('h2', {}, 'ប្រឡងសាកល្បងកំណត់ម៉ោង (Timed Mock Exam)'),
-        h('p', { class: 'mock-desc' },
-          'ប្រព័ន្ធនឹងជ្រើសរើសប្រធានបទដោយចៃដន្យពីចំណោម ៣៨ ប្រធានបទ PISA របស់ក្រសួងអប់រំ ដោយមាននាឡិការាប់ថយក្រោយជាក់ស្ដែង ' +
-          'និងចេញវិញ្ញាបនបត្រសមត្ថភាព PISA ផ្លូវការ (រួមទាំងការកំណត់កម្រិត ១ ដល់ ៦) នៅពេលបញ្ចប់។'
-        ),
-        h('div', { class: 'mock-inputs' },
-          h('input', { type: 'text', id: 'mock-name', placeholder: 'ឈ្មោះសិស្ស (ឧ. សុខ ដារ៉ា)', value: name.value }),
-          h('input', { type: 'text', id: 'mock-class', placeholder: 'ថ្នាក់ (ឧ. ៩ក)', value: klass.value })
-        ),
-        h('div', { class: 'mock-btn-grid' },
-          h('button', {
-            type: 'button', class: 'mock-btn',
-            onclick: () => startMock(10, 30),
-            html: '⚡ <b>តេស្តរហ័ស (១០ សំណួរ)</b><small>រយៈពេល ៣០ នាទី</small>'
-          }),
-          h('button', {
-            type: 'button', class: 'mock-btn mock-btn-std',
-            onclick: () => startMock(15, 45),
-            html: '🎯 <b>តេស្តស្តង់ដារ (១៥ សំណួរ)</b><small>រយៈពេល ៤៥ នាទី</small>'
-          }),
-          h('button', {
-            type: 'button', class: 'mock-btn mock-btn-full',
-            onclick: () => startMock(20, 60),
-            html: '🏆 <b>តេស្តពេញលេញ (២០ សំណួរ)</b><small>រយៈពេល ៦០ នាទី</small>'
-          })
-        )
-      )
-    ));
-    main.append(mockSec);
-
-    // --- setting up a session: who, how, what
-    const setup = h('section', { class: 'km-section km-alt', id: 'start' });
-    const wrap = h('div', { class: 'km-wrap' });
-    setup.append(wrap);
-    wrap.append(h('div', { class: 'km-head' },
-      h('span', { class: 'km-eyebrow' }, h('span', { class: 'dot' }), 'ចាប់ផ្ដើម'),
-      h('h2', {}, 'រៀបចំតេស្តក្នុងបីជំហាន'),
-      h('p', {}, 'បំពេញឈ្មោះ ជ្រើសរបៀប និងប្រធានបទ រួចចុច «ចាប់ផ្ដើម»។')));
-
+    // --- an unfinished or finished session on this computer
     const saved = PISA.saved();
     if (saved && saved.unitIds && saved.unitIds.every((id) => PISA.unit(id))) {
-      const who = saved.student && saved.student.name ? saved.student.name : 'មិនមានឈ្មោះ';
-      const box = h('div', { class: 'km-resume' });
+      const sw = saved.student && saved.student.name ? saved.student.name : 'មិនមានឈ្មោះ';
+      const box = h('div', { class: 'hm-resume' });
       if (saved.finishedAt) {
-        box.append(h('p', {}, 'វគ្គចុងក្រោយរបស់ ' + who + ' បានបញ្ចប់រួចហើយ។'),
-          h('div', { class: 'km-resume-btns' },
-            h('button', { type: 'button', class: 'km-btn km-btn-primary km-btn-sm', onclick: () => PISA.resume(saved) }, 'មើលលទ្ធផល'),
-            h('button', { type: 'button', class: 'km-btn km-btn-quiet km-btn-sm', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល')));
+        box.append(h('p', {}, 'វគ្គចុងក្រោយរបស់ ' + sw + ' បានបញ្ចប់រួចហើយ។'),
+          h('button', { type: 'button', class: 'hm-btn', onclick: () => PISA.resume(saved) }, 'មើលលទ្ធផល'),
+          h('button', { type: 'button', class: 'hm-link', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល'));
       } else {
         const u = PISA.unit(saved.unitIds[saved.pos.u]);
-        box.append(h('p', {}, 'មានវគ្គមួយមិនទាន់បញ្ចប់ (' + who + ' — ' + u.title + ' អេក្រង់ទី ' + PISA.km(saved.pos.s + 1) + ')។'),
-          h('div', { class: 'km-resume-btns' },
-            h('button', { type: 'button', class: 'km-btn km-btn-primary km-btn-sm', onclick: () => PISA.resume(saved) }, 'បន្តវគ្គនេះ'),
-            h('button', { type: 'button', class: 'km-btn km-btn-quiet km-btn-sm', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល ហើយចាប់ផ្ដើមថ្មី')));
+        box.append(h('p', {}, 'មានវគ្គមួយមិនទាន់បញ្ចប់៖ ' + sw + ' — ' + u.title + ' អេក្រង់ទី ' + PISA.km(saved.pos.s + 1) + '។'),
+          h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: () => PISA.resume(saved) }, 'បន្តវគ្គនេះ'),
+          h('button', { type: 'button', class: 'hm-link', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល ហើយចាប់ផ្ដើមថ្មី'));
       }
       wrap.append(box);
     }
 
-    const step = (n, title, ...body) => h('div', { class: 'km-step' },
-      h('div', { class: 'km-step-h' }, h('span', { class: 'num' }, PISA.km(n)), h('h3', {}, title)), ...body);
-
-    // mode
-    let mode = 'test';
-    const modeCards = [];
-    const modeCard = (v, title, text) => {
-      const inp = h('input', { type: 'radio', name: 'mode', value: v });
-      inp.checked = v === mode;
-      const card = h('label', { class: 'mode' + (v === mode ? ' on' : '') }, inp, h('span', {}, h('b', {}, title), h('br'), h('span', { class: 'sub' }, text)));
-      inp.addEventListener('change', () => { mode = v; modeCards.forEach((c) => c.classList.toggle('on', c === card)); });
-      modeCards.push(card);
-      return card;
+    // --- two columns: start now / my practice
+    const startMock = (qCount, mins) => {
+      start({ mode: 'test', unitIds: PISA.sampleMockUnits(qCount), mock: { durationSeconds: mins * 60,
+        title: 'ប្រឡងកំណត់ម៉ោង (' + PISA.km(qCount) + ' សំណួរ · ' + PISA.km(mins) + ' នាទី)' } });
     };
+    const mockPick = h('select', { 'aria-label': 'ប្រឡងកំណត់ម៉ោង' },
+      h('option', { value: '10,30' }, '១០ សំណួរ · ៣០ នាទី'), h('option', { value: '15,45' }, '១៥ សំណួរ · ៤៥ នាទី'), h('option', { value: '20,60' }, '២០ សំណួរ · ៦០ នាទី'));
+    const row = (title, text, ...actions) => h('li', { class: 'hm-row' }, h('div', { class: 'hm-row-t' }, h('b', {}, title), h('span', {}, text)), h('div', { class: 'hm-row-a' }, ...actions));
+    const quick = h('ol', { class: 'hm-rows' });
+    if (gold.length) {
+      quick.append(row('ហាត់ប្រធានបទគំរូ ថ្នាក់ទី ៧ ៨ ៩', PISA.km(gold.length) + ' ប្រធានបទ · ' + PISA.km(goldQs) + ' សំណួរ · មានចម្លើយភ្លាមៗ',
+        h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: () => start({ mode: 'practice', unitIds: goldIds }) }, 'ចាប់ផ្ដើមហាត់')));
+      quick.append(row('ធ្វើតេស្តគំរូ', 'ប្រធានបទដដែល តែទៅមុខតែមួយផ្លូវ ដូចតេស្ត PISA ពិត',
+        h('button', { type: 'button', class: 'hm-btn', onclick: () => start({ mode: 'test', unitIds: goldIds }) }, 'ធ្វើតេស្ត')));
+    }
+    quick.append(row('ប្រឡងកំណត់ម៉ោង', 'សំណួរចៃដន្យពី PISA TEST (MoEYS) ប្រធានបទ ៣៨ មាននាឡិកាកំណត់ម៉ោង', mockPick,
+      h('button', { type: 'button', class: 'hm-btn', onclick: () => { const [q, m] = mockPick.value.split(',').map(Number); startMock(q, m); } }, 'ចាប់ផ្ដើម')));
+    if (hasTutorial) quick.append(row('មេរៀនណែនាំ', 'រៀនប្រើអេក្រង់ ប៊ូតុង និងម៉ាស៊ីនគិតលេខ មុនធ្វើតេស្ត (ប្រហែល ៥ នាទី)',
+      h('button', { type: 'button', class: 'hm-btn', onclick: startTutorial }, 'មើល')));
 
-    // --- units: one tab per collection; the choice is kept across tabs
-    const chosen = new Set(gold.map((u) => u.id));
-    if (!chosen.size) all.forEach((u) => chosen.add(u.id));
+    const mine = h('section', { class: 'hm-mine' }, h('h2', {}, 'ការហាត់របស់ខ្ញុំ'));
+    const hist = PISA.history();
+    if (!hist.length) {
+      mine.append(h('p', { class: 'hm-empty' }, 'មិនទាន់មានការហាត់ដែលបានបញ្ចប់ទេ។ ពេលបញ្ចប់ អ្វីដែលបានហាត់នឹងបង្ហាញនៅទីនេះ។ ទិន្នន័យនេះរក្សាទុកតែក្នុងកុំព្យូទ័រ ឬទូរស័ព្ទនេះប៉ុណ្ណោះ។'));
+    } else {
+      const list = h('ul', { class: 'hm-hist' });
+      hist.slice(-5).reverse().forEach((x) => {
+        const first = PISA.unit(x.units[0] && x.units[0].id);
+        const more = x.units.length > 1 ? ' និង ' + PISA.km(x.units.length - 1) + ' ផ្សេងទៀត' : '';
+        list.append(h('li', {}, h('span', { class: 'hm-hd' }, dateKm(x.t)), h('span', { class: 'hm-hm' }, MODE_WORDS[x.mode] || x.mode),
+          h('span', { class: 'hm-ht' }, (first ? first.title : '—') + more),
+          h('span', { class: 'hm-hs' }, x.max ? PISA.km(x.got) + '/' + PISA.km(x.max) : '—'),
+          h('span', { class: 'hm-bar', role: 'img', 'aria-label': PISA.km(pctOf(x.got, x.max)) + '%' }, h('i', { style: { width: pctOf(x.got, x.max) + '%' } }))));
+      });
+      mine.append(list);
+      // topics to do again: the lowest shares over all the sessions
+      const sum = new Map();
+      hist.forEach((x) => x.units.forEach((u) => { const g = sum.get(u.id) || { got: 0, max: 0 }; g.got += u.got; g.max += u.max; sum.set(u.id, g); }));
+      const weak = [...sum.entries()].filter(([id, g]) => g.max > 0 && PISA.unit(id) && pctOf(g.got, g.max) < 60)
+        .sort((a, b) => pctOf(a[1].got, a[1].max) - pctOf(b[1].got, b[1].max)).slice(0, 4);
+      if (weak.length) {
+        mine.append(h('h3', {}, 'ប្រធានបទដែលគួរហាត់ម្ដងទៀត'));
+        const wl = h('ul', { class: 'hm-weak' });
+        weak.forEach(([id, g]) => wl.append(h('li', {}, h('span', {}, PISA.unit(id).title), h('em', {}, PISA.km(pctOf(g.got, g.max)) + '%'),
+          h('button', { type: 'button', class: 'hm-link', onclick: () => start({ mode: 'practice', unitIds: [id] }) }, 'ហាត់'))));
+        mine.append(wl);
+      }
+      mine.append(h('button', { type: 'button', class: 'hm-link hm-clear', onclick: () => PISA.dialog(['លុបប្រវត្តិការហាត់ពីកុំព្យូទ័រនេះ?'],
+        [{ label: 'បោះបង់' }, { label: 'លុប', primary: true, action: () => { PISA.clearHistory(); home(); } }]) }, 'លុបប្រវត្តិ'));
+    }
+    wrap.append(h('div', { class: 'hm-cols' }, h('section', { class: 'hm-start' }, h('h2', {}, 'ចាប់ផ្ដើមភ្លាម'), quick), mine));
+
+    // --- choose the topics: one tab per source; the choice is kept across tabs
+    const chosen = new Set();           // nothing is ticked until the student chooses
     const cols = COLLECTIONS.filter((c) => PISA.units.some((u) => colOf(u) === c.id));
-    let tab = cols[0].id;
-    try { const t = localStorage.getItem(TAB_KEY); if (cols.some((c) => c.id === t)) tab = t; } catch (e) { /* ignore */ }
+    let tab = cols[0].id, find = '';
 
-    const tabBar = h('div', { class: 'ctabs', role: 'tablist', 'aria-label': 'ប្រភេទប្រធានបទ' });
-    const panel = h('div', { class: 'ctab-panel', role: 'tabpanel', id: 'ctab-panel' });
-    const summary = h('div', { class: 'sb-sum', 'aria-live': 'polite' });
-    const err = h('span', { class: 'err', role: 'alert' });
+    const tabBar = h('div', { class: 'hm-tabs', role: 'tablist', 'aria-label': 'ប្រភេទប្រធានបទ' });
+    const panel = h('div', { class: 'hm-panel', role: 'tabpanel', id: 'ctab-panel' });
+    const summary = h('span', { class: 'hm-sum', 'aria-live': 'polite' });
+    const err = h('span', { class: 'hm-err', role: 'alert' });
+    const finder = h('input', { type: 'search', placeholder: 'ស្វែងរកប្រធានបទ', 'aria-label': 'ស្វែងរកប្រធានបទ' });
+    finder.addEventListener('input', () => { find = finder.value.trim().toLowerCase(); drawPanel(); });
 
-    function unitCard(u, compact) {
+    function unitRow(u) {
       const inp = h('input', { type: 'checkbox' });
       inp.checked = chosen.has(u.id);
       const qs = Object.values(u.questions);
-      const card = h('label', { class: 'ucard' + (inp.checked ? ' on' : '') }, inp, h('div', {},
-        h('h3', {}, (u.label || PISA.km(u.no)) + ' · ' + u.title),
-        compact ? null : (u.grade ? h('div', { class: 'en' }, 'ថ្នាក់ទី ' + PISA.km(u.grade) + (u.en ? ' · ' + u.en : '')) : (u.en ? h('div', { class: 'en' }, u.en) : null)),
-        !compact && u.blurb ? h('p', {}, u.blurb) : null,
-        h('div', { class: 'meta' }, PISA.km(qs.length) + ' សំណួរ · ' + PISA.km(pointsOf(u)) + ' ពិន្ទុ')));
+      const li = h('label', { class: 'hm-unit' + (inp.checked ? ' on' : '') }, inp,
+        h('span', { class: 'hm-no' }, u.label || PISA.km(u.no)),
+        h('span', { class: 'hm-ut' }, h('b', {}, u.title), u.en ? h('small', {}, u.en) : null),
+        h('span', { class: 'hm-un' }, (u.grade ? 'ថ្នាក់ ' + PISA.km(u.grade) + ' · ' : '') + PISA.km(qs.length) + ' សំណួរ'));
       inp.addEventListener('change', () => {
         if (inp.checked) chosen.add(u.id); else chosen.delete(u.id);
-        card.classList.toggle('on', inp.checked);
+        li.classList.toggle('on', inp.checked);
         refresh();
       });
-      return card;
+      return li;
     }
-    // «ជ្រើសទាំងអស់ / មិនជ្រើស» for a list of units
     function allOrNone(list) {
       const set = (on) => { list.forEach((u) => (on ? chosen.add(u.id) : chosen.delete(u.id))); drawPanel(); refresh(); };
-      return h('span', { class: 'links' },
-        h('button', { type: 'button', class: 'link', onclick: () => set(true) }, 'ជ្រើសទាំងអស់'),
-        h('button', { type: 'button', class: 'link', onclick: () => set(false) }, 'មិនជ្រើស'));
+      return h('span', { class: 'hm-allnone' },
+        h('button', { type: 'button', class: 'hm-link', onclick: () => set(true) }, 'ជ្រើសទាំងអស់'),
+        h('button', { type: 'button', class: 'hm-link', onclick: () => set(false) }, 'មិនជ្រើស'));
     }
+    const matches = (u) => !find || (u.title + ' ' + (u.en || '') + ' ' + (u.lessonTitle || '') + ' ' + (u.blurb || '')).toLowerCase().includes(find);
     function drawPanel() {
       const col = cols.find((c) => c.id === tab);
       let list = PISA.units.filter((u) => colOf(u) === col.id);
       if (col.id === 'moeys') list.sort((a, b) => (Number(a.no) || 0) - (Number(b.no) || 0));
+      const shown = list.filter(matches);
       panel.innerHTML = '';
-      panel.append(h('div', { class: 'col-head' },
-        h('div', {}, h('h4', {}, col.title), h('p', { class: 'col-sub' }, col.sub)), allOrNone(list)));
+      panel.append(h('div', { class: 'hm-col-head' }, h('div', {}, h('h3', {}, col.title), h('p', {}, col.sub)), allOrNone(shown)));
+      if (!shown.length) { panel.append(h('p', { class: 'hm-empty' }, 'រកមិនឃើញប្រធានបទនេះក្នុងប្រភេទនេះទេ។')); return; }
       if (col.id === 'textbook') {
-        // one group per lesson, as in the textbook
-        const lessons = [];
-        list.forEach((u) => { const g = lessons.find((l) => l.n === u.lesson); if (g) g.units.push(u); else lessons.push({ n: u.lesson, title: u.lessonTitle, units: [u] }); });
-        lessons.forEach((l) => panel.append(h('div', { class: 'lesson-grp' },
-          h('div', { class: 'lesson-head' }, h('h5', {}, 'មេរៀនទី ' + PISA.km(l.n) + ' · ' + l.title), allOrNone(l.units)),
-          h('div', { class: 'units compact' }, ...l.units.map((u) => unitCard(u, true))))));
+        // one block per grade (7 to 12 as they are written), and in it one group per lesson, as in the textbook
+        const grades = [...new Set(shown.map((u) => u.grade || 0))].sort((x, y) => x - y);
+        grades.forEach((g) => {
+          const inGrade = shown.filter((u) => (u.grade || 0) === g), lessons = [];
+          inGrade.forEach((u) => { const l = lessons.find((x) => x.n === u.lesson); if (l) l.units.push(u); else lessons.push({ n: u.lesson, title: u.lessonTitle, units: [u] }); });
+          panel.append(h('div', { class: 'hm-grade' },
+            h('h4', {}, g ? 'ថ្នាក់ទី ' + PISA.km(g) : 'ថ្នាក់ផ្សេងទៀត'), allOrNone(inGrade)));
+          lessons.forEach((l) => panel.append(h('div', { class: 'hm-lesson' },
+            h('div', { class: 'hm-lesson-h' }, h('h4', {}, 'មេរៀនទី ' + PISA.km(l.n) + ' · ' + l.title), allOrNone(l.units)),
+            h('div', { class: 'hm-units' }, ...l.units.map(unitRow)))));
+        });
       } else {
-        panel.append(h('div', { class: 'units' }, ...list.map((u) => unitCard(u, false))));
+        panel.append(h('div', { class: 'hm-units' }, ...shown.map(unitRow)));
       }
     }
     function drawTabs() {
@@ -282,8 +269,8 @@
       cols.forEach((c, i) => {
         const list = PISA.units.filter((u) => colOf(u) === c.id);
         const picked = list.filter((u) => chosen.has(u.id)).length;
-        const b = h('button', {
-          type: 'button', role: 'tab', class: 'ctab' + (c.id === tab ? ' on' : ''), id: 'ctab-' + c.id,
+        tabBar.append(h('button', {
+          type: 'button', role: 'tab', class: 'hm-tab' + (c.id === tab ? ' on' : ''), id: 'ctab-' + c.id,
           'aria-selected': c.id === tab ? 'true' : 'false', 'aria-controls': 'ctab-panel', tabindex: c.id === tab ? '0' : '-1',
           onclick: () => select(c.id),
           onkeydown: (e) => {
@@ -291,89 +278,62 @@
             if (!d) return;
             e.preventDefault();
             select(cols[(i + d + cols.length) % cols.length].id);
-            tabBar.querySelector('.ctab.on').focus();
+            tabBar.querySelector('.hm-tab.on').focus();
           },
-        }, h('span', {}, c.tab), h('span', { class: 'ctab-n' + (picked ? ' picked' : ''), title: 'បានជ្រើស ' + PISA.km(picked) + ' ក្នុងចំណោម ' + PISA.km(list.length) },
-          picked ? '✓ ' + PISA.km(picked) + '/' + PISA.km(list.length) : PISA.km(list.length)));
-        tabBar.append(b);
+        }, c.tab, h('small', {}, picked ? PISA.km(picked) + '/' + PISA.km(list.length) : PISA.km(list.length))));
       });
       panel.setAttribute('aria-labelledby', 'ctab-' + tab);
     }
     function select(id) {
       tab = id;
-      try { localStorage.setItem(TAB_KEY, id); } catch (e) { /* ignore */ }
-      drawTabs();
-      drawPanel();
+      drawTabs(); drawPanel();
     }
     function refresh() {
       const picked = PISA.units.filter((u) => chosen.has(u.id));
       const nq = picked.reduce((n, u) => n + PISA.questionIds(u).length, 0);
-      const pts = picked.reduce((n, u) => n + pointsOf(u), 0);
-      summary.innerHTML = '';
-      summary.append(picked.length
-        ? h('span', {}, h('b', {}, 'បានជ្រើស ' + PISA.km(picked.length) + ' ប្រធានបទ'), ' · ' + PISA.km(nq) + ' សំណួរ · ' + PISA.km(pts) + ' ពិន្ទុ')
-        : h('span', { class: 'sb-none' }, 'មិនទាន់ជ្រើសប្រធានបទ'));
+      summary.textContent = picked.length ? 'បានជ្រើស ' + PISA.km(picked.length) + ' ប្រធានបទ · ' + PISA.km(nq) + ' សំណួរ' : 'មិនទាន់ជ្រើសប្រធានបទ';
       if (picked.length) err.textContent = '';
       drawTabs();
     }
-
-    const startBar = h('div', { class: 'start-bar' }, summary, err,
-      h('button', { type: 'button', class: 'link', onclick: () => { chosen.clear(); drawPanel(); refresh(); } }, 'សម្អាត'),
-      h('button', {
-        type: 'button', class: 'km-btn km-btn-primary',
-        onclick: () => {
-          const ids = PISA.units.map((u) => u.id).filter((id) => chosen.has(id));
-          if (!ids.length) { err.textContent = 'សូមជ្រើសរើសប្រធានបទយ៉ាងហោចណាស់មួយ។'; return; }
-          PISA.start({ name: name.value.trim(), klass: klass.value.trim(), mode, unitIds: ids });
-        },
-        html: '<span>ចាប់ផ្ដើម</span>' + ic('arrow'),
-      }));
-    wrap.append(h('div', { class: 'km-setup' },
-      step(1, 'អ្នកធ្វើតេស្ត', h('div', { class: 'field-row' },
-        h('label', { class: 'field' }, h('span', {}, 'ឈ្មោះសិស្ស'), name),
-        h('label', { class: 'field' }, h('span', {}, 'ថ្នាក់'), klass))),
-      step(2, 'របៀប', h('div', { class: 'modes' },
-        modeCard('test', 'របៀបតេស្ត', 'ទៅមុខតែមួយផ្លូវ ដូចតេស្ត PISA ពិត។ ចុចព្រួញ «បន្ទាប់» ហើយ មិនអាចត្រឡប់មកកែចម្លើយវិញបានទេ។'),
-        modeCard('practice', 'របៀបហាត់រៀន', 'អាចចុចព្រួញ «ថយក្រោយ» ដើម្បីមើល ឬកែចម្លើយវិញ។ សមស្របសម្រាប់ការបង្រៀននៅក្នុងថ្នាក់។'))),
-      // the start bar floats only while the topics are on screen
-      h('div', { class: 'km-zone' },
-        h('div', { class: 'km-step' },
-          h('div', { class: 'km-step-h' }, h('span', { class: 'num' }, PISA.km(3)), h('h3', {}, 'ប្រធានបទ')), tabBar, panel),
-        startBar)));
+    const go = (mode) => () => {
+      const ids = PISA.units.map((u) => u.id).filter((id) => chosen.has(id));
+      if (!ids.length) { err.textContent = 'សូមជ្រើសរើសប្រធានបទយ៉ាងហោចណាស់មួយ។'; return; }
+      start({ mode, unitIds: ids });
+    };
+    const bar = h('div', { class: 'hm-bar-start' }, summary, err,
+      h('button', { type: 'button', class: 'hm-link', onclick: () => { chosen.clear(); drawPanel(); refresh(); } }, 'សម្អាត'),
+      h('button', { type: 'button', class: 'hm-btn', onclick: go('test') }, 'ធ្វើជាតេស្ត'),
+      h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: go('practice') }, 'ហាត់រៀន'));
+    wrap.append(h('section', { class: 'hm-topics', id: 'start' },
+      h('div', { class: 'hm-topics-h' }, h('h2', {}, 'ជ្រើសប្រធានបទខ្លួនឯង'), finder),
+      h('p', { class: 'hm-modes' }, h('b', {}, 'ហាត់រៀន៖'), ' ពិនិត្យចម្លើយបានភ្លាមៗ ព្យាយាមម្ដងទៀត និងចុចថយក្រោយបាន។ ', h('b', {}, 'ធ្វើជាតេស្ត៖'), ' ទៅមុខតែមួយផ្លូវ ដូចតេស្ត PISA ពិត។'),
+      h('div', { class: 'hm-zone' }, tabBar, panel, bar)));
     drawPanel();
     refresh();
-    main.append(setup);
 
     // --- for teachers
-    const feature = (icon, title, text, link) => h('div', { class: 'km-card' },
-      h('span', { class: 'ci', html: ic(icon) }), h('h3', {}, title), h('p', {}, text),
-      link ? h('a', { class: 'km-go', href: link[1], ...ext, html: link[0] + ' ' + ic('arrow') }) : null);
-    main.append(h('section', { class: 'km-section' }, h('div', { class: 'km-wrap' },
-      h('div', { class: 'km-head' },
-        h('span', { class: 'km-eyebrow' }, h('span', { class: 'dot' }), 'សម្រាប់គ្រូ'),
-        h('h2', {}, 'ពិនិត្យលទ្ធផល និងប្រើក្នុងសាលា')),
-      h('div', { class: 'km-cards' },
-        feature('check', 'ពិន្ទុ និងចម្លើយគំរូ', 'ពិន្ទុនៅចុងតេស្ត គ្រូពិនិត្យ និងកែពិន្ទុបាន។ ទាញយកលទ្ធផលជាឯកសារ CSV សម្រាប់ Excel។'),
-        feature('chart', 'លទ្ធផលតាមដំណើរការ', 'ពិន្ទុតាមដំណើរការគណិតវិទ្យា និងកម្រិតប៉ាន់ស្មាន សម្រាប់ឯកតាគំរូ និងតេស្តអនុវត្ត ក–ឍ។'),
-        feature('download', 'ប្រើក្នុងសាលា ដោយគ្មានអ៊ីនធឺណិត', 'តេស្តនេះមិនត្រូវការអ៊ីនធឺណិតទេ បន្ទាប់ពីទាញយករួច។ លទ្ធផលរក្សាទុកតែនៅលើកុំព្យូទ័រនោះប៉ុណ្ណោះ។',
-          ['របៀបទាញយក', SITE + 'cba.html#lab'])))));
+    wrap.append(h('section', { class: 'hm-teach' }, h('h2', {}, 'សម្រាប់គ្រូ'),
+      h('p', {}, h('b', {}, 'ពិន្ទុ។ '), 'សំណួរបិទត្រូវបានដាក់ពិន្ទុដោយស្វ័យប្រវត្តិ។ សំណួរសរសេរចម្លើយវែង គ្រូអាន ដាក់ពិន្ទុ និងកែពិន្ទុបាននៅទំព័រលទ្ធផល ហើយទាញយកជា CSV សម្រាប់ Excel។'),
+      h('p', {}, h('b', {}, 'តាមដំណើរការ។ '), 'ពិន្ទុតាមដំណើរការគណិតវិទ្យា និងកម្រិតប៉ាន់ស្មាន សម្រាប់ប្រធានបទគំរូ និងប្រធានបទគម្រោង។'),
+      h('p', {}, h('b', {}, 'ក្នុងសាលា។ '), 'ដំណើរការបានដោយគ្មានអ៊ីនធឺណិត បន្ទាប់ពីបើកម្ដងរួច។ លទ្ធផលរក្សាទុកតែលើកុំព្យូទ័រនោះ។ ',
+        h('a', { href: SITE + 'cba.html#lab', ...ext }, 'របៀបប្រើក្នុងបន្ទប់កុំព្យូទ័រ'))));
 
     app.append(main, siteFooter((box) => {
       const has = (c) => PISA.units.some((u) => (u.collection || 'oecd') === c);
       if (has('moeys')) {
         box.append(h('p', { class: 'notice', html:
-          '<b>សំណួរគំរូ PISA ទាំង ៣៨ ប្រធានបទ៖</b> ដកស្រង់ និងរៀបចំឡើងវិញតាមប្រព័ន្ធកុំព្យូទ័រ CBA ពី «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ) ឆ្នាំ ២០២៥។' }));
+          '<b>PISA TEST (MoEYS) ប្រធានបទ ៣៨៖</b> ដកស្រង់ និងរៀបចំឡើងវិញតាមប្រព័ន្ធកុំព្យូទ័រ CBA ពី «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ) ឆ្នាំ ២០២៥។' }));
       }
       if (has('gold') || has('practice')) {
         box.append(h('p', { class: 'notice', html:
-          '<b>ឯកតាគំរូ និងតេស្តអនុវត្ត៖</b> សំណួរដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២» (សាន សុខលី)។ ' +
+          '<b>ប្រធានបទគំរូ និងប្រធានបទគម្រោង៖</b> សំណួរដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២» (សាន សុខលី)។ ' +
           'សំណួរទាំងនេះរៀបចំតាមបែប PISA តែមិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ ហើយកម្រិតលំបាកជាការប៉ាន់ស្មានរបស់អ្នករៀបរៀង មិនមែនការក្រិតតាមខ្នាតផ្លូវការឡើយ។' }));
       }
       if (has('oecd')) {
         // Attribution, change notice, licence and translation disclaimer as
         // CC BY-NC-SA 3.0 IGO and the OECD's terms ask for. Do not shorten.
         box.append(h('div', { class: 'notice', html:
-          '<p><b>ឧទាហរណ៍គំរូរបស់ OECD៖</b> ប្រធានបទទាំងប្រាំពីរនេះ បកប្រែ និងសម្របជាភាសាខ្មែរពី Annex 2.A «Illustrative examples» នៃ ' +
+          '<p><b>From PISA 2022 (ឧទាហរណ៍របស់ OECD)៖</b> ប្រធានបទទាំងប្រាំពីរនេះ បកប្រែ និងសម្របជាភាសាខ្មែរពី Annex 2.A «Illustrative examples» នៃ ' +
           'OECD (2023), <i>PISA 2022 Assessment and Analytical Framework</i>, PISA, OECD Publishing, Paris, ' +
           '<a href="https://doi.org/10.1787/dfe0bf9c-en" target="_blank" rel="noopener">https://doi.org/10.1787/dfe0bf9c-en</a> ' +
           '© OECD 2023 ដែលចែកចាយក្រោមអាជ្ញាប័ណ្ណ <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/igo/" target="_blank" rel="noopener">CC BY-NC-SA 3.0 IGO</a>។</p>' +
@@ -408,7 +368,7 @@
     if (pick.length && one[1] === 'test') {
       PISA.start({ name: '', mode: 'test', unitIds: pick, preview: true });
       PISA.dialog([
-        'តេស្តពេញ៖ ភារកិច្ច ' + PISA.km(pick.length) + ' ជាប់គ្នា តាមរបៀបតេស្ត PISA ពិត។',
+        'តេស្តពេញ៖ ' + PISA.km(pick.length) + ' ប្រធានបទ' + ' ជាប់គ្នា តាមរបៀបតេស្ត PISA ពិត។',
         'ឆ្លើយសំណួរនីមួយៗ រួចចុច «បន្ទាប់»។ អ្នកមិនអាចថយក្រោយ ដើម្បីកែចម្លើយវិញបានទេ។ ពេលចប់ អ្នកនឹងឃើញលទ្ធផល និងចម្លើយគំរូ។',
       ], [{ label: 'ចាប់ផ្ដើម', primary: true }]);
       return;
