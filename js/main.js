@@ -323,29 +323,27 @@
       const has = (c) => PISA.units.some((u) => (u.collection || 'oecd') === c);
       if (has('moeys')) {
         box.append(h('p', { class: 'notice', html:
-          '<b>PISA TEST (MoEYS) ប្រធានបទ ៣៨៖</b> ដកស្រង់ និងរៀបចំឡើងវិញតាមប្រព័ន្ធកុំព្យូទ័រ CBA ពី «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា (នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ) ឆ្នាំ ២០២៥។' }));
+          '<b>PISA TEST (MoEYS)៖</b> សំណួរពី «ឯកសារជំនួយស្មារតី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា រៀបចំឡើងវិញជាតេស្តលើកុំព្យូទ័រ។' }));
       }
       if (has('gold') || has('practice')) {
         box.append(h('p', { class: 'notice', html:
-          '<b>ប្រធានបទគំរូ និងប្រធានបទគម្រោង៖</b> សំណួរដើមរបស់គម្រោង ពីសៀវភៅណែនាំគ្រូ «ក្របខណ្ឌគណិតវិទ្យារបស់ PISA ២០២២» (សាន សុខលី)។ ' +
-          'សំណួរទាំងនេះរៀបចំតាមបែប PISA តែមិនមែនជាសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ ហើយកម្រិតលំបាកជាការប៉ាន់ស្មានរបស់អ្នករៀបរៀង មិនមែនការក្រិតតាមខ្នាតផ្លូវការឡើយ។' }));
+          '<b>ប្រធានបទគំរូ និងប្រធានបទគម្រោង៖</b> សំណួរដើមរបស់ សាន សុខលី តាមបែប PISA មិនមែនសំណួរផ្លូវការរបស់ OECD ឬ PISA ទេ។ កម្រិតលំបាកជាការប៉ាន់ស្មាន។' }));
       }
       if (has('oecd')) {
-        // Attribution, change notice, licence and translation disclaimer as
-        // CC BY-NC-SA 3.0 IGO and the OECD's terms ask for. Do not shorten.
+        // Attribution, licence, statement of changes and the translation disclaimer that CC BY-NC-SA 3.0 IGO and
+        // the OECD's terms ask for. The visible text is short; the OECD's own disclaimer is kept whole in the
+        // folded part. build_public.py checks that each of these strings is still here.
         box.append(h('div', { class: 'notice', html:
-          '<p><b>From PISA 2022 (ឧទាហរណ៍របស់ OECD)៖</b> ប្រធានបទទាំងប្រាំពីរនេះ បកប្រែ និងសម្របជាភាសាខ្មែរពី Annex 2.A «Illustrative examples» នៃ ' +
-          'OECD (2023), <i>PISA 2022 Assessment and Analytical Framework</i>, PISA, OECD Publishing, Paris, ' +
+          '<p><b>From PISA 2022៖</b> ប្រធានបទទាំង ៧ បកប្រែ និងសម្របជាខ្មែរពី OECD (2023), <i>PISA 2022 Assessment and Analytical Framework</i>, Annex 2.A, ' +
           '<a href="https://doi.org/10.1787/dfe0bf9c-en" target="_blank" rel="noopener">https://doi.org/10.1787/dfe0bf9c-en</a> ' +
-          '© OECD 2023 ដែលចែកចាយក្រោមអាជ្ញាប័ណ្ណ <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/igo/" target="_blank" rel="noopener">CC BY-NC-SA 3.0 IGO</a>។</p>' +
-          '<p><b>ការផ្លាស់ប្ដូរ៖</b> បកប្រែជាភាសាខ្មែរ គូរអេក្រង់ឡើងវិញ (ពុំមែនជារូបថតអេក្រង់ទេ) និងបន្ថែមចម្លើយគំរូ និងការដាក់ពិន្ទុរបស់គម្រោង (សៀវភៅណែនាំគ្រូ ជំពូកទី ៨)។ ' +
-          'ការសម្របជាភាសាខ្មែរនៃប្រធានបទទាំងប្រាំពីរនេះ ចែកចាយក្រោមអាជ្ញាប័ណ្ណ CC BY-NC-SA 3.0 IGO ដូចគ្នា សម្រាប់ការប្រើប្រាស់មិនរកប្រាក់ចំណេញ។</p>' +
-          '<p>ការបកប្រែនេះមិនមែនធ្វើដោយ OECD ទេ ហើយមិនត្រូវចាត់ទុកជាការបកប្រែផ្លូវការរបស់ OECD ឡើយ។ គុណភាពនៃការបកប្រែ ជាទំនួលខុសត្រូវរបស់អ្នកបកប្រែ។ ' +
-          'បើមានភាពខុសគ្នារវាងការបកប្រែ និងអត្ថបទដើម មានតែអត្ថបទដើមប៉ុណ្ណោះដែលមានសុពលភាព។ OECD មិនបានពិនិត្យ ឬគាំទ្រកម្មវិធីនេះទេ។</p>' +
-          '<p lang="en" class="en-note">This translation was not created by the OECD and should not be considered an official OECD translation. ' +
+          '© OECD 2023, អាជ្ញាប័ណ្ណ <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/igo/" target="_blank" rel="noopener">CC BY-NC-SA 3.0 IGO</a>។ ' +
+          '<b>ការផ្លាស់ប្ដូរ៖</b> បកប្រែជាខ្មែរ គូរអេក្រង់ឡើងវិញ បន្ថែមចម្លើយគំរូ និងការដាក់ពិន្ទុ។ ' +
+          'ចែកចាយក្រោមអាជ្ញាប័ណ្ណដូចគ្នា សម្រាប់ប្រើមិនរកប្រាក់ចំណេញ។ មិនមែនជាការបកប្រែផ្លូវការរបស់ OECD ហើយ OECD មិនបានគាំទ្រទេ។</p>' +
+          '<details><summary>អត្ថបទអាជ្ញាប័ណ្ណពេញ (English)</summary><p lang="en" class="en-note">' +
+          'This translation was not created by the OECD and should not be considered an official OECD translation. ' +
           'The quality of the translation and its coherence with the original language text of the work are the sole responsibility of the author(s) of the translation. ' +
           'In the event of any discrepancy between the original work and the translation, only the text of the original work should be considered valid. ' +
-          'This is an adaptation of an original work by the OECD; it is not endorsed by the OECD.</p>' }));
+          'This is an adaptation of an original work by the OECD; it is not endorsed by the OECD.</p></details>' }));
       }
     }));
     if (window.kmVisits) window.kmVisits.refresh();

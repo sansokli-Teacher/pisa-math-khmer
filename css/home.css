@@ -189,3 +189,6 @@
   .hm .hm-intro h1 { font-size: 32px; }
   .hm .hm-cols > section, .hm .hm-topics { padding: 16px; }
 }
+.km-notices .notice { margin: 0 0 8px; font-size: 13.5px; line-height: 1.7; color: var(--ink-3); }
+.km-notices .notice p { margin: 0 0 4px; }
+.km-notices details summary { cursor: pointer; color: var(--teal-strong); font-size: 13px; }
