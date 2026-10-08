@@ -261,7 +261,7 @@
           W.p('<b>តើនៅចុងឆ្នាំដំបូង មានសត្វភេនឃ្វីនប៉ុន្មានក្បាល (ពេញវ័យ និងកូន) នៅក្នុងអាណាចក្រ?</b>', 'q-lead'),
           h('div', { class: 'answer-line-wrap', style: 'margin: 14px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;' },
             h('span', { style: 'font-weight: 600;' }, 'ចំនួនសត្វភេនឃ្វីន៖'),
-            W.input(ctx, 'm22q2', 'count', '12000', { width: '140px', math: true, cls: 'resp-input' }),
+            W.input(ctx, 'm22q2', 'count', '', { width: '140px', cls: 'resp-input' }),
             h('span', { style: 'font-weight: 600;' }, 'ក្បាល')
           )
         ),

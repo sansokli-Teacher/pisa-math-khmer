@@ -169,7 +169,7 @@
           W.p('<b>តើមាឌនៃសារធាតុរាវដែលចាក់បញ្ចូល ស្មើនឹងប៉ុន្មាន mL?</b>', 'q-lead'),
           h('div', { class: 'answer-line-wrap', style: 'margin: 14px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;' },
             h('span', { style: 'font-weight: 600;' }, 'មាឌនៃសារធាតុរាវ \\(v =\\)'),
-            W.input(ctx, 'm20q2', 'v', '360', { width: '120px', math: true, cls: 'resp-input' }),
+            W.input(ctx, 'm20q2', 'v', '', { width: '120px', cls: 'resp-input' }),
             h('span', { style: 'font-weight: 600;' }, 'mL')
           ),
           h('details', { style: 'margin-top: 14px; font-size: 0.88rem; color: #4b5563; background: #f9fafb; padding: 8px 12px; border-radius: 6px; border: 1px dashed #cbd5e1;' },

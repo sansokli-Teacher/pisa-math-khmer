@@ -241,7 +241,7 @@
         tag: 'សំណួរ ' + PISA.km(q.no) + ' / ' + PISA.km(u.questions.length),
         split: hasWide ? 52 : 45,
         items: [qid],
-        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox, math: textbook }),
+        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox, math: textbook && q.autoNum == null }),
         right: stimulus,
       });
     });
