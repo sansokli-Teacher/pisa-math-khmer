@@ -81,14 +81,16 @@
 
       m01q3: {
         label: 'សំណួរ ៣',
-        format: 'សំណួរបំពេញចន្លោះ',
+        format: 'សំណួរសរសេរចម្លើយ',
         max: 1,
         parts: [{ k: 'ans', label: 'ចម្លើយ' }],
         summary: (r) => r.ans || '—',
         score: (r) => {
           // the two numbers, even if the student typed "11-13" in one box
           const nums = PISA.latin(r.ans || '').match(/\d+(?:\.\d+)?/g) || [];
-          if (!nums.length) return { pts: 0, note: 'មិនបានឆ្លើយ' };
+          if (!String(r.ans || '').trim()) return { pts: 0, note: 'មិនបានឆ្លើយ' };
+          // a written answer with no age in it is for the teacher to read
+          if (!nums.length) return { pts: null, note: 'រង់ចាំគ្រូពិនិត្យ' };
           const vf = parseFloat(nums[0]);
           const vt = nums.length > 1 ? parseFloat(nums[nums.length - 1]) : NaN;
 
@@ -154,10 +156,7 @@
         left: (ctx) => W.stack(
           W.instr('សូមពិនិត្យមើលក្រាប «ការលូតកម្ពស់» នៅផ្ទាំងខាងស្ដាំ។'),
           W.p('<b>យោងតាមក្រាបខាងលើ តើអំឡុងពេលណាដែលកម្ពស់ជាមធ្យមរបស់ក្មេងស្រី ខ្ពស់ជាងក្មេងប្រុស ដែលមានអាយុស្មើគ្នា?</b>', 'q-lead'),
-          h('div', { style: 'margin: 16px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;' },
-            h('span', { style: 'font-weight: 600;' }, 'ចម្លើយ ៖'),
-            W.input(ctx, 'm01q3', 'ans', '', { width: '300px', cls: 'resp-input' })
-          )
+          W.textarea(ctx, 'm01q3', 'ans', 'សូមសរសេរចម្លើយរបស់អ្នកនៅទីនេះ...', 3, true)
         ),
         right: stimulus,
       },

@@ -75,9 +75,9 @@
   };
 
   // ------------------------------------------------------- typed input ---
-  W.textarea = function (ctx, qid, part, placeholder, rows) {
+  W.textarea = function (ctx, qid, part, placeholder, rows, noMath) {
     // data-math: the maths buttons and preview of js/mathtype.js attach to it
-    const ta = h('textarea', { class: 'resp-text', rows: rows || 4, placeholder: placeholder || 'សូមវាយចម្លើយនៅទីនេះ', 'aria-label': placeholder || 'ចម្លើយ', 'data-math': true });
+    const ta = h('textarea', { class: 'resp-text', rows: rows || 4, placeholder: placeholder || 'សូមវាយចម្លើយនៅទីនេះ', 'aria-label': placeholder || 'ចម្លើយ', 'data-math': !noMath });
     ta.value = ctx.val(qid, part) || '';
     ta.addEventListener('input', () => ctx.setVal(qid, part, ta.value));
     return ta;
