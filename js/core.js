@@ -200,7 +200,7 @@
   PISA.start = function (opts) {
     state = {
       v: 1,
-      student: { name: opts.name || '', klass: opts.klass || '' },
+      student: { name: opts.name || '', klass: opts.klass || '', teacher: opts.teacher || '', school: opts.school || '' },
       mode: opts.mode === 'practice' ? 'practice' : 'test',
       unitIds: opts.unitIds.slice(),
       pos: { u: opts.u || 0, s: opts.s || 0 },
@@ -654,7 +654,7 @@
       sec.append(card);
     });
     const ids = [...new Set(again.map((x) => x.u.id))];
-    sec.append(h('p', { class: 'rv-act' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, mode: 'practice', unitIds: ids }) },
+    sec.append(h('p', { class: 'rv-act' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, teacher: state.student.teacher, school: state.student.school, mode: 'practice', unitIds: ids }) },
       'ហាត់ម្ដងទៀត ' + PISA.km(ids.length) + ' ប្រធានបទនេះ (មានចម្លើយភ្លាមៗ)')));
     return sec;
   }
@@ -712,7 +712,7 @@
     }));
 
     const page = h('div', { class: 'results' });
-    const who = [state.student.name, state.student.klass].filter(Boolean).join(' · ');
+    const who = [state.student.name, state.student.klass, state.student.school].filter(Boolean).join(' · ');
     page.append(h('header', { class: 'res-head' },
       h('h1', {}, 'លទ្ធផល'),
       h('p', { class: 'res-sub' }, (who ? who + ' — ' : '') + (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន') +
@@ -747,6 +747,7 @@
           '<div class="cert-body">' +
             '<p class="cert-intro">វិញ្ញាបនបត្រនេះបញ្ជាក់ជូនដល់ ៖</p>' +
             '<div class="cert-name">' + (state.student.name || 'សិស្សានុសិស្ស') + (state.student.klass ? ' <span class="cert-klass">(ថ្នាក់ ' + state.student.klass + ')</span>' : '') + '</div>' +
+            (state.student.school || state.student.teacher ? '<p class="cert-intro">' + [state.student.school, state.student.teacher ? 'គ្រូបង្រៀន៖ ' + state.student.teacher : ''].filter(Boolean).join(' · ') + '</p>' : '') +
             '<p class="cert-text">បានបំពេញការប្រឡងតេស្តគណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ (CBA) ដោយទទួលបានលទ្ធផលដូចខាងក្រោម ៖</p>' +
             '<div class="cert-grid">' +
               '<div class="c-box"><div class="c-val">' + PISA.km(total) + ' / ' + PISA.km(max) + '</div><div class="c-lbl">ពិន្ទុសរុប</div></div>' +
@@ -956,10 +957,11 @@
     const rows = [
       ['របាយការណ៍លទ្ធផលតេស្តគណិតវិទ្យា PISA CBA (cba.khmermath.org)'],
       ['ឈ្មោះសិស្ស', state.student.name || 'សិស្ស', 'ថ្នាក់', state.student.klass || '—'],
+      ['សាលា', state.student.school || '—', 'គ្រូបង្រៀន', state.student.teacher || '—'],
       ['កាលបរិច្ឆេទ', new Date(state.startedAt).toLocaleDateString('km-KH'), 'របៀបតេស្ត', state.mock ? state.mock.title : (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន')],
       ['ពិន្ទុសរុប', totEarned + ' / ' + totMax, 'ភាគរយ', sPct + '%'],
       [''],
-      ['student', 'class', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']
+      ['student', 'class', 'school', 'teacher', 'mode', 'unit', 'question', 'answer', 'auto_points', 'teacher_points', 'final_points', 'max_points', 'screen_seconds', 'process', 'level']
     ];
     state.unitIds.forEach((id) => {
       const u = PISA.unit(id);
@@ -967,7 +969,7 @@
         const sc = scoreOf(u, qid);
         const si = screenOf(u, qid);
         const secs = si >= 0 ? Math.round((state.times[id + ':' + si] || 0) / 1000) : '';
-        rows.push([state.student.name, state.student.klass, state.mode, u.en, sc.q.label, answerText(sc.q, sc.r),
+        rows.push([state.student.name, state.student.klass, state.student.school || '', state.student.teacher || '', state.mode, u.en, sc.q.label, answerText(sc.q, sc.r),
           sc.auto.pts == null ? '' : sc.auto.pts, sc.teacher == null ? '' : sc.teacher, sc.final == null ? '' : sc.final, sc.max, secs,
           sc.q.process || '', sc.q.level || '']);
       });

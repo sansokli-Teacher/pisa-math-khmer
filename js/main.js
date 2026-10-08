@@ -109,9 +109,12 @@
     try { who = JSON.parse(localStorage.getItem(WHO_KEY)) || {}; } catch (e) { who = {}; }
     const name = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. សុខ ដារ៉ា', value: who.name || '' });
     const klass = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. ៩ក', value: who.klass || '' });
-    const remember = () => { try { localStorage.setItem(WHO_KEY, JSON.stringify({ name: name.value.trim(), klass: klass.value.trim() })); } catch (e) { /* ignore */ } };
-    name.addEventListener('change', remember); klass.addEventListener('change', remember);
-    const start = (opts) => { remember(); PISA.start(Object.assign({ name: name.value.trim(), klass: klass.value.trim() }, opts)); };
+    const teacher = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. លោកគ្រូ សាន សុខលី', value: who.teacher || '' });
+    const school = h('input', { type: 'text', autocomplete: 'off', placeholder: 'ឧ. វិទ្យាល័យ …', value: who.school || '' });
+    const whoNow = () => ({ name: name.value.trim(), klass: klass.value.trim(), teacher: teacher.value.trim(), school: school.value.trim() });
+    const remember = () => { try { localStorage.setItem(WHO_KEY, JSON.stringify(whoNow())); } catch (e) { /* ignore */ } };
+    [name, klass, teacher, school].forEach((i) => i.addEventListener('change', remember));
+    const start = (opts) => { remember(); PISA.start(Object.assign(whoNow(), opts)); };
 
     const gold = PISA.units.filter((u) => colOf(u) === 'gold');
     const goldQs = gold.reduce((n, u) => n + PISA.questionIds(u).length, 0);
@@ -134,8 +137,18 @@
 
     // --- who (optional)
     wrap.append(h('div', { class: 'hm-who' },
-      h('label', {}, h('span', {}, 'ឈ្មោះ'), name), h('label', {}, h('span', {}, 'ថ្នាក់'), klass),
-      h('p', {}, 'មិនបំពេញក៏បាន។ ឈ្មោះនឹងចេញលើលទ្ធផល ហើយនឹងមិនត្រូវបានផ្ញើទៅកន្លែងណាទេ។')));
+      h('label', {}, h('span', {}, 'ឈ្មោះសិស្ស'), name), h('label', {}, h('span', {}, 'ថ្នាក់'), klass),
+      h('label', {}, h('span', {}, 'គ្រូបង្រៀន'), teacher), h('label', {}, h('span', {}, 'សាលា'), school),
+      h('p', {}, 'មិនបំពេញក៏បាន។ ព័ត៌មាននេះចេញលើលទ្ធផល វិញ្ញាបនបត្រ និងឯកសារ CSV ប៉ុណ្ណោះ ហើយមិនត្រូវបានផ្ញើទៅកន្លែងណាទេ។')));
+
+    // --- how to use
+    wrap.append(h('section', { class: 'hm-how', id: 'how' }, h('h2', {}, 'របៀបប្រើ'),
+      h('ol', {},
+        h('li', {}, h('b', {}, 'បំពេញព័ត៌មាន។ '), 'ឈ្មោះ ថ្នាក់ គ្រូ និងសាលា (មិនបំពេញក៏បាន)។'),
+        h('li', {}, h('b', {}, 'ជ្រើសរើស។ '), 'ចុចប៊ូតុងក្នុង «ចាប់ផ្ដើមភ្លាម» ឬជ្រើសប្រធានបទខ្លួនឯង រួចចុច «ហាត់រៀន» (ពិនិត្យចម្លើយភ្លាមៗ) ឬ «ធ្វើជាតេស្ត» (ទៅមុខតែមួយផ្លូវ ដូចតេស្តពិត)។'),
+        h('li', {}, h('b', {}, 'ឆ្លើយសំណួរ។ '), 'អានអត្ថបទនៅផ្នែកខាងស្ដាំ ឆ្លើយនៅផ្នែកខាងឆ្វេង ហើយចុច «បន្ទាប់»។ មានម៉ាស៊ីនគិតលេខនៅជ្រុងខាងលើ។'),
+        h('li', {}, h('b', {}, 'មើលលទ្ធផល។ '), 'ពេលចប់ មើលចម្លើយខុស ទាញយកវិញ្ញាបនបត្រ ឬឯកសារ CSV។ ការហាត់របស់អ្នករក្សាទុកក្នុងកុំព្យូទ័រ ឬទូរស័ព្ទនេះ។')),
+      hasTutorial ? h('p', {}, 'មិនធ្លាប់ប្រើ? ', h('button', { type: 'button', class: 'hm-link', onclick: startTutorial }, 'ធ្វើមេរៀនណែនាំ (ប្រហែល ៥ នាទី)')) : null));
 
     // --- an unfinished or finished session on this computer
     const saved = PISA.saved();
