@@ -126,7 +126,7 @@
           const k = partFor(b)[0].k;
           box.append(h('div', { class: 'ansline' },
             b.pre ? h('span', { class: 'pre', html: b.pre }) : null,
-            W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math, label: plain(b.pre) || 'ចម្លើយ' }),
+            W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math && !b.plain, label: plain(b.pre) || 'ចម្លើយ' }),
             b.post ? h('span', { class: 'post', html: b.post }) : null));
           if (opts.workBox && !box.querySelector('.work')) {
             box.append(h('div', { class: 'work' }, h('p', { class: 'small' }, 'វិធីគណនា៖'), W.textarea(ctx, qid, 'work', 'សូមសរសេរវិធីគណនារបស់អ្នកនៅទីនេះ', 4)));
@@ -193,6 +193,21 @@
     return parts.length > 1 ? { pts: null, note: 'ជម្រើសត្រឹមត្រូវ — គ្រូត្រូវអានផ្នែកផ្សេងទៀត' } : { pts: q.points };
   };
 
+  // A typed number scores when it equals the book's answer. Units, spaces, commas and Khmer digits are tolerated;
+  // a question may also accept some words (autoWords) when the book's own wording allows a non-numeric answer.
+  const numRule = (q) => (r) => {
+    const raw = r.a1;
+    if (raw == null || String(raw).trim() === '') return { pts: 0, note: 'មិនបានឆ្លើយ' };
+    if ((q.autoWords || []).some((w) => String(raw).includes(w))) return { pts: q.points };
+    let v = PISA.parseAnswer(raw);
+    if (!v) {
+      const m = PISA.latin(raw).replace(/[\s,]/g, '').match(/-?\d+(?:\.\d+)?/);
+      v = m ? { value: parseFloat(m[0]) } : null;
+    }
+    if (!v) return { pts: 0, note: 'ចម្លើយមិនមែនជាចំនួន' };
+    return Math.abs(v.value - q.autoNum) < 1e-9 ? { pts: q.points } : { pts: 0, note: 'ចម្លើយមិនត្រឹមត្រូវ' };
+  };
+
   function register(u) {
     const textbook = u.kind === 'textbook';
     const questions = {};
@@ -216,7 +231,7 @@
         level: q.spec && q.spec.level,
         parts,
         summary: (r) => summaryOf(q, r, workBox),
-        score: PISA.bookScoring[qid] || (q.auto ? autoRule(q, parts) : () => ({ pts: null })),
+        score: PISA.bookScoring[qid] || (q.auto ? autoRule(q, parts) : q.autoNum != null ? numRule(q) : () => ({ pts: null })),
         key: textbook ? (q.key || NO_KEY) : q.key + spec,
       };
       const hasWide = q.blocks.some((b) => b.type === 'figure' || b.type === 'grid' || b.type === 'table' || b.type === 'filltable');
@@ -235,13 +250,13 @@
       collection: u.kind,
       grade: u.grade,
       title: u.title,
-      en: u.kind === 'gold' ? u.code : textbook ? 'Textbook task ' + PISA.latin(u.code) : 'Practice ' + u.code,
+      en: u.en || (u.kind === 'gold' ? u.code : textbook ? 'Textbook task ' + PISA.latin(u.code) : 'Practice ' + u.code),
       label: u.kind === 'gold' ? u.code : textbook ? 'លំហាត់ ' + u.code : 'ប្រធានបទ ' + u.code,
-      blurb: textbook ? 'មេរៀនទី ' + PISA.km(u.lesson) + ' ' + u.lessonTitle : plain(u.stimTitle),
+      blurb: u.blurb || (textbook ? 'មេរៀនទី ' + PISA.km(u.lesson) + ' ' + u.lessonTitle : plain(u.stimTitle)),
       lesson: u.lesson,
       lessonTitle: u.lessonTitle,
       note: u.note,
-      footer: textbook ? TEXTBOOK_FOOTER : FOOTER,
+      footer: u.footer || (textbook ? TEXTBOOK_FOOTER : FOOTER),
       lessonUrl: u.lessonUrl,
       questions,
       screens,
@@ -249,4 +264,5 @@
   }
   (PISA.bookUnits || []).forEach(register);
   (PISA.textbookUnits || []).forEach(register);
+  (PISA.g7Units || []).forEach(register);       // Grade 7, imported lesson by lesson (tools/import_g7.py)
 })();

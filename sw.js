@@ -26,6 +26,7 @@ const CORE_ASSETS = [
   'js/visits.js',
   'js/data/book_units.js',
   'js/data/textbook_units.js',
+  'js/data/g7_units.js',
   'js/units/book_scoring.js',
   'js/units/book_units.js',
   'js/units/tutorial.js'

@@ -36,6 +36,13 @@ From «គណិតវិទ្យាថ្នាក់ទី៩ បែបទំ
 reserved; published here by the author for students to practise. Not OECD
 material. Mathematics drawn with KaTeX (MIT licence, katex/LICENSE).
 
+## The Grade 7 PISA tests (collection «លំហាត់តាមកម្រិតថ្នាក់»)
+
+From «សមត្ថភាពគណិតវិទ្យា PISA ថ្នាក់ទី ៧» (lesson 1 so far), © 2026 លោកគ្រូ សាន សុខលី,
+all rights reserved; published here by the author for students to practise. Not
+OECD material. Imported by `tools/import_g7.py`; figures drawn with TikZ or
+the author's pictures.
+
 ## Fonts
 
 Noto Sans Khmer, SIL Open Font License 1.1 (fonts/OFL.txt): the test screens.
