@@ -581,10 +581,6 @@ PISA.g7Units = [
       }
      ]
     ]
-   },
-   {
-    "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t04.webp\" alt=\"សំបុត្របាល់ទាត់នៅពហុកីឡដ្ឋាន\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
    }
   ],
   "questions": [
@@ -1083,7 +1079,7 @@ PISA.g7Units = [
     "body": [
      [
       {
-       "html": "<span class=\"mi\">\\(0\\)</span>--<span class=\"mi\">\\(2\\)</span> km"
+       "html": "<span class=\"mi\">\\(0\\)</span>–<span class=\"mi\">\\(2\\)</span> km"
       },
       {
        "html": "<span class=\"mi\">\\(3\\,000\\)</span> រៀល"
@@ -1091,7 +1087,7 @@ PISA.g7Units = [
      ],
      [
       {
-       "html": "<span class=\"mi\">\\(3\\)</span>--<span class=\"mi\">\\(5\\)</span> km"
+       "html": "<span class=\"mi\">\\(3\\)</span>–<span class=\"mi\">\\(5\\)</span> km"
       },
       {
        "html": "<span class=\"mi\">\\(5\\,000\\)</span> រៀល"
@@ -1099,7 +1095,7 @@ PISA.g7Units = [
      ],
      [
       {
-       "html": "<span class=\"mi\">\\(6\\)</span>--<span class=\"mi\">\\(8\\)</span> km"
+       "html": "<span class=\"mi\">\\(6\\)</span>–<span class=\"mi\">\\(8\\)</span> km"
       },
       {
        "html": "<span class=\"mi\">\\(8\\,000\\)</span> រៀល"
@@ -1107,7 +1103,7 @@ PISA.g7Units = [
      ],
      [
       {
-       "html": "<span class=\"mi\">\\(9\\)</span>--<span class=\"mi\">\\(12\\)</span> km"
+       "html": "<span class=\"mi\">\\(9\\)</span>–<span class=\"mi\">\\(12\\)</span> km"
       },
       {
        "html": "<span class=\"mi\">\\(12\\,000\\)</span> រៀល"
@@ -1132,7 +1128,7 @@ PISA.g7Units = [
     "blocks": [
      {
       "type": "html",
-      "html": "<p>បើហាងស្ថិតនៅចម្ងាយ <span class=\"mi\">\\(6\\)</span>--<span class=\"mi\">\\(8\\)</span> km ពីសាលា តើថ្លៃដឹកប៉ុន្មានរៀល?</p>"
+      "html": "<p>បើហាងស្ថិតនៅចម្ងាយ <span class=\"mi\">\\(6\\)</span>–<span class=\"mi\">\\(8\\)</span> km ពីសាលា តើថ្លៃដឹកប៉ុន្មានរៀល?</p>"
      },
      {
       "type": "options",

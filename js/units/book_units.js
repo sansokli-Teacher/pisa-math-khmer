@@ -199,7 +199,9 @@
     const raw = r.a1;
     if (raw == null || String(raw).trim() === '') return { pts: 0, note: 'មិនបានឆ្លើយ' };
     if ((q.autoWords || []).some((w) => String(raw).includes(w))) return { pts: q.points };
-    let v = PISA.parseAnswer(raw);
+    // the answers are whole numbers, so «27.000» is twenty-seven thousand (a dot before exactly three digits)
+    const dots = PISA.latin(raw).trim().match(/^(\d{1,3}(?:\.\d{3})+)\D*$/);
+    let v = dots ? { value: parseFloat(dots[1].replace(/\./g, '')) } : PISA.parseAnswer(raw);
     if (!v) {
       const m = PISA.latin(raw).replace(/[\s,]/g, '').match(/-?\d+(?:\.\d+)?/);
       v = m ? { value: parseFloat(m[0]) } : null;
