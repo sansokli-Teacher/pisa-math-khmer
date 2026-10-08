@@ -66,7 +66,7 @@ PISA.g7Units = [
    },
    {
     "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t01.svg\" alt=\"ស្តុកភេសជ្ជៈនៅអាហារដ្ឋានសាលា\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
+    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t01.svg\" alt=\"ស្តុកភេសជ្ជៈនៅអាហារដ្ឋានសាលា\" style=\"width:210px;max-width:55%\"></div>"
    }
   ],
   "questions": [
@@ -241,7 +241,7 @@ PISA.g7Units = [
    },
    {
     "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t02.svg\" alt=\"ការប្រមូលប្រាក់តាម ABA សម្រាប់ដំណើរទស្សនកិច្ច\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
+    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t02.svg\" alt=\"ការប្រមូលប្រាក់តាម ABA សម្រាប់ដំណើរទស្សនកិច្ច\" style=\"width:210px;max-width:55%\"></div>"
    }
   ],
   "questions": [
@@ -942,7 +942,7 @@ PISA.g7Units = [
    },
    {
     "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t06.svg\" alt=\"កញ្ចប់អ៊ីនធឺណិតទូរស័ព្ទសម្រាប់សប្តាហ៍មួយ\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
+    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t06.svg\" alt=\"កញ្ចប់អ៊ីនធឺណិតទូរស័ព្ទសម្រាប់សប្តាហ៍មួយ\" style=\"width:210px;max-width:55%\"></div>"
    }
   ],
   "questions": [
@@ -1288,7 +1288,7 @@ PISA.g7Units = [
    },
    {
     "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t08.svg\" alt=\"ការអានកុងទ័រអគ្គិសនីនៅផ្ទះ\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
+    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t08.svg\" alt=\"ការអានកុងទ័រអគ្គិសនីនៅផ្ទះ\" style=\"width:210px;max-width:55%\"></div>"
    }
   ],
   "questions": [
@@ -1479,7 +1479,7 @@ PISA.g7Units = [
    },
    {
     "type": "html",
-    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t09.svg\" alt=\"សៀវភៅនៅបណ្ណាល័យសាលា\" style=\"width:auto;max-width:46%;max-height:200px\"></div>"
+    "html": "<div class=\"center\"><img class=\"pic\" src=\"assets/textbook/g7-l01-t09.svg\" alt=\"សៀវភៅនៅបណ្ណាល័យសាលា\" style=\"width:210px;max-width:55%\"></div>"
    }
   ],
   "questions": [
