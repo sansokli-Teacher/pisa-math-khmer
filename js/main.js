@@ -88,15 +88,15 @@
   const pctOf = (got, max) => (max ? Math.round((got / max) * 100) : 0);
 
   function homeHeader(tutorial, action) {
-    return h('header', { class: 'hm-top' }, h('div', { class: 'hm-wrap hm-top-in' },
-      h('a', { class: 'hm-brand', href: SITE, ...ext }, h('img', { src: 'assets/img/logo.svg', alt: '', width: 30, height: 30 }),
-        h('span', {}, h('b', {}, 'KhmerMath'), ' · តេស្តលើកុំព្យូទ័រ')),
-      h('nav', { class: 'hm-nav', 'aria-label': 'KhmerMath' },
-        tutorial ? h('button', { type: 'button', class: 'hm-link', onclick: tutorial }, 'មេរៀនណែនាំ') : null,
+    return h('header', { class: 'km-header' }, h('div', { class: 'km-wrap km-header-in' },
+      h('a', { class: 'km-brand', href: SITE, ...ext }, h('img', { src: 'assets/img/logo.svg', alt: '', width: 38, height: 38 }),
+        h('span', { class: 'km-brand-t' }, h('b', {}, 'KhmerMath'), h('small', {}, 'តេស្តលើកុំព្យូទ័រ (CBA)'))),
+      h('nav', { class: 'km-nav', 'aria-label': 'KhmerMath' },
+        tutorial ? h('a', { href: '#tutorial', onclick: (e) => { e.preventDefault(); tutorial(); } }, 'មេរៀនណែនាំ') : null,
         h('a', { href: SITE, ...ext }, 'ទំព័រដើម KhmerMath'),
         h('a', { class: 'hm-opt', href: 'https://pisa.khmermath.org/', ...ext }, 'សៀវភៅ PISA ២០២២'),
         h('a', { class: 'hm-opt', href: SITE + 'cba.html#lab', ...ext }, 'សម្រាប់បន្ទប់កុំព្យូទ័រ')),
-      action ? h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: action.onclick }, action.label) : null));
+      action ? h('button', { type: 'button', class: 'km-btn km-btn-primary km-btn-sm', onclick: action.onclick }, action.label) : null));
   }
 
   function home() {
@@ -127,7 +127,8 @@
 
     // --- what this is
     wrap.append(h('section', { class: 'hm-intro' },
-      h('h1', {}, 'ហាត់គណិតវិទ្យាតាមបែប PISA'),
+      h('span', { class: 'hm-eyebrow' }, 'ហាត់ និងធ្វើតេស្តលើអេក្រង់'),
+      h('h1', {}, 'ហាត់គណិតវិទ្យា ', h('span', {}, 'តាមបែប PISA')),
       h('p', { class: 'hm-lead' }, 'សំណួរតាមបែប PISA ជាភាសាខ្មែរ លើអេក្រង់ដែលរៀបចំដូចតេស្តពិត។ ហាត់ម្ដងមួយសំណួរ ហើយពិនិត្យចម្លើយភ្លាមៗ ឬធ្វើជាតេស្តដូចពិត។'),
       h('p', { class: 'hm-facts' }, PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ · ឥតគិតថ្លៃ · ប្រើលើទូរស័ព្ទបាន · ប្រើពេលគ្មានអ៊ីនធឺណិតបាន')));
 
