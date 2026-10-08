@@ -21,13 +21,6 @@
         alt: 'ក្រាបកម្ពស់ជាមធ្យមរបស់ក្មេងប្រុស និងក្មេងស្រី ក្នុងប្រទេសហូឡង់ ឆ្នាំ 1998',
         style: 'max-width: 100%; width: 520px; height: auto; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08);'
       })
-    ),
-    h('div', { style: 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; font-size: 0.88rem; color: #334155; line-height: 1.5;' },
-      h('b', { style: 'color: #0f172a;' }, 'សម្គាល់លើក្រាប៖'),
-      h('ul', { style: 'margin: 4px 0 0; padding-left: 20px;' },
-        h('li', {}, 'បន្ទាត់ពណ៌ខៀវដិត (—)៖ កម្ពស់ជាមធ្យមរបស់<b>ក្មេងប្រុស</b> (ឆ្នាំ 1998)'),
-        h('li', {}, 'បន្ទាត់ពណ៌ក្រហមផ្កាឈូកដាច់ៗ (- -)៖ កម្ពស់ជាមធ្យមរបស់<b>ក្មេងស្រី</b> (ឆ្នាំ 1998)')
-      )
     )
   );
 
@@ -59,11 +52,6 @@
           if (/\b168\.3\b/.test(lat)) {
             return { pts: 1, note: 'ត្រឹមត្រូវ (168.3 cm)' };
           }
-          // Accept explicit calculation expression 170.6 - 2.3
-          const norm = lat.replace(/\s+/g, '');
-          if (/170\.6-2\.3/.test(norm)) {
-            return { pts: 1, note: 'ការគណនាត្រឹមត្រូវ (170.6 - 2.3 = 168.3)' };
-          }
           return { pts: 0, note: 'ចម្លើយមិនត្រឹមត្រូវ' };
         },
         key: '<b>168.3 cm</b> (ឬ 168.3)។<br><br>' +
@@ -88,22 +76,14 @@
           const raw = (r.explain || '').trim();
           if (!raw) return { pts: 0, note: 'មិនបានឆ្លើយ' };
 
-          const lower = raw.toLowerCase();
-          const lat = PISA.latin(lower);
-
-          // Criteria from PISA scoring guide:
-          // 1. Refers to the reduction in steepness / slope / flattening of the curve after age 12:
-          const hasFlatten = /រាប|ស្មើ|រាបស្មើ|មិនសូវចោត|មិនចោត|កោងរាប|ងាកចេញ|ងាក|ឈប់ឡើង|ឡើងយឺត|កើនតិច|ថយចុះ|លយចុះ|ជម្រាល|អត្រា/.test(raw) ||
-            /flat|steep|slope|gradient|plateau|level|slow|decrease|less|bend|curve/.test(lat);
-
-          // 2. Mentions rate of change / gradient / derivative / growth comparison:
-          const hasRate = /អត្រា|បម្រែបម្រួល|កម្រិត|ជម្រាល|cm|សង់ទីម៉ែត្រ/.test(raw) ||
-            /rate|growth|change|speed/.test(lat);
-
-          if (hasFlatten || hasRate) {
-            return { pts: 1, note: 'ការពន្យល់ត្រឹមត្រូវ (សំដៅលើការថយចុះភាពចោត ឬអត្រាបម្រែបម្រួល)' };
-          }
-          return { pts: 0, note: 'ការពន្យល់មិនទាន់ចំចំណុចសំខាន់ (ភាពចោតនៃក្រាប)' };
+          const lat = PISA.latin(raw.toLowerCase());
+          // The guide gives credit for "the curve is less steep / flattens / slope decreases after 12".
+          // A word list cannot tell that from "girls mature earlier", so only clear wording is credited
+          // here; every other answer is left for the teacher to mark.
+          const clear = /មិនសូវចោត|មិនចោត|ចោតតិច|ភាពចោត|រាបស្មើ|រាបទៅ|ខ្សែកោងរាប|ក្រាបរាប|ងាកចេញ|ឈប់កើន|ឈប់ឡើង|ជម្រាល|អត្រាបម្រែបម្រួល/.test(raw) ||
+            /flatten|less steep|slope|gradient|plateau/.test(lat);
+          if (clear) return { pts: 1, note: 'សំដៅលើភាពចោតនៃខ្សែកោងថយចុះ (គ្រូអាចកែបាន)' };
+          return { pts: null, note: 'រង់ចាំគ្រូពិនិត្យ' };
         },
         key: '<b>ការពន្យល់ត្រឹមត្រូវ៖</b><br>' +
           'ចម្លើយត្រូវសំដៅលើ <b>«ការផ្លាស់ប្ដូរភាពចោត ឬជម្រាលនៃខ្សែក្រាប»</b> របស់ក្មេងស្រីចាប់ពីអាយុ 12 ឆ្នាំឡើងទៅ៖<br>' +
@@ -112,7 +92,8 @@
           '• <b>ការប្រៀបធៀបកំណើនជាក់ស្ដែង៖</b> ពីអាយុ 10 ដល់ 12 ឆ្នាំ កម្ពស់កើនប្រហែល 15 cm (~7.5 cm/ឆ្នាំ) ប៉ុន្តែពីអាយុ 12 ដល់ 20 ឆ្នាំ កម្ពស់កើនបានត្រឹមតែប្រហែល 15.6 cm (~2 cm/ឆ្នាំ) ប៉ុណ្ណោះ។<br><br>' +
           '<b>ការផ្ដល់ពិន្ទុ៖</b><br>' +
           '• <b>ពិន្ទុពេញ (១ ពិន្ទុ)៖</b> ពន្យល់សំដៅលើការកាត់បន្ថយភាពចោតនៃខ្សែក្រាប ឬការប្រៀបធៀបកំណើនជាក់ស្ដែង។<br>' +
-          '• <b>គ្មានពិន្ទុ (០ ពិន្ទុ)៖</b> ចម្លើយមិនសមហេតុផល (ឧ. ឆ្លើយថាក្មេងប្រុសខ្ពស់ជាង) ឬរំលង។',
+          '• <b>គ្មានពិន្ទុ (០ ពិន្ទុ)៖</b> ឆ្លើយតែថាក្រាបក្មេងស្រីនៅក្រោមក្រាបក្មេងប្រុស ដោយមិននិយាយពីភាពចោត ឬអត្រាកំណើន · ចម្លើយមិនសំដៅលើក្រាប (ឧ. «ក្មេងស្រីពេញវ័យឆាប់») · ឬរំលង។<br><br>' +
+          '<i>ចម្លើយសរសេរវែង ប្រព័ន្ធដាក់ពិន្ទុឱ្យតែពេលសំដៅលើភាពចោតច្បាស់ៗ។ ចម្លើយផ្សេងទៀតរង់ចាំគ្រូពិនិត្យ។</i>',
       },
 
       m01q3: {
@@ -125,32 +106,16 @@
         ],
         summary: (r) => ((r.age_from || '—') + ' ដល់ ' + (r.age_to || '—') + ' ឆ្នាំ'),
         score: (r) => {
-          const f = PISA.latin((r.age_from || '').trim()).replace(/[^\d.]/g, '');
-          const t = PISA.latin((r.age_to || '').trim()).replace(/[^\d.]/g, '');
+          // the two numbers, even if the student typed "11-13" in one box
+          const nums = PISA.latin((r.age_from || '') + ' ' + (r.age_to || '')).match(/\d+(?:\.\d+)?/g) || [];
+          if (!nums.length) return { pts: 0, note: 'មិនបានឆ្លើយ' };
+          const vf = parseFloat(nums[0]);
+          const vt = nums.length > 1 ? parseFloat(nums[nums.length - 1]) : NaN;
 
-          if (!f && !t) {
-            // Check if user entered both in one field
-            const allText = PISA.latin((r.age_from || '') + ' ' + (r.age_to || '')).trim();
-            if (/11.*13/.test(allText) || /11.*12/.test(allText)) {
-              return { pts: 1, note: 'ចន្លោះអាយុត្រឹមត្រូវ (11 ដល់ 13 ឆ្នាំ)' };
-            }
-            return { pts: 0, note: 'មិនបានឆ្លើយ' };
+          if (vf === 11 && (vt === 13 || vt === 12)) {
+            return { pts: 1, note: 'ចន្លោះអាយុត្រឹមត្រូវ (' + vf + ' ដល់ ' + vt + ' ឆ្នាំ)' };
           }
-
-          const vf = parseFloat(f);
-          const vt = parseFloat(t);
-
-          // Full credit: 11 to 13 (or 11.2 to 13.0, or 11 to 12 in daily language)
-          if ((vf === 11 || (vf >= 10.8 && vf <= 11.5)) && (vt === 13 || (vt >= 12.5 && vt <= 13.5))) {
-            return { pts: 1, note: 'ចន្លោះអាយុត្រឹមត្រូវ (11 ដល់ 13 ឆ្នាំ)' };
-          }
-          if (vf === 11 && vt === 12) {
-            return { pts: 1, note: 'ចន្លោះអាយុត្រឹមត្រូវ (11 និង 12 ឆ្នាំ)' };
-          }
-          // Partial / boundary condition
-          if (vf === 12 && vt === 13) {
-            return { pts: 1, note: 'ត្រឹមត្រូវ (12 ដល់ 13 ឆ្នាំ)' };
-          }
+          if (vf === 12 && vt === 13) return { pts: 0, note: 'មិនទាន់ពេញ៖ ក្មេងស្រីខ្ពស់ជាងចាប់ពីអាយុ 11 ដល់ 13 ឆ្នាំ' };
           return { pts: 0, note: 'ចម្លើយមិនត្រឹមត្រូវ (ចម្លើយត្រឹមត្រូវគឺ 11 ដល់ 13 ឆ្នាំ)' };
         },
         key: '<b>ចន្លោះអាយុ 11 ដល់ 13 ឆ្នាំ</b> (ឬ អាយុ 11 និង 12 ឆ្នាំ)។<br><br>' +
@@ -159,8 +124,9 @@
           '• ខ្សែពណ៌ក្រហមផ្កាឈូកដាច់ៗ (ក្មេងស្រី) ស្ថិតនៅ<b>ខាងលើ</b>ខ្សែពណ៌ខៀវ (ក្មេងប្រុស) ចាប់ពីចំណុចប្រសព្វទីមួយ (ប្រហែលអាយុ 11 ឆ្នាំ ឬ 11.2 ឆ្នាំ) រហូតដល់ចំណុចប្រសព្វទីពីរ (ប្រហែលអាយុ 13 ឆ្នាំ)។<br>' +
           '• ក្រៅពីចន្លោះអាយុ 11 ដល់ 13 ឆ្នាំនេះ កម្ពស់ជាមធ្យមរបស់ក្មេងប្រុស គឺខ្ពស់ជាង ឬស្មើក្មេងស្រី។<br><br>' +
           '<b>ការផ្ដល់ពិន្ទុ៖</b><br>' +
-          '• <b>ពិន្ទុពេញ (១ ពិន្ទុ)៖</b> ចន្លោះអាយុ 11–13 ឆ្នាំ ឬបញ្ជាក់ថាអាយុ 11 និង 12 ឆ្នាំ។<br>' +
-          '• <b>គ្មានពិន្ទុ (០ ពិន្ទុ)៖</b> ចម្លើយផ្សេងទៀត (ឧ. អាយុលើសពី 13 ឆ្នាំ ឬ 10 ដល់ 11 ឆ្នាំ) ឬរំលង។',
+          '• <b>ពិន្ទុពេញ (១ ពិន្ទុ)៖</b> ចន្លោះអាយុ 11–13 ឆ្នាំ ឬអាយុ 11 និង 12 ឆ្នាំ។<br>' +
+          '• <b>ពិន្ទុមិនពេញ (០)៖</b> 12 ដល់ 13 · 12 · 13 · 11 · 11.2 ដល់ 12.8។<br>' +
+          '• <b>គ្មានពិន្ទុ (០ ពិន្ទុ)៖</b> ឆ្នាំ 1998 · ក្មេងស្រីខ្ពស់ជាងក្មេងប្រុសនៅអាយុលើស 13 ឆ្នាំ · ចាប់ពីអាយុ 10 ដល់ 11 · ឬរំលង។',
       },
     },
     screens: [
@@ -190,7 +156,7 @@
           W.p('<b>តើកម្ពស់ជាមធ្យមរបស់ក្មេងស្រីអាយុ 20 ឆ្នាំ ស្មើប៉ុន្មាន នៅឆ្នាំ 1980?</b>', 'q-lead'),
           h('div', { class: 'answer-line-wrap', style: 'margin: 16px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;' },
             h('span', { style: 'font-weight: 600;' }, 'កម្ពស់ជាមធ្យមក្នុងឆ្នាំ 1980 ស្មើនឹង ៖'),
-            W.input(ctx, 'm01q1', 'height', '168.3', { width: '130px', math: true, cls: 'resp-input' }),
+            W.input(ctx, 'm01q1', 'height', '', { width: '130px', cls: 'resp-input' }),
             h('span', { style: 'font-weight: 600;' }, 'cm')
           )
         ),
@@ -219,9 +185,9 @@
           W.p('<b>យោងតាមក្រាបខាងលើ តើអំឡុងពេលណាដែលកម្ពស់ជាមធ្យមរបស់ក្មេងស្រី ខ្ពស់ជាងក្មេងប្រុស ដែលមានអាយុស្មើគ្នា?</b>', 'q-lead'),
           h('div', { style: 'margin: 16px 0; display: flex; align-items: center; gap: 10px; font-size: 1.05rem; flex-wrap: wrap;' },
             h('span', { style: 'font-weight: 600;' }, 'ចាប់ពីអាយុ ៖'),
-            W.input(ctx, 'm01q3', 'age_from', '11', { width: '90px', math: true, cls: 'resp-input' }),
+            W.input(ctx, 'm01q3', 'age_from', '', { width: '90px', cls: 'resp-input' }),
             h('span', { style: 'font-weight: 600;' }, 'ឆ្នាំ ដល់អាយុ ៖'),
-            W.input(ctx, 'm01q3', 'age_to', '13', { width: '90px', math: true, cls: 'resp-input' }),
+            W.input(ctx, 'm01q3', 'age_to', '', { width: '90px', cls: 'resp-input' }),
             h('span', { style: 'font-weight: 600;' }, 'ឆ្នាំ')
           ),
           W.p('<i>(បញ្ជាក់៖ បញ្ចូលលេខអាយុដែលក្មេងស្រីមានកម្ពស់ជាមធ្យមខ្ពស់ជាងក្មេងប្រុស)</i>', 'hint')

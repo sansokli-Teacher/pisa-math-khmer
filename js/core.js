@@ -464,6 +464,9 @@
     return c;
   }
   function footer(unit) {
+    if (!unit.footer && unit.collection === 'moeys') {
+      return h('footer', { class: 'cba-foot' }, 'ដកស្រង់ពី «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា · រៀបចំឡើងវិញជាតេស្តលើកុំព្យូទ័រ — មិនមែនជាកម្មវិធីតេស្តផ្លូវការរបស់ OECD ទេ');
+    }
     return h('footer', { class: 'cba-foot' }, unit.footer ||
       'ផ្អែកលើឧទាហរណ៍ «' + unit.en + '» — OECD (2023), PISA 2022 Assessment and Analytical Framework, Annex 2.A, © OECD 2023, CC BY-NC-SA 3.0 IGO · ' +
       'បកប្រែ និងគូរឡើងវិញដោយក្រុមការងារ — មិនមែនជាកម្មវិធីតេស្តផ្លូវការរបស់ OECD ទេ');
