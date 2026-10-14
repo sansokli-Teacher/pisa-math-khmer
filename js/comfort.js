@@ -547,6 +547,41 @@
     });
   }
 
+
+  // ----------------------------------------------------- the results top ---
+  // A score ring, a few words for the score, the numbers that matter and the next step (the old plain header is the fallback).
+  function resultsHero(info) {
+    const S = info.state;
+    const pct = info.max ? Math.round((info.total / info.max) * 100) : 0;
+    const nq = info.units.reduce((n, u) => n + PISA.questionIds(u).length, 0);
+    const tier = pct >= 85 ? ['អស្ចារ្យណាស់!', 'ល្អប្រសើរមែនទែន សូមបន្តរក្សាកម្រិតនេះ។', '#2f9e6f']
+      : pct >= 70 ? ['ល្អណាស់!', 'អ្នកធ្វើបានល្អ សូមពិនិត្យកំហុសបន្តិច ដើម្បីឱ្យល្អឥតខ្ចោះ។', '#2e7a70']
+        : pct >= 50 ? ['ល្អហើយ!', 'អ្នកកំពុងឆ្ពោះទៅមុខ។ មើលចម្លើយខាងក្រោម ហើយហាត់ម្ដងទៀត។', '#c9862b']
+          : ['កុំបោះបង់!', 'ការហាត់បន្តិចម្ដងៗនាំឱ្យពូកែ។ មើលចម្លើយគំរូ ហើយព្យាយាមម្ដងទៀត។', '#b4546a'];
+    const R = 52, C = 2 * Math.PI * R;
+    const ring = '<svg viewBox="0 0 132 132" aria-hidden="true" focusable="false"><circle cx="66" cy="66" r="' + R + '" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="12"/>' +
+      '<circle class="rh-arc" cx="66" cy="66" r="' + R + '" fill="none" stroke="' + tier[2] + '" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" ' +
+      'stroke-dasharray="' + (C * pct / 100).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg>';
+    const tile = (num, lbl, cls) => h('div', { class: 'rh-tile' + (cls ? ' ' + cls : '') }, h('b', {}, num), h('span', {}, lbl));
+    const who = [S.student.name, S.student.klass, S.student.school].filter(Boolean).join(' · ');
+    const go = (id) => () => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    const box = h('section', { class: 'rh' }, h('div', { class: 'rh-in' },
+      h('div', { class: 'rh-ring' }, h('span', { html: ring }), h('div', { class: 'rh-pct' }, h('b', {}, km(pct) + '%'), h('i', {}, km(info.total) + ' / ' + km(info.max)))),
+      h('div', { class: 'rh-t' },
+        h('span', { class: 'rh-kicker' }, (S.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន') + (who ? ' · ' + who : '')),
+        h('h1', {}, tier[0]),
+        h('p', {}, tier[1]),
+        h('div', { class: 'rh-tiles' },
+          tile(km(info.total) + ' / ' + km(info.max), 'ពិន្ទុ'), tile(km(nq), 'សំណួរ'), tile(info.duration, 'រយៈពេល'),
+          info.pending ? tile(km(info.pending), 'រង់ចាំគ្រូដាក់ពិន្ទុ', 'warn') : null),
+        h('div', { class: 'rh-cta' },
+          h('button', { type: 'button', class: 'rh-main', onclick: go('res-review') }, 'មើលចម្លើយ និងកំហុស ↓'),
+          h('button', { type: 'button', class: 'rh-alt', onclick: info.again }, 'ហាត់ម្ដងទៀត'),
+          h('button', { type: 'button', class: 'rh-link', onclick: go('res-cert') }, 'វិញ្ញាបនបត្រ'),
+          h('button', { type: 'button', class: 'rh-link', onclick: info.home }, 'ទំព័រដើម')))));
+    return box;
+  }
+
   function results(page, info) {
     const S = info.state;
     // the name, asked here: a student who left it empty gets it on the certificate
@@ -565,9 +600,7 @@
         h('div', { class: 'cm-url' }, input, btn('រក្សាទុកឈ្មោះ', go, 'btn-primary'))));
     }
     const bar = h('div', { class: 'cm-sharebar' }, h('div', { class: 'cm-quick' },
-      btn('ចែករំលែកវិញ្ញាបនបត្រ (រូបភាព)', () => certificateShare(info), 'btn-primary'),
-      btn('ទាញយករូបវិញ្ញាបនបត្រ (PNG)', () => certificateShare(info, 'save')),
-      btn('ចែករំលែកតំណ + QR ដើម្បីហាត់ម្ដងទៀត', () => share(S.unitIds, { mode: S.mode, title: 'ចែករំលែកប្រធានបទទាំងនេះ' }))));
+      btn('ចែករំលែកតំណ + QR ដើម្បីឱ្យមិត្តហាត់ដូចគ្នា', () => share(S.unitIds, { mode: S.mode, title: 'ចែករំលែកប្រធានបទទាំងនេះ' }))));
     page.append(bar);
   }
 
@@ -656,7 +689,7 @@
     // small screens: the text is tiny at that size, so a tap opens the certificate large (scroll or pinch)
     const open = () => zoomOpen(wrap, 'ប្រើម្រាមដៃពីរ ដើម្បីពង្រីក ឬរំកិល');
     wrap.append(h('button', { type: 'button', class: 'cm-zoom-badge c2-zoom', onclick: open }, '🔍 ពង្រីកវិញ្ញាបនបត្រ'), root);
-    wrap.append(h('div', { class: 'c2-acts' }, btn('ចែករំលែកវិញ្ញាបនបត្រ (Telegram…)', () => certificateShare(info), 'btn-primary'), btn('ទាញយករូប PNG', () => certificateShare(info, 'save'))));
+    wrap.append(h('div', { class: 'c2-acts' }, btn('ចែករំលែកវិញ្ញាបនបត្រ (Telegram…)', () => certificateShare(info), 'btn-primary'), btn('ទាញយករូប PNG', () => certificateShare(info, 'save')), btn('🖨️ បោះពុម្ព (A4)', () => PISA.printCertificate && PISA.printCertificate())));
     root.classList.add('cm-zoomable');
     root.addEventListener('click', () => { if (phone()) open(); });
     // 1 em = 1 % of the width: css/comfort.css does it with container units (1cqw); an old browser without them gets it from here
@@ -668,5 +701,5 @@
     return wrap;
   }
 
-  PISA.comfort = { afterScreen, saved, settings, overview, share, results, installBox, toast, prefs, resultCard, certificate, certificateImage };
+  PISA.comfort = { afterScreen, saved, settings, overview, share, results, installBox, toast, prefs, resultCard, certificate, certificateImage, resultsHero };
 })();

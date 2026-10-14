@@ -212,7 +212,8 @@ button.cm-chip { cursor: pointer; }
   /* «បោះពុម្ពវិញ្ញាបនបត្រ»: the certificate alone, whatever else the results page holds. It fills the printable width
      (A4 landscape, margins None: 297 x 210 mm; with the browser's default margins it is simply a little smaller). */
   @page { size: 297mm 210mm; margin: 0; }
-  body.print-cert-only .results > :not(.pisa-cert-wrap) { display: none !important; }
+  body.print-cert-only .results > :not(.res-sec) { display: none !important; }
+  body.print-cert-only .res-sec-h { display: none !important; }
   body.print-cert-only, body.print-cert-only #app, body.print-cert-only .km-res-main { background: #fff !important; padding: 0 !important; }
   body.print-cert-only .km-wrap { max-width: none !important; padding: 0 !important; margin: 0 !important; }
   body.print-cert-only, html:has(body.print-cert-only) { width: auto !important; height: auto !important; }

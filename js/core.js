@@ -351,7 +351,8 @@
     document.title = unit.title + ' — ' + scr.tag;
 
     const win = h('div', { class: 'cba-window' });
-    win.append(topBar(unit), body(unit, scr, ctx), learnTray(unit, scr), footer(unit));
+    // (a null child would be written as the word «null»: the tray exists only in practice mode)
+    win.append(...[topBar(unit), body(unit, scr, ctx), learnTray(unit, scr), footer(unit)].filter(Boolean));
     app.append(win);
     PISA.typeset(win);
     if (PISA.mathBar) PISA.mathBar(win);
@@ -799,17 +800,26 @@
     }));
 
     const page = h('div', { class: 'results' });
-    const who = [state.student.name, state.student.klass, state.student.school].filter(Boolean).join(' · ');
-    page.append(h('header', { class: 'res-head' },
-      h('h1', {}, 'លទ្ធផល'),
-      h('p', { class: 'res-sub' }, (who ? who + ' — ' : '') + (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន') +
-        ' — រយៈពេល ' + fmtElapsed((state.finishedAt || Date.now()) - state.startedAt))));
+    const durationMs = (state.finishedAt || Date.now()) - state.startedAt;
+    const hero = PISA.comfort && PISA.comfort.resultsHero && PISA.comfort.resultsHero({
+      state, total, max, pending, marked, units, duration: fmtElapsed(durationMs),
+      again: () => { store.clear(); const st = state.student; PISA.start({ name: st.name, klass: st.klass, teacher: st.teacher, school: st.school, mode: 'practice', unitIds: state.unitIds.slice() }); },
+      home: () => { clearHash(); PISA.home(); window.scrollTo(0, 0); },
+    });
+    if (hero) page.append(hero);
+    else {
+      const who = [state.student.name, state.student.klass, state.student.school].filter(Boolean).join(' · ');
+      page.append(h('header', { class: 'res-head' },
+        h('h1', {}, 'លទ្ធផល'),
+        h('p', { class: 'res-sub' }, (who ? who + ' — ' : '') + (state.mode === 'test' ? 'របៀបតេស្ត' : 'របៀបហាត់រៀន') +
+          ' — រយៈពេល ' + fmtElapsed((state.finishedAt || Date.now()) - state.startedAt))));
 
-    const totals = h('div', { class: 'res-totals' },
-      h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(total) + ' / ' + PISA.km(max)), h('div', { class: 'tot-lbl' }, 'ពិន្ទុសរុប (មិនទាន់រាប់សំណួររង់ចាំគ្រូ)')),
-      h('div', { class: 'tot' + (pending ? ' tot-warn' : '') }, h('div', { class: 'tot-num' }, PISA.km(pending)), h('div', { class: 'tot-lbl' }, 'សំណួររង់ចាំគ្រូដាក់ពិន្ទុ')),
-      h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
-    page.append(totals);
+      const totals = h('div', { class: 'res-totals' },
+        h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(total) + ' / ' + PISA.km(max)), h('div', { class: 'tot-lbl' }, 'ពិន្ទុសរុប (មិនទាន់រាប់សំណួររង់ចាំគ្រូ)')),
+        h('div', { class: 'tot' + (pending ? ' tot-warn' : '') }, h('div', { class: 'tot-num' }, PISA.km(pending)), h('div', { class: 'tot-lbl' }, 'សំណួររង់ចាំគ្រូដាក់ពិន្ទុ')),
+        h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
+      page.append(totals);
+    }
     // the name for the certificate (asked here, not before the test) and sharing the result
     if (PISA.comfort) PISA.comfort.results(page, { state, total, max, units, redraw: showResults, save });
 
@@ -860,18 +870,21 @@
           '</div>' +
         '</div>' +
       '</div>';
-    page.append(reviewSection(units));
-    const byProcess = processSection(units);
-    if (byProcess) page.append(byProcess);
-    // the certificate of js/comfort.js (Khmer M1 and Khmer OS Battambang, Times New Roman, red border); the plain one above stays as a fallback
+    // the certificate of js/comfort.js (Khmer M1 and Khmer OS Battambang, Times New Roman, gold frame); the plain one above stays as a fallback
     if (PISA.comfort && PISA.comfort.certificate) {
       certWrap = PISA.comfort.certificate({ state, total, max, pct, units, durationStr });
     }
-    page.append(certWrap);
+    page.append(h('section', { class: 'res-sec', id: 'res-cert' }, h('h2', { class: 'res-sec-h' }, 'វិញ្ញាបនបត្ររបស់អ្នក'), certWrap));
+    const reviewNode = reviewSection(units);
+    reviewNode.id = 'res-review';
+    page.append(reviewNode);
+    const byProcess = processSection(units);
+    if (byProcess) page.append(byProcess);
 
     const fromMoeys = units.every((u) => u.collection === 'moeys');
     const fromTextbook = units.every((u) => u.collection === 'textbook');
-    page.append(h('p', { class: 'res-note' },
+    const teacherBox = h('details', { class: 'res-teacher' }, h('summary', {}, 'សម្រាប់គ្រូ៖ តារាងពិន្ទុ ការដាក់ពិន្ទុ និងការទាញយកទិន្នន័យ'));
+    teacherBox.append(h('p', { class: 'res-note' },
       (fromMoeys
         ? 'ចម្លើយគំរូ និងការដាក់ពិន្ទុ យកតាម «ឯកសារជំនួយស្មារតីស្តីពីសំណួរតេស្តគំរូនីតិវិធី PISA ២០២៥» របស់នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ នៃក្រសួងអប់រំ យុវជន និងកីឡា។ '
         : fromTextbook
@@ -879,7 +892,6 @@
         : 'ចម្លើយគំរូ និងការដាក់ពិន្ទុ យកតាមសៀវភៅណែនាំគ្រូ ដែលជាការចងក្រងរបស់គម្រោង ពុំមែនជាកូនសោដាក់ពិន្ទុផ្លូវការរបស់ OECD ទេ។ ') +
       'សំណួរសរសេរចម្លើយវែង ត្រូវការគ្រូអាន និងដាក់ពិន្ទុដោយប្រើប៊ូតុងនៅជួរនីមួយៗ។ គ្រូក៏អាចកែពិន្ទុស្វ័យប្រវត្តិបានដែរ ពេលអត្រាកំណែផ្តល់ពិន្ទុលើវិធីធ្វើ។'));
 
-    page.append(h('h2', { class: 'res-teacher-h' }, 'សម្រាប់គ្រូ៖ តារាងពិន្ទុ និងការដាក់ពិន្ទុ'));
     units.forEach((u) => {
       const sec = h('section', { class: 'res-unit' });
       sec.append(h('h2', {}, unitHeading(u) + ' ', u.en && u.en !== u.label ? h('span', { class: 'en' }, '(' + u.en + ')') : null));
@@ -891,7 +903,7 @@
       PISA.questionIds(u).forEach((qid) => tb.append(resultRow(u, qid)));
       tbl.append(tb);
       sec.append(tbl);
-      page.append(sec);
+      teacherBox.append(sec);
     });
 
     function printCertificateOnly() {
@@ -899,17 +911,20 @@
       window.print();
       setTimeout(() => document.body.classList.remove('print-cert-only'), 800);
     }
+    PISA.printCertificate = printCertificateOnly;
 
-    page.append(h('div', { class: 'res-actions' },
-      h('button', { type: 'button', class: 'btn btn-primary', onclick: printCertificateOnly }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ (A4)'),
+    teacherBox.append(h('div', { class: 'res-actions' },
       h('button', { type: 'button', class: 'btn', onclick: () => window.print() }, '📄 របាយការណ៍លម្អិត (PDF)'),
       h('button', { type: 'button', class: 'btn', onclick: downloadCSV }, '📥 ទាញយកលទ្ធផល (CSV)'),
-      h('button', { type: 'button', class: 'btn', onclick: downloadJSON }, 'ទាញយកទិន្នន័យពេញ (JSON)'),
+      h('button', { type: 'button', class: 'btn', onclick: downloadJSON }, 'ទាញយកទិន្នន័យពេញ (JSON)')));
+    page.append(h('div', { class: 'res-actions res-actions-main' },
+      h('button', { type: 'button', class: 'btn btn-primary', onclick: printCertificateOnly }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ (A4)'),
       h('button', {
         type: 'button', class: 'btn btn-quiet', onclick: () => dialog(
           ['ចាប់ផ្ដើមវគ្គថ្មី? លទ្ធផលនេះនឹងត្រូវលុបចេញពីកុំព្យូទ័រនេះ។ សូមទាញយក CSV មុនសិន បើត្រូវការ។'],
           [{ label: 'បោះបង់' }, { label: 'ចាប់ផ្ដើមថ្មី', primary: true, action: () => { store.clear(); state = null; PISA.home(); } }]),
       }, 'ចាប់ផ្ដើមវគ្គថ្មី')));
+    page.append(teacherBox);
     // a session opened from a textbook lesson offers the way back to it
     const back = units.every((u) => u.lessonUrl) && units[0].lessonUrl;
     if (back) {
