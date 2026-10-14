@@ -135,21 +135,7 @@
       h('p', { class: 'hm-lead' }, 'សំណួរតាមបែប PISA ជាភាសាខ្មែរ លើអេក្រង់ដែលរៀបចំដូចតេស្តពិត។ ហាត់ម្ដងមួយសំណួរ ហើយពិនិត្យចម្លើយភ្លាមៗ ឬធ្វើជាតេស្តដូចពិត។'),
       h('p', { class: 'hm-facts' }, PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ · ឥតគិតថ្លៃ · ប្រើលើទូរស័ព្ទបាន · ប្រើពេលគ្មានអ៊ីនធឺណិតបាន')));
 
-    // --- who (optional)
-    wrap.append(h('div', { class: 'hm-who' },
-      h('label', {}, h('span', {}, 'ឈ្មោះសិស្ស'), name), h('label', {}, h('span', {}, 'ថ្នាក់'), klass),
-      h('label', {}, h('span', {}, 'គ្រូបង្រៀន'), teacher), h('label', {}, h('span', {}, 'សាលា'), school),
-      h('p', {}, 'មិនបំពេញក៏បាន។ ព័ត៌មាននេះចេញលើលទ្ធផល វិញ្ញាបនបត្រ និងឯកសារ CSV ប៉ុណ្ណោះ ហើយមិនត្រូវបានផ្ញើទៅកន្លែងណាទេ។')));
-
-    // --- how to use
-    wrap.append(h('section', { class: 'hm-how', id: 'how' }, h('h2', {}, 'របៀបប្រើ'),
-      h('ol', {},
-        h('li', {}, h('b', {}, 'បំពេញព័ត៌មាន។ '), 'ឈ្មោះ ថ្នាក់ គ្រូ និងសាលា (មិនបំពេញក៏បាន)។'),
-        h('li', {}, h('b', {}, 'ជ្រើសរើស។ '), 'ចុចប៊ូតុងក្នុង «ចាប់ផ្ដើមភ្លាម» ឬជ្រើសប្រធានបទខ្លួនឯង រួចចុច «ហាត់រៀន» (ពិនិត្យចម្លើយភ្លាមៗ) ឬ «ធ្វើជាតេស្ត» (ទៅមុខតែមួយផ្លូវ ដូចតេស្តពិត)។'),
-        h('li', {}, h('b', {}, 'ឆ្លើយសំណួរ។ '), 'អានអត្ថបទនៅផ្នែកខាងស្ដាំ ឆ្លើយនៅផ្នែកខាងឆ្វេង ហើយចុច «បន្ទាប់»។ មានម៉ាស៊ីនគិតលេខនៅជ្រុងខាងលើ។'),
-        h('li', {}, h('b', {}, 'មើលលទ្ធផល។ '), 'ពេលចប់ មើលចម្លើយខុស ទាញយកវិញ្ញាបនបត្រ ឬឯកសារ CSV។ ការហាត់របស់អ្នករក្សាទុកក្នុងកុំព្យូទ័រ ឬទូរស័ព្ទនេះ។')),
-      hasTutorial ? h('p', {}, 'មិនធ្លាប់ប្រើ? ', h('button', { type: 'button', class: 'hm-link', onclick: startTutorial }, 'ធ្វើមេរៀនណែនាំ (ប្រហែល ៥ នាទី)')) : null));
-
+    // --- a session left unfinished comes first: the student can carry on in one tap
     // --- an unfinished or finished session on this computer
     const saved = PISA.saved();
     if (saved && saved.unitIds && saved.unitIds.every((id) => PISA.unit(id))) {
@@ -167,6 +153,8 @@
       }
       wrap.append(box);
     }
+
+    if (PISA.comfort) wrap.append(PISA.comfort.installBox());
 
     // --- two columns: start now / my practice
     const startMock = (qCount, mins) => {
@@ -219,6 +207,23 @@
         [{ label: 'បោះបង់' }, { label: 'លុប', primary: true, action: () => { PISA.clearHistory(); home(); } }]) }, 'លុបប្រវត្តិ'));
     }
     wrap.append(h('div', { class: 'hm-cols' }, h('section', { class: 'hm-start' }, h('h2', {}, 'ចាប់ផ្ដើមភ្លាម'), quick), mine));
+    // --- who (optional): folded, because most students just start; the name can also be given on the results page
+    const whoFold = h('details', { class: 'hm-fold', open: !!(who.name || who.klass || who.teacher || who.school) },
+      h('summary', {}, 'ឈ្មោះ ថ្នាក់ សាលា ', h('small', {}, '(មិនបំពេញក៏បាន)')),
+      h('div', { class: 'hm-fold-in' }, h('div', { class: 'hm-who' },
+        h('label', {}, h('span', {}, 'ឈ្មោះសិស្ស'), name), h('label', {}, h('span', {}, 'ថ្នាក់'), klass),
+        h('label', {}, h('span', {}, 'គ្រូបង្រៀន'), teacher), h('label', {}, h('span', {}, 'សាលា'), school),
+        h('p', {}, 'មិនបំពេញក៏បាន។ ព័ត៌មាននេះចេញលើលទ្ធផល វិញ្ញាបនបត្រ និងឯកសារ CSV ប៉ុណ្ណោះ ហើយមិនត្រូវបានផ្ញើទៅកន្លែងណាទេ។'))));
+    // --- how to use
+    const howFold = h('details', { class: 'hm-fold', id: 'how' }, h('summary', {}, 'របៀបប្រើ'), h('div', { class: 'hm-fold-in' }, h('div', { class: 'hm-how' },
+      h('ol', {},
+        h('li', {}, h('b', {}, 'បំពេញព័ត៌មាន។ '), 'ឈ្មោះ ថ្នាក់ គ្រូ និងសាលា (មិនបំពេញក៏បាន)។'),
+        h('li', {}, h('b', {}, 'ជ្រើសរើស។ '), 'ចុចប៊ូតុងក្នុង «ចាប់ផ្ដើមភ្លាម» ឬជ្រើសប្រធានបទខ្លួនឯង រួចចុច «ហាត់រៀន» (ពិនិត្យចម្លើយភ្លាមៗ) ឬ «ធ្វើជាតេស្ត» (ទៅមុខតែមួយផ្លូវ ដូចតេស្តពិត)។'),
+        h('li', {}, h('b', {}, 'ឆ្លើយសំណួរ។ '), 'អានអត្ថបទនៅផ្នែកខាងស្ដាំ ឆ្លើយនៅផ្នែកខាងឆ្វេង ហើយចុច «បន្ទាប់»។ មានម៉ាស៊ីនគិតលេខនៅជ្រុងខាងលើ។'),
+        h('li', {}, h('b', {}, 'មើលលទ្ធផល។ '), 'ពេលចប់ មើលចម្លើយខុស ទាញយកវិញ្ញាបនបត្រ ឬឯកសារ CSV។ ការហាត់របស់អ្នករក្សាទុកក្នុងកុំព្យូទ័រ ឬទូរស័ព្ទនេះ។')),
+      hasTutorial ? h('p', {}, 'មិនធ្លាប់ប្រើ? ', h('button', { type: 'button', class: 'hm-link', onclick: startTutorial }, 'ធ្វើមេរៀនណែនាំ (ប្រហែល ៥ នាទី)')) : null)));
+
+    wrap.append(whoFold);
 
     // --- choose the topics: one tab per source; the choice is kept across tabs
     const chosen = new Set();           // nothing is ticked until the student chooses
@@ -239,7 +244,9 @@
       const li = h('label', { class: 'hm-unit' + (inp.checked ? ' on' : '') }, inp,
         h('span', { class: 'hm-no' }, u.label || PISA.km(u.no)),
         h('span', { class: 'hm-ut' }, h('b', {}, u.title), u.en ? h('small', {}, u.en) : null),
-        h('span', { class: 'hm-un' }, (u.grade ? 'ថ្នាក់ ' + PISA.km(u.grade) + ' · ' : '') + PISA.km(qs.length) + ' សំណួរ'));
+        h('span', { class: 'hm-un' }, (u.grade ? 'ថ្នាក់ ' + PISA.km(u.grade) + ' · ' : '') + PISA.km(qs.length) + ' សំណួរ'),
+        PISA.comfort ? h('button', { type: 'button', class: 'hm-share', title: 'ចែករំលែកតំណ និង QR', 'aria-label': 'ចែករំលែកប្រធានបទនេះ',
+          onclick: (e) => { e.preventDefault(); e.stopPropagation(); PISA.comfort.share([u.id]); } }, 'QR') : null);
       inp.addEventListener('change', () => {
         if (inp.checked) chosen.add(u.id); else chosen.delete(u.id);
         li.classList.toggle('on', inp.checked);
@@ -316,6 +323,11 @@
     };
     const bar = h('div', { class: 'hm-bar-start' }, summary, err,
       h('button', { type: 'button', class: 'hm-link', onclick: () => { chosen.clear(); drawPanel(); refresh(); } }, 'សម្អាត'),
+      PISA.comfort ? h('button', { type: 'button', class: 'hm-link', onclick: () => {
+        const ids = PISA.units.map((u) => u.id).filter((id) => chosen.has(id));
+        if (!ids.length) { err.textContent = 'សូមជ្រើសរើសប្រធានបទយ៉ាងហោចណាស់មួយ។'; return; }
+        PISA.comfort.share(ids, { title: 'ចែករំលែកប្រធានបទដែលបានជ្រើស' });
+      } }, 'ចែករំលែក / QR') : null,
       h('button', { type: 'button', class: 'hm-btn', onclick: go('test') }, 'ធ្វើជាតេស្ត'),
       h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: go('practice') }, 'ហាត់រៀន'));
     wrap.append(h('section', { class: 'hm-topics', id: 'start' },
@@ -324,6 +336,8 @@
       h('div', { class: 'hm-zone' }, tabBar, panel, bar)));
     drawPanel();
     refresh();
+
+    wrap.append(howFold);
 
     // --- for teachers
     wrap.append(h('section', { class: 'hm-teach' }, h('h2', {}, 'សម្រាប់គ្រូ'),

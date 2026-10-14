@@ -132,7 +132,7 @@
       try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; }
     },
     set(v) {
-      try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* ignore */ }
+      try { localStorage.setItem(KEY, JSON.stringify(v)); return true; } catch (e) { return false; }
     },
     clear() {
       try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
@@ -143,7 +143,11 @@
   let enteredAt = 0;
   PISA.saved = () => store.get();
   PISA.clearSaved = () => store.clear();
-  function save() { if (!state.preview) store.set(state); }
+  function save() {
+    if (state.preview) return;
+    const ok = store.set(state);
+    if (PISA.comfort) PISA.comfort.saved(ok);
+  }
 
   // -------------------------------------------------------------- units ---
   PISA.registerUnit = (u) => PISA.units.push(u);
@@ -269,6 +273,7 @@
     clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="#fff" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
     calc: '<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="7.5" y="5.5" width="9" height="3.2" fill="#fff"/><g fill="#fff"><rect x="7.5" y="11" width="2.4" height="2.2"/><rect x="10.8" y="11" width="2.4" height="2.2"/><rect x="14.1" y="11" width="2.4" height="2.2"/><rect x="7.5" y="15" width="2.4" height="2.2"/><rect x="10.8" y="15" width="2.4" height="2.2"/><rect x="14.1" y="15" width="2.4" height="2.2"/></g></svg>',
     help: '<svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Arial, sans-serif">?</text></svg>',
+    aa: '<svg viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="Arial, sans-serif">Aa</text></svg>',
     back: '<svg viewBox="0 0 24 24"><path d="M15.5 5.5 8 12l7.5 6.5z" fill="#fff"/></svg>',
     next: '<svg viewBox="0 0 24 24"><path d="M8.5 5.5 16 12l-7.5 6.5z" fill="#fff"/></svg>',
   };
@@ -296,6 +301,7 @@
     app.append(win);
     PISA.typeset(win);
     if (PISA.mathBar) PISA.mathBar(win);
+    if (PISA.comfort) PISA.comfort.afterScreen(win, { unit, scr, practice: state.mode === 'practice' });
     enteredAt = Date.now();
     if (state && state.mock) startMockTimer();
     const first = win.querySelector('.panel-content');
@@ -393,10 +399,12 @@
   function topBar(unit) {
     const bar = h('header', { class: 'cba-top' });
     bar.append(h('div', { class: 'brand' }, 'គណិតវិទ្យាតាមបែប PISA'));
-    const prog = h('div', { class: 'progress', title: 'វឌ្ឍនភាពក្នុងប្រធានបទនេះ' });
+    const prog = h('button', { type: 'button', class: 'progress', title: 'មើលសំណួរទាំងអស់', 'aria-label': 'មើលសំណួរទាំងអស់',
+      onclick: () => PISA.comfort && PISA.comfort.overview() });
     unit.screens.forEach((_, i) => {
       prog.append(h('span', { class: 'sq' + (i === state.pos.s ? ' on' : '') }));
     });
+    prog.append(h('span', { class: 'prog-text' }, PISA.km(state.pos.s + 1) + ' / ' + PISA.km(unit.screens.length)));
     bar.append(prog);
     bar.append(iconBtn('clock', 'ពេលវេលា', toggleClock));
     if (state.mock) {
@@ -409,6 +417,7 @@
     bar.append(h('div', { class: 'tb-spacer' }));
     if (state.mode === 'practice') bar.append(h('div', { class: 'mode-tag' }, 'របៀបហាត់រៀន'));
     bar.append(iconBtn('calc', 'ម៉ាស៊ីនគិតលេខ', () => PISA.calc.toggle()));
+    bar.append(iconBtn('aa', 'ទំហំអក្សរ និងការកំណត់', () => PISA.comfort && PISA.comfort.settings()));
     bar.append(iconBtn('help', 'ជំនួយ', showHelp));
     const atStart = state.pos.u === 0 && state.pos.s === 0;
     bar.append(iconBtn('back', 'ថយក្រោយ', goBack, state.mode !== 'practice' || atStart));
@@ -526,6 +535,25 @@
     showScreen();
   }
 
+  // what js/comfort.js needs from a running session
+  PISA.session = () => state;
+  PISA.next = () => { if (state && !state.finishedAt && document.querySelector('.cba-window')) goNext(); };
+  PISA.prev = () => { if (state && state.mode === 'practice' && document.querySelector('.cba-window')) goBack(); };
+  PISA.help = () => showHelp();
+  PISA.clock = () => toggleClock();
+  PISA.screenDone = (u, s) => {
+    const unit = unitAt(u), scr = unit.screens[s];
+    const items = (scr.items || []).filter((qid) => unit.questions[qid]);
+    return items.length ? items.every((qid) => isAnswered(unit, qid)) : null;      // null: nothing to answer on this screen
+  };
+  PISA.goTo = (u, s) => {
+    if (!state || state.mode !== 'practice' || state.finishedAt) return;
+    recordTime();
+    state.pos = { u, s };
+    save();
+    showScreen();
+  };
+
   function finish() {
     state.finishedAt = Date.now();
     save();
@@ -569,6 +597,8 @@
         : 'ក្នុងរបៀបតេស្ត អ្នកមិនអាចត្រឡប់ក្រោយបានទេ ដូចតេស្ត PISA ពិត។') + '</li>' +
       '<li>សំណួរខ្លះឱ្យអ្នក<b>ចុចជម្រើស</b> ខ្លះឱ្យ<b>វាយចម្លើយ</b> ខ្លះឱ្យ<b>អូសទម្លាក់</b>។ អាន «សេចក្ដីណែនាំ» ពណ៌ទ្រេតនៅខាងឆ្វេងរាល់ពេល។</li>' +
       '<li>ពេលវាយលេខ អ្នកអាចប្រើលេខខ្មែរ (១២៣) ឬលេខឡាតាំង (123) ក៏បាន។</li>' +
+      '<li><span class="hi hi-green">' + ICON.aa + '</span>ចុច «Aa» ដើម្បីបង្កើនទំហំអក្សរ ប្តូរទៅពន្លឺទន់ មើលគ្រាប់ចុចរហ័ស។ ចុចលេខអេក្រង់ (ឧ. ២ / ៣) ដើម្បីមើលសំណួរទាំងអស់។</li>' +
+      '<li>លើទូរស័ព្ទ ប៊ូតុង «អត្ថបទ ↓ / សំណួរ ↑» នៅខាងក្រោម នាំអ្នកទៅមក រវាងអត្ថបទ និងសំណួរ។ ចុចរូបភាព ឬក្រាហ្វ ដើម្បីពង្រីក។</li>' +
       '</ul>';
     box.append(h('div', { class: 'dlg-btns' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => back.remove() }, 'យល់ហើយ')));
     back.append(box);
@@ -726,6 +756,8 @@
       h('div', { class: 'tot' + (pending ? ' tot-warn' : '') }, h('div', { class: 'tot-num' }, PISA.km(pending)), h('div', { class: 'tot-lbl' }, 'សំណួររង់ចាំគ្រូដាក់ពិន្ទុ')),
       h('div', { class: 'tot' }, h('div', { class: 'tot-num' }, PISA.km(marked)), h('div', { class: 'tot-lbl' }, 'សំណួរដែលគ្រូបានដាក់ ឬកែពិន្ទុ')));
     page.append(totals);
+    // the name for the certificate (asked here, not before the test) and sharing the result
+    if (PISA.comfort) PISA.comfort.results(page, { state, total, max, units, redraw: showResults, save });
 
     const pct = max > 0 ? Math.round((total / max) * 100) : 0;
     const durationStr = fmtElapsed((state.finishedAt || Date.now()) - state.startedAt);

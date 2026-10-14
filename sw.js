@@ -1,5 +1,5 @@
 /* PISA CBA Khmer — Service Worker for Offline PWA Support */
-const CACHE_NAME = 'pisa-cba-khmer-v2026-10-08-learn';
+const CACHE_NAME = 'pisa-cba-khmer-v2026-10-14-comfort';
 
 // Pre-cached critical assets
 const CORE_ASSETS = [
@@ -10,6 +10,7 @@ const CORE_ASSETS = [
   'css/site.css',
   'css/home.css',
   'css/learn.css',
+  'css/comfort.css',
   'fonts/NotoSansKhmer.woff',
   'fonts/kantumruy-pro-khmer.woff2',
   'fonts/kantumruy-pro-latin.woff2',
@@ -22,6 +23,8 @@ const CORE_ASSETS = [
   'js/widgets.js',
   'js/mathtype.js',
   'js/calculator.js',
+  'js/comfort.js',
+  'js/vendor/qrcode.js',
   'js/main.js',
   'js/visits.js',
   'js/data/book_units.js',

@@ -43,6 +43,12 @@ all rights reserved; published here by the author for students to practise. Not
 OECD material. Imported by `tools/import_g7.py`; figures drawn with TikZ or
 the author's pictures.
 
+## QR codes
+
+js/vendor/qrcode.js is qrcode-generator 1.4.4 by Kazuhiko Arase, MIT licence
+(http://www.opensource.org/licenses/mit-license.php). "QR Code" is a registered
+trademark of DENSO WAVE INCORPORATED.
+
 ## Fonts
 
 Noto Sans Khmer, SIL Open Font License 1.1 (fonts/OFL.txt): the test screens.

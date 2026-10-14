@@ -126,7 +126,7 @@
           const k = partFor(b)[0].k;
           box.append(h('div', { class: 'ansline' },
             b.pre ? h('span', { class: 'pre', html: b.pre }) : null,
-            W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math && !b.plain, label: plain(b.pre) || 'ចម្លើយ' }),
+            W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math && !b.plain, inputmode: opts.inputmode, label: plain(b.pre) || 'ចម្លើយ' }),
             b.post ? h('span', { class: 'post', html: b.post }) : null));
           if (opts.workBox && !box.querySelector('.work')) {
             box.append(h('div', { class: 'work' }, h('p', { class: 'small' }, 'វិធីគណនា៖'), W.textarea(ctx, qid, 'work', 'សូមសរសេរវិធីគណនារបស់អ្នកនៅទីនេះ', 4)));
@@ -138,7 +138,7 @@
           break;
         case 'line': {
           const k = partFor(b)[0].k;
-          box.append(h('div', { class: 'ansline wide' }, h('span', { class: 'pre', html: b.label }), W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math, label: plain(b.label) })));
+          box.append(h('div', { class: 'ansline wide' }, h('span', { class: 'pre', html: b.label }), W.input(ctx, qid, k, '', { cls: 'ans', math: opts.math, inputmode: opts.inputmode, label: plain(b.label) })));
           break;
         }
         case 'grid': box.append(gridNode(ctx, qid, b)); break;
@@ -241,7 +241,9 @@
         tag: 'សំណួរ ' + PISA.km(q.no) + ' / ' + PISA.km(u.questions.length),
         split: hasWide ? 52 : 45,
         items: [qid],
-        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox, math: textbook && q.autoNum == null }),
+        // a whole number or a decimal that cannot be negative: the phone opens the digits keyboard
+        left: (ctx) => renderBlocks(ctx, qid, q.blocks, { workBox, math: textbook && q.autoNum == null,
+          inputmode: q.autoNum == null || q.autoNum < 0 ? undefined : Number.isInteger(q.autoNum) ? 'numeric' : 'decimal' }),
         right: stimulus,
       });
     });

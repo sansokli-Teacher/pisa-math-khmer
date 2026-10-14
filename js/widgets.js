@@ -83,8 +83,14 @@
     return ta;
   };
   W.input = function (ctx, qid, part, placeholder, opts) {
+    // several units pass the options as the fourth argument: W.input(ctx, qid, part, { label, width, type: 'number' })
+    if (placeholder && typeof placeholder === 'object') { opts = placeholder; placeholder = ''; }
     opts = opts || {};
-    const inp = h('input', { type: 'text', class: 'resp-input' + (opts.cls ? ' ' + opts.cls : ''), placeholder: placeholder || '', autocomplete: 'off', spellcheck: 'false', 'aria-label': opts.label || placeholder || 'ចម្លើយ', 'data-math': !!opts.math });
+    const numeric = opts.type === 'number' || opts.numeric;
+    const inp = h('input', { type: 'text', class: 'resp-input' + (opts.cls ? ' ' + opts.cls : ''), placeholder: placeholder || '', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
+      // a number box opens the digits keyboard on a phone (typed Khmer digits, %, and a/b are still read by PISA.parseAnswer)
+      inputmode: opts.inputmode || (numeric ? 'decimal' : 'text'), enterkeyhint: 'next',
+      'aria-label': opts.label || placeholder || 'ចម្លើយ', 'data-math': !!opts.math });
     if (opts.maxlength) inp.maxLength = opts.maxlength;
     if (opts.width) inp.style.width = opts.width;
     inp.value = ctx.val(qid, part) || '';
