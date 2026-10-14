@@ -719,28 +719,83 @@
 
   // For the student: the questions to look at again, each with the answer given, the book's model answer
   // and the way back to the lesson. Questions answered in full are only counted.
+  // Score by topic: a bar for each, and a button to practise it again. A tap on the name goes to its answers below.
+  function topicBreakdown(units) {
+    const rows = units.map((u) => {
+      let got = 0, max = 0, wait = 0;
+      PISA.questionIds(u).forEach((qid) => { const sc = scoreOf(u, qid); max += sc.max; if (sc.final != null) got += sc.final; else wait += 1; });
+      return { u, got, max, wait, pct: max ? Math.round((got / max) * 100) : 0 };
+    });
+    if (rows.length < 2) return null;                     // one topic: the score above says it all
+    const tone = (r) => (r.wait && !r.got ? 'wait' : r.pct >= 85 ? 'great' : r.pct >= 60 ? 'good' : r.pct >= 40 ? 'mid' : 'low');
+    const sec = h('section', { class: 'res-sec tb', id: 'res-topics' }, h('h2', { class: 'res-sec-h' }, 'ពិន្ទុតាមប្រធានបទ'));
+    const list = h('ul', { class: 'tb-list' });
+    rows.slice().sort((x, y) => x.pct - y.pct).forEach((r) => {
+      list.append(h('li', { class: 'tb-row tone-' + tone(r) },
+        h('a', { class: 'tb-name', href: '#rv-' + r.u.id, onclick: (e) => { const t = document.getElementById('rv-' + r.u.id); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); const d = t.querySelector('details'); if (d) d.open = true; } } }, unitHeading(r.u)),
+        h('span', { class: 'tb-bar', role: 'img', 'aria-label': PISA.km(r.pct) + '%' }, h('i', { style: { width: Math.max(r.pct, r.got ? 3 : 0) + '%' } })),
+        h('span', { class: 'tb-val' }, PISA.km(r.got) + ' / ' + PISA.km(r.max) + (r.wait ? ' +' + PISA.km(r.wait) + ' រង់ចាំគ្រូ' : '')),
+        r.pct < 85 ? h('button', { type: 'button', class: 'tb-go', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, teacher: state.student.teacher, school: state.student.school, mode: 'practice', unitIds: [r.u.id] }) }, 'ហាត់') : h('span', { class: 'tb-ok', 'aria-label': 'ល្អ' }, '✓')));
+    });
+    sec.append(list);
+    const weak = rows.filter((r) => r.pct < 85 && r.max).sort((x, y) => x.pct - y.pct).slice(0, 3);
+    if (weak.length) {
+      sec.append(h('p', { class: 'tb-next' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, teacher: state.student.teacher, school: state.student.school, mode: 'practice', unitIds: weak.map((r) => r.u.id) }) },
+        'ហាត់ប្រធានបទខ្សោយបំផុត ' + PISA.km(weak.length) + ' ម្ដងទៀត ▸')));
+    }
+    return sec;
+  }
+
   function reviewSection(units) {
     const all = [];
     units.forEach((u) => PISA.questionIds(u).forEach((qid) => all.push({ u, qid, sc: scoreOf(u, qid) })));
     const done = (x) => x.sc.final != null && x.sc.final >= x.sc.max;
     const good = all.filter(done), again = all.filter((x) => !done(x));
+    const nWrong = again.filter((x) => x.sc.final != null).length, nWait = again.length - nWrong;
     const sec = h('section', { class: 'rv' });
     sec.append(h('h2', {}, 'ពិនិត្យឡើងវិញ'),
       h('p', { class: 'rv-sum' }, h('b', {}, PISA.km(good.length)), ' សំណួរត្រឹមត្រូវ · ', h('b', {}, PISA.km(again.length)), ' សំណួរត្រូវមើលម្ដងទៀត'));
     if (!again.length) { sec.append(h('p', { class: 'rv-none' }, 'សំណួរទាំងអស់ត្រឹមត្រូវ។')); return sec; }
-    again.forEach(({ u, qid, sc }) => {
-      const wait = sc.final == null;
-      const said = answerText(sc.q, sc.r), drawn = PISA.mathHtml && PISA.mathHtml(said);
-      const card = h('article', { class: 'rv-card' });
-      card.append(h('div', { class: 'rv-top' }, h('span', { class: 'rv-unit' }, unitHeading(u)),
-        h('span', { class: 'pill ' + (wait ? 'wait' : sc.final > 0 ? 'part' : 'no') }, wait ? 'ប្រៀបធៀបជាមួយចម្លើយគំរូ' : PISA.km(sc.final) + ' / ' + PISA.km(sc.max))));
-      card.append(h('h3', {}, sc.q.label),
-        h('div', { class: 'rv-said' }, h('b', {}, 'ចម្លើយរបស់អ្នក៖ '), drawn ? h('span', { html: drawn }) : h('span', {}, said)),
-        h('div', { class: 'rv-key' }, h('div', { class: 'rv-key-h' }, 'ចម្លើយគំរូ'), raw(sc.q.key || '')));
-      const link = PISA.lessonLink(u);
-      if (link) card.append(h('a', { class: 'rv-link', href: link, target: '_blank', rel: 'noopener' }, 'រៀនមេរៀននេះឡើងវិញ ▸'));
-      sec.append(card);
+    // filter: all / not right / waiting for the teacher
+    const groups = h('div', { class: 'rv-groups' });
+    const filters = h('div', { class: 'rv-filters', role: 'group', 'aria-label': 'ត្រង' });
+    const apply = (kind) => {
+      [...filters.children].forEach((b) => b.setAttribute('aria-pressed', b.dataset.kind === kind ? 'true' : 'false'));
+      groups.querySelectorAll('.rv-card').forEach((c) => { c.hidden = kind !== 'all' && c.dataset.kind !== kind; });
+      groups.querySelectorAll('.rv-group').forEach((g) => { g.hidden = ![...g.querySelectorAll('.rv-card')].some((c) => !c.hidden); });
+    };
+    [['all', 'ទាំងអស់', again.length], ['wrong', 'មិនទាន់ត្រូវ', nWrong], ['wait', 'រង់ចាំគ្រូ', nWait]].forEach(([k, label, n]) => {
+      if (k !== 'all' && !n) return;
+      filters.append(h('button', { type: 'button', 'data-kind': k, 'aria-pressed': k === 'all' ? 'true' : 'false', onclick: () => apply(k) }, label + ' (' + PISA.km(n) + ')'));
     });
+    if (filters.children.length > 2) sec.append(filters);
+    let first = true;
+    units.forEach((u) => {
+      const mine = again.filter((x) => x.u === u);
+      if (!mine.length) return;
+      const grp = h('section', { class: 'rv-group', id: 'rv-' + u.id }, units.length > 1 ? h('h3', { class: 'rv-gh' }, unitHeading(u), h('span', {}, PISA.km(mine.length))) : null);
+      mine.forEach(({ qid, sc }) => {
+        const wait = sc.final == null;
+        const said = answerText(sc.q, sc.r), drawn = PISA.mathHtml && PISA.mathHtml(said);
+        const card = h('details', { class: 'rv-card', 'data-kind': wait ? 'wait' : 'wrong' });
+        if (first) { card.open = true; first = false; }
+        const short = String(said).replace(/\s+/g, ' ').slice(0, 60);
+        card.append(h('summary', { class: 'rv-top' }, h('span', { class: 'rv-q' }, h('b', {}, sc.q.label), units.length === 1 ? '' : h('small', {}, ' · ' + u.title)),
+          h('span', { class: 'rv-short' }, short && short !== '—' ? short : 'មិនបានឆ្លើយ'),
+          h('span', { class: 'pill ' + (wait ? 'wait' : sc.final > 0 ? 'part' : 'no') }, wait ? 'ប្រៀបធៀបជាមួយចម្លើយគំរូ' : PISA.km(sc.final) + ' / ' + PISA.km(sc.max))));
+        card.append(h('div', { class: 'rv-body' },
+          h('div', { class: 'rv-said' }, h('b', {}, 'ចម្លើយរបស់អ្នក៖ '), drawn ? h('span', { html: drawn }) : h('span', {}, said)),
+          h('div', { class: 'rv-key' }, h('div', { class: 'rv-key-h' }, 'ចម្លើយគំរូ'), raw(sc.q.key || ''))));
+        const link = PISA.lessonLink(u);
+        if (link) card.querySelector('.rv-body').append(h('a', { class: 'rv-link', href: link, target: '_blank', rel: 'noopener' }, 'រៀនមេរៀននេះឡើងវិញ ▸'));
+        grp.append(card);
+      });
+      groups.append(grp);
+    });
+    sec.append(groups);
+    if (good.length) {
+      sec.append(h('p', { class: 'rv-good' }, h('b', {}, '✓ ត្រឹមត្រូវ៖ '), good.map((x) => (units.length > 1 ? (x.u.label || '') + ' ' : '') + x.sc.q.label).join(' · ')));
+    }
     const ids = [...new Set(again.map((x) => x.u.id))];
     sec.append(h('p', { class: 'rv-act' }, h('button', { type: 'button', class: 'btn btn-primary', onclick: () => PISA.start({ name: state.student.name, klass: state.student.klass, teacher: state.student.teacher, school: state.student.school, mode: 'practice', unitIds: ids }) },
       'ហាត់ម្ដងទៀត ' + PISA.km(ids.length) + ' ប្រធានបទនេះ (មានចម្លើយភ្លាមៗ)')));
@@ -874,6 +929,8 @@
     if (PISA.comfort && PISA.comfort.certificate) {
       certWrap = PISA.comfort.certificate({ state, total, max, pct, units, durationStr });
     }
+    const breakdown = topicBreakdown(units);
+    if (breakdown) page.append(breakdown);
     page.append(h('section', { class: 'res-sec', id: 'res-cert' }, h('h2', { class: 'res-sec-h' }, 'វិញ្ញាបនបត្ររបស់អ្នក'), certWrap));
     const reviewNode = reviewSection(units);
     reviewNode.id = 'res-review';

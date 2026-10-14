@@ -579,6 +579,28 @@
           h('button', { type: 'button', class: 'rh-alt', onclick: info.again }, 'ហាត់ម្ដងទៀត'),
           h('button', { type: 'button', class: 'rh-link', onclick: go('res-cert') }, 'វិញ្ញាបនបត្រ'),
           h('button', { type: 'button', class: 'rh-link', onclick: info.home }, 'ទំព័រដើម')))));
+    // a little life: the ring draws itself, the number counts up, and a top score gets confetti (not for «reduce motion»)
+    const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!calm) {
+      const arc = box.querySelector('.rh-arc');
+      if (arc) arc.style.setProperty('--len', (C * pct / 100).toFixed(1));
+      const num = box.querySelector('.rh-pct b');
+      const t0 = performance.now();
+      const step = (t) => { const k = Math.min(1, (t - t0) / 1000); num.textContent = km(Math.round(pct * (1 - Math.pow(1 - k, 3)))) + '%'; if (k < 1) requestAnimationFrame(step); };
+      num.textContent = km(0) + '%';
+      requestAnimationFrame(step);
+      if (pct >= 85) {
+        const conf = h('div', { class: 'rh-confetti', 'aria-hidden': 'true' });
+        const colors = ['#f2b441', '#8fe3d0', '#ffffff', '#e8765f', '#7fb4ee'];
+        for (let i = 0; i < 28; i++) {
+          const p = h('i', {});
+          p.style.cssText = 'left:' + (Math.random() * 100).toFixed(1) + '%;background:' + colors[i % colors.length] + ';animation-delay:' + (Math.random() * 0.9).toFixed(2) + 's;animation-duration:' + (2.2 + Math.random() * 1.6).toFixed(2) + 's;transform:rotate(' + Math.round(Math.random() * 360) + 'deg)';
+          conf.append(p);
+        }
+        box.append(conf);
+        setTimeout(() => conf.remove(), 5000);
+      }
+    }
     return box;
   }
 
