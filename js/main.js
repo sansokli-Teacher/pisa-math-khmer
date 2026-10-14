@@ -389,6 +389,15 @@
     // textbook lesson's «សាកធ្វើលំហាត់នេះ» button; #test=… runs them as one forward-only
     // test («តេស្តពេញ»). Like a preview, neither is saved.
     if (/^#tutorial\b/.test(location.hash) && PISA.unit('tut')) { startTutorial(); return; }
+    // #certificate: the results page with a sample student, to see the certificate (teacher preview, never saved)
+    if (/^#certificate\b/.test(location.hash)) {
+      const ids = PISA.units.filter((u) => u.collection === 'gold').map((u) => u.id);
+      PISA.start({ name: 'សុខ ដារ៉ា', klass: '៩ក', school: 'វិទ្យាល័យ ឧទាហរណ៍', teacher: 'លោកគ្រូ សាន សុខលី', mode: 'practice', unitIds: ids, preview: true });
+      const S = PISA.session();
+      S.finishedAt = Date.now();
+      PISA.resume(S);
+      return;
+    }
     const one = /(unit|test)=([a-z0-9,_-]+)/i.exec(location.hash);
     const pick = one ? one[2].split(',').filter((id) => PISA.unit(id)) : [];
     if (pick.length && one[1] === 'test') {

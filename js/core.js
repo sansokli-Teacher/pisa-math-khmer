@@ -763,7 +763,7 @@
     const durationStr = fmtElapsed((state.finishedAt || Date.now()) - state.startedAt);
 
     // Certificate card
-    const certWrap = h('div', { class: 'pisa-cert-wrap' });
+    let certWrap = h('div', { class: 'pisa-cert-wrap' });
     certWrap.innerHTML =
       '<div class="pisa-cert" id="pisa-certificate">' +
         '<div class="cert-inner">' +
@@ -809,6 +809,10 @@
     page.append(reviewSection(units));
     const byProcess = processSection(units);
     if (byProcess) page.append(byProcess);
+    // the certificate of js/comfort.js (Khmer M1 and Khmer OS Battambang, Times New Roman, red border); the plain one above stays as a fallback
+    if (PISA.comfort && PISA.comfort.certificate) {
+      certWrap = PISA.comfort.certificate({ state, total, max, pct, units, durationStr });
+    }
     page.append(certWrap);
 
     const fromMoeys = units.every((u) => u.collection === 'moeys');

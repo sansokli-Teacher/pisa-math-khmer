@@ -438,5 +438,54 @@
     return box;
   }
 
-  PISA.comfort = { afterScreen, saved, settings, overview, share, results, installBox, toast, prefs, resultCard };
+
+  // ------------------------------------------------------- certificate ---
+  // Khmer M1 for the title and the name, Khmer OS Battambang for the Khmer text, Times New Roman for the English
+  // (fonts in css/comfort.css), inside the project's gold ornamental frame (assets/img/frame-certificate.png).
+  // The page is laid out in «em» where 1 em = 1 % of the certificate's width, so it scales as a whole; print is A4 landscape.
+  const MONTHS = ['មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា', 'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'];
+  const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function certificate(info) {
+    const S = info.state;
+    const when = new Date(S.finishedAt || Date.now());
+    const day = km(when.getDate()), mon = MONTHS[when.getMonth()], yr = km(when.getFullYear());
+    const pct = info.max ? Math.round((info.total / info.max) * 100) : 0;
+    const name = (S.student.name || '').trim();
+    const titles = info.units.slice(0, 4).map((u) => u.title).join(' ✦ ') + (info.units.length > 4 ? ' ✦ …' : '');
+    const nameSize = name.length > 34 ? 3.1 : name.length > 24 ? 3.9 : 5;
+    const who = [S.student.klass ? 'ថ្នាក់ ' + S.student.klass : '', S.student.school, S.student.teacher ? 'គ្រូបង្រៀន៖ ' + S.student.teacher : ''].filter(Boolean).join(' · ');
+    const wrap = h('div', { class: 'pisa-cert-wrap' });
+    const root = h('div', { class: 'cert2', id: 'pisa-certificate', role: 'img', 'aria-label': 'វិញ្ញាបនបត្រការហាត់គណិតវិទ្យា' });
+    root.innerHTML = '<div class="c2-stage">' +
+      '<div class="c2-side c2-left"><img src="assets/img/logo.svg" alt="" width="64" height="64"><b class="m1">KhmerMath</b><span class="kh">គណិតវិទ្យាខ្មែរ</span></div>' +
+      '<div class="c2-side c2-right"><div class="c2-badge"><b>PISA</b><i>CBA</i></div><span class="kh">ហាត់ប្រឡងលើកុំព្យូទ័រ</span><span class="en">Computer-based practice</span></div>' +
+      '<div class="c2-title m1" role="heading" aria-level="1">វិញ្ញាបនបត្រការហាត់គណិតវិទ្យា</div>' +
+      '<div class="c2-sub en">Certificate of Mathematics Practice</div>' +
+      '<div class="c2-pres kh">វិញ្ញាបនបត្រនេះប្រគល់ជូនដល់</div>' +
+      '<div class="c2-pres2 en"><i>This certificate is presented to</i></div>' +
+      '<div class="c2-name m1" style="font-size:' + nameSize + 'em"></div><div class="c2-rule"></div>' +
+      '<div class="c2-who kh"></div>' +
+      '<p class="c2-body kh">ដោយបានបំពេញការហាត់គណិតវិទ្យាតាមបែប PISA លើកុំព្យូទ័រ នៅថ្ងៃទី ' + day + ' ខែ ' + mon + ' ឆ្នាំ ' + yr +
+      ' ទទួលបានពិន្ទុ <b>' + km(info.total) + ' / ' + km(info.max) + '</b> (<b>' + km(pct) + '%</b>)។</p>' +
+      '<div class="c2-topics kh"></div>' +
+      '<p class="c2-body2 en">for the computer-based mathematics practice on <b>' + MONTHS_EN[when.getMonth()] + ' ' + when.getDate() + ', ' + when.getFullYear() +
+      '</b> — score <b>' + info.total + ' / ' + info.max + ' (' + pct + '%)</b></p>' +
+      '<div class="c2-sign"><div class="c2-line"></div><b class="kh">លោកគ្រូ សាន សុខលី</b><span class="en">KhmerMath · cba.khmermath.org</span></div>' +
+      '<div class="c2-foot kh">ការហាត់សាកល្បង មិនមែនជាលទ្ធផល PISA ផ្លូវការទេ · <span class="en">Practice record — not an official PISA result</span></div>' +
+      '</div>';
+    // names and titles go in as text, never as markup
+    root.querySelector('.c2-name').textContent = name || 'សិស្សានុសិស្ស';
+    root.querySelector('.c2-who').textContent = who;
+    root.querySelector('.c2-topics').textContent = 'ប្រធានបទ៖ ' + titles;
+    wrap.append(root);
+    // 1 em = 1 % of the width
+    const fit = () => { const w = root.getBoundingClientRect().width; if (w) { root.style.fontSize = (w / 100) + 'px'; root.style.setProperty('--u', (w / 100) + 'px'); } };
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(root); else window.addEventListener('resize', fit);
+    requestAnimationFrame(fit);
+    window.addEventListener('beforeprint', () => { root.style.fontSize = ''; root.style.removeProperty('--u'); });
+    window.addEventListener('afterprint', fit);
+    return wrap;
+  }
+
+  PISA.comfort = { afterScreen, saved, settings, overview, share, results, installBox, toast, prefs, resultCard, certificate };
 })();
