@@ -266,6 +266,7 @@
       screens,
     });
   }
+  PISA.registerBookUnits = (list) => (list || []).forEach(register);       // the public build loads each set when it is needed
   (PISA.bookUnits || []).forEach(register);
   (PISA.textbookUnits || []).forEach(register);
   (PISA.g7Units || []).forEach(register);       // Grade 7, imported lesson by lesson (tools/import_g7.py)

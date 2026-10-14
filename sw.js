@@ -1,43 +1,36 @@
 /* PISA CBA Khmer — Service Worker for Offline PWA Support */
-const CACHE_NAME = 'pisa-cba-khmer-v2026-10-14-cert';
+const CACHE_NAME = 'pisa-cba-khmer-v2026-10-14-lazy';
 
 // Pre-cached critical assets
 const CORE_ASSETS = [
-  './',
-  'index.html',
-  'manifest.webmanifest',
-  'css/app.css',
-  'css/site.css',
-  'css/home.css',
-  'css/learn.css',
-  'css/comfort.css',
-  'fonts/NotoSansKhmer.woff',
-  'fonts/KhmerM1.woff',
-  'fonts/KhmerOSBattambang.woff',
-  'fonts/tinos-latin-400-normal.woff2',
-  'fonts/tinos-latin-400-italic.woff2',
-  'fonts/tinos-latin-700-normal.woff2',
-  'fonts/kantumruy-pro-khmer.woff2',
-  'fonts/kantumruy-pro-latin.woff2',
-  'assets/img/logo.svg',
-  'assets/img/frame-certificate.png',
-  'katex/katex.min.css',
-  'katex/katex.min.js',
-  'katex/contrib/auto-render.min.js',
-  'js/core.js',
-  'js/widgets.js',
-  'js/mathtype.js',
-  'js/calculator.js',
-  'js/comfort.js',
-  'js/vendor/qrcode.js',
-  'js/main.js',
-  'js/visits.js',
-  'js/data/book_units.js',
-  'js/data/textbook_units.js',
-  'js/data/g7_units.js',
-  'js/units/book_scoring.js',
-  'js/units/book_units.js',
-  'js/units/tutorial.js'
+  "./",
+  "index.html",
+  "manifest.webmanifest",
+  "assets/img/logo.svg",
+  "fonts/kantumruy-pro-khmer.woff2",
+  "katex/katex.min.css?v=3f94e1b737",
+  "css/app.css?v=af4caf0a76",
+  "css/site.css?v=d4d815552b",
+  "css/home.css?v=adf1c72f8a",
+  "css/learn.css?v=20f48e37b9",
+  "css/comfort.css?v=237079d88b",
+  "css/design.css?v=9eb7a7e1f1",
+  "js/core.js?v=a2c90b9977",
+  "js/widgets.js?v=e020d17a92",
+  "js/mathtype.js?v=cf56913e61",
+  "js/calculator.js?v=257fedf43a",
+  "js/comfort.js?v=b1e2c7a3b1",
+  "js/data/catalog.js?v=d52dc6595f",
+  "js/main.js?v=ed13d6c70a",
+  "js/visits.js?v=96ec68e49a",
+  "fonts/NotoSansKhmer.woff",
+  "fonts/KhmerM1.woff",
+  "fonts/KhmerOSBattambang.woff",
+  "fonts/tinos-latin-400-normal.woff2",
+  "fonts/tinos-latin-400-italic.woff2",
+  "fonts/tinos-latin-700-normal.woff2",
+  "fonts/kantumruy-pro-latin.woff2",
+  "assets/img/frame-certificate.png"
 ];
 
 self.addEventListener('install', (evt) => {
@@ -68,33 +61,33 @@ self.addEventListener('activate', (evt) => {
 
 self.addEventListener('fetch', (evt) => {
   const req = evt.request;
-  // Ignore non-GET and browser extension requests
   if (req.method !== 'GET' || !req.url.startsWith('http')) return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return;
+  const isPage = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
 
-  // Stale-while-revalidate / Cache-first strategy for static assets
+  if (isPage) {
+    // the page itself: the network first, so a new version is seen at once; the saved copy when there is no connection
+    evt.respondWith(
+      fetch(req).then((res) => {
+        if (res && res.status === 200) { const copy = res.clone(); caches.open(CACHE_NAME).then((c) => c.put('index.html', copy)); }
+        return res;
+      }).catch(() => caches.match('index.html').then((r) => r || caches.match('./')))
+    );
+    return;
+  }
+  // scripts, styles, fonts and pictures: a file with ?v=<hash> never changes, so the saved copy is right; others are
+  // refreshed in the background
+  const hashed = /[?&]v=[0-9a-f]+/.test(url.search);
   evt.respondWith(
     caches.match(req).then((cached) => {
       if (cached) {
-        // Fetch in background to update cache
-        fetch(req).then((networkRes) => {
-          if (networkRes && networkRes.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, networkRes));
-          }
-        }).catch(() => {/* offline, use cached */});
+        if (!hashed) fetch(req).then((res) => { if (res && res.status === 200) caches.open(CACHE_NAME).then((c) => c.put(req, res)); }).catch(() => {});
         return cached;
       }
-      return fetch(req).then((networkRes) => {
-        if (!networkRes || networkRes.status !== 200 || networkRes.type !== 'basic') {
-          return networkRes;
-        }
-        const clone = networkRes.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
-        return networkRes;
-      }).catch(() => {
-        // Fallback for navigation requests
-        if (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) {
-          return caches.match('index.html');
-        }
+      return fetch(req).then((res) => {
+        if (res && res.status === 200 && res.type === 'basic') { const copy = res.clone(); caches.open(CACHE_NAME).then((c) => c.put(req, copy)); }
+        return res;
       });
     })
   );

@@ -89,7 +89,11 @@
   // Mathematics written as TeX between \\( \\) or \\[ \\] (the textbook tasks) is drawn by
   // KaTeX when it is loaded; every screen and the results page call this.
   PISA.typeset = (el) => {
-    if (!el || !window.renderMathInElement) return;
+    if (!el) return;
+    if (!window.renderMathInElement) {           // KaTeX is loaded on demand in the public build (PISA.ensureMath)
+      if (PISA.ensureMath && !PISA.mathFailed) PISA.ensureMath().then(() => { if (window.renderMathInElement && el.isConnected) PISA.typeset(el); }, () => { PISA.mathFailed = true; });
+      return;
+    }
     window.renderMathInElement(el, {
       delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
       macros: { '\\arc': '\\overset{\\frown}{#1}' },
@@ -154,10 +158,60 @@
   PISA.unit = (id) => PISA.units.find((u) => u.id === id);
   PISA.questionIds = (u) => Object.keys(u.questions || {});
 
+  // ---- the list of topics, and loading them on demand ----
+  // In the public build (tools/build_public.py) the topics are not all loaded at the start: js/data/catalog.js lists
+  // them (PISA.catalog: id, title, counts ...) and says which files hold each one (PISA.fileOf, PISA.groups). The home
+  // page works from the list; a topic is loaded when a student starts it (PISA.load). Opened straight from a folder
+  // (index.html with every script in it) there is no catalog: the list is made from the loaded units and PISA.load
+  // has nothing to do.
+  const pointsOfUnit = (u) => Object.values(u.questions || {}).reduce((n, q) => n + (q.max || 1), 0);
+  PISA.infoOf = (u) => ({
+    id: u.id, collection: u.collection || 'oecd', no: u.no, label: u.label, title: u.title, en: u.en, grade: u.grade,
+    lesson: u.lesson, lessonTitle: u.lessonTitle, blurb: u.blurb, nq: PISA.questionIds(u).length, pts: pointsOfUnit(u),
+  });
+  PISA.list = () => PISA.catalog || PISA.units.map(PISA.infoOf);
+  PISA.info = (id) => (PISA.catalog ? PISA.catalog.find((x) => x.id === id) : (PISA.unit(id) ? PISA.infoOf(PISA.unit(id)) : null)) || null;
+  PISA.known = (id) => !!PISA.info(id);
+  const scripts = {};
+  PISA.loadScript = (src) => scripts[src] || (scripts[src] = new Promise((res, rej) => {
+    const el = document.createElement('script');
+    el.src = src; el.onload = () => res(); el.onerror = () => { delete scripts[src]; rej(new Error('cannot load ' + src)); };
+    document.head.append(el);
+  }));
+  // load one file after the other (a group's renderer must come before its data)
+  const inOrder = (files) => files.reduce((p, f) => p.then(() => PISA.loadScript(f)), Promise.resolve());
+  PISA.load = (ids) => {
+    const need = (ids || []).filter((id) => !PISA.unit(id));
+    if (!need.length) return Promise.resolve();
+    if (!PISA.catalog) return Promise.resolve();
+    const jobs = new Map();
+    need.forEach((id) => {
+      const f = PISA.fileOf && PISA.fileOf[id];
+      if (!f) return;
+      if (typeof f === 'string') jobs.set(f, () => PISA.loadScript(f));
+      else jobs.set('group:' + f.group, () => PISA.loadGroup(f.group));
+    });
+    return Promise.all([...jobs.values()].map((run) => run())).then(() => {
+      const missing = need.filter((id) => !PISA.unit(id));
+      if (missing.length) throw new Error('topics not found: ' + missing.join(', '));
+    });
+  };
+  const groupJobs = {};
+  PISA.loadGroup = (name) => groupJobs[name] || (groupJobs[name] = (() => {
+    const g = PISA.groups[name];
+    return inOrder(g.files).then(() => PISA.loadScript(g.data)).then(() => { PISA.registerBookUnits(PISA[g.global]); });
+  })().catch((e) => { delete groupJobs[name]; throw e; }));
+  // KaTeX (275 KB) and the QR coder (56 KB) are loaded when first needed, in the public build
+  PISA.ensureMath = () => {
+    if (window.renderMathInElement || !PISA.lazy || !PISA.lazy.math) return Promise.resolve();
+    return PISA.loadScript(PISA.lazy.math[0]).then(() => PISA.loadScript(PISA.lazy.math[1]));
+  };
+  PISA.ensureQr = () => (typeof window.qrcode === 'function' || !PISA.lazy || !PISA.lazy.qr ? Promise.resolve() : PISA.loadScript(PISA.lazy.qr));
+
   
   // ----------------------------------------------------------- mock exam ---
   PISA.sampleMockUnits = function (count) {
-    const moeys = PISA.units.filter((u) => u.collection === 'moeys');
+    const moeys = PISA.list().filter((u) => u.collection === 'moeys');
     const shuffled = moeys.slice().sort(() => 0.5 - Math.random());
     return shuffled.slice(0, Math.min(count, shuffled.length)).map((u) => u.id);
   };

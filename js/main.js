@@ -18,6 +18,14 @@
     { id: 'oecd', tab: 'From PISA 2022', title: 'From PISA 2022', sub: 'ឧទាហរណ៍ទាំងប្រាំពីរពីក្របខណ្ឌគណិតវិទ្យា PISA ២០២២ របស់ OECD បកប្រែជាភាសាខ្មែរ' },
   ];
   const colOf = (u) => u.collection || 'oecd';
+  // Start something that needs topics which may not be loaded yet (the public build loads them on demand)
+  function launch(ids, go) {
+    if (ids.every((id) => PISA.unit(id))) return go();
+    document.body.classList.add('is-loading');
+    if (PISA.comfort) PISA.comfort.toast('កំពុងរៀបចំប្រធានបទ…', '', 8000);
+    PISA.load(ids).then(go, () => { if (PISA.comfort) PISA.comfort.toast('មិនអាចផ្ទុកប្រធានបទបានទេ — សូមពិនិត្យអ៊ីនធឺណិត ហើយព្យាយាមម្ដងទៀត', 'warn', 6000); })
+      .then(() => document.body.classList.remove('is-loading'));
+  }
   const pointsOf = (u) => Object.values(u.questions).reduce((s, q) => s + (q.max || 1), 0);
 
   // --------------------------------------------------- site chrome ---
@@ -99,6 +107,25 @@
       action ? h('button', { type: 'button', class: 'km-btn km-btn-primary km-btn-sm', onclick: action.onclick }, action.label) : null));
   }
 
+  // A drawn picture of the test screen for the hero (no image to download): the blue bar with its green buttons,
+  // the question panel with an answer box and the text panel with a chart.
+  const HERO_ART = '<svg viewBox="0 0 520 340" role="img" aria-label="ឧទាហរណ៍អេក្រង់តេស្ត" focusable="false">' +
+    '<defs><linearGradient id="ha" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb5e3"/><stop offset="1" stop-color="#4a9ad0"/></linearGradient>' +
+    '<filter id="hs" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#0b1f35" flood-opacity=".35"/></filter></defs>' +
+    '<g filter="url(#hs)"><rect x="10" y="10" width="500" height="312" rx="16" fill="url(#ha)"/>' +
+    '<g fill="#8ea662" stroke="#6c8446"><rect x="26" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14" fill="#fff"/><rect x="66" y="26" width="14" height="14"/></g>' +
+    '<g fill="#8ea662" stroke="#6c8446"><rect x="392" y="22" width="30" height="22" rx="4"/><rect x="428" y="22" width="30" height="22" rx="4"/><rect x="464" y="22" width="30" height="22" rx="4"/></g>' +
+    '<rect x="22" y="54" width="200" height="256" rx="8" fill="#fff" stroke="#4a9ad0" stroke-width="2"/>' +
+    '<rect x="32" y="64" width="180" height="40" rx="4" fill="#c5dcf0" stroke="#4a9ad0"/><rect x="42" y="72" width="110" height="8" rx="4" fill="#1e3a5c"/><rect x="42" y="88" width="60" height="6" rx="3" fill="#5a7a9a"/>' +
+    '<rect x="34" y="120" width="170" height="7" rx="3.5" fill="#cfd7df"/><rect x="34" y="136" width="150" height="7" rx="3.5" fill="#cfd7df"/><rect x="34" y="152" width="120" height="7" rx="3.5" fill="#cfd7df"/>' +
+    '<rect x="34" y="176" width="110" height="30" rx="4" fill="#fff" stroke="#7b8790" stroke-width="1.5"/><text x="156" y="196" font-size="13" fill="#5d6b76" font-family="sans-serif">%</text>' +
+    '<rect x="34" y="262" width="76" height="30" rx="7" fill="#fff" stroke="#6c8446" stroke-width="2"/><rect x="124" y="262" width="80" height="30" rx="7" fill="#8ea662" stroke="#6c8446" stroke-width="2"/>' +
+    '<rect x="232" y="54" width="266" height="256" rx="8" fill="#fff" stroke="#4a9ad0" stroke-width="2"/>' +
+    '<rect x="300" y="70" width="130" height="9" rx="4.5" fill="#1e3a5c"/><rect x="248" y="96" width="234" height="6" rx="3" fill="#cfd7df"/><rect x="248" y="110" width="200" height="6" rx="3" fill="#cfd7df"/>' +
+    '<g stroke="#e3e7ea"><path d="M262 140H482M262 170H482M262 200H482M262 230H482M262 260H482"/></g><path d="M262 132V282H484" fill="none" stroke="#8a959d" stroke-width="1.5"/>' +
+    '<g fill="#dbe6f2" stroke="#6f8fb0" stroke-width="1.5"><rect x="278" y="214" width="26" height="68"/><rect x="316" y="160" width="26" height="122"/><rect x="354" y="196" width="26" height="86"/><rect x="392" y="236" width="26" height="46"/><rect x="430" y="150" width="26" height="132" fill="#2e7a70" stroke="#226058"/></g></g>' +
+    '<g transform="translate(398 246)"><circle r="30" fill="#c9862b"/><circle r="25" fill="none" stroke="#fff3d6" stroke-width="2"/><text y="8" text-anchor="middle" font-size="22" font-weight="700" fill="#fff" font-family="sans-serif">✓</text></g></svg>';
+
   function home() {
     const app = document.getElementById('app');
     app.className = 'app-home km hm';
@@ -114,41 +141,56 @@
     const whoNow = () => ({ name: name.value.trim(), klass: klass.value.trim(), teacher: teacher.value.trim(), school: school.value.trim() });
     const remember = () => { try { localStorage.setItem(WHO_KEY, JSON.stringify(whoNow())); } catch (e) { /* ignore */ } };
     [name, klass, teacher, school].forEach((i) => i.addEventListener('change', remember));
-    const start = (opts) => { remember(); PISA.start(Object.assign(whoNow(), opts)); };
+    const start = (opts) => { remember(); launch(opts.unitIds, () => PISA.start(Object.assign(whoNow(), opts))); };
 
-    const gold = PISA.units.filter((u) => colOf(u) === 'gold');
-    const goldQs = gold.reduce((n, u) => n + PISA.questionIds(u).length, 0);
-    const all = PISA.units.filter((u) => u.collection !== 'tutorial');
-    const allQs = all.reduce((n, u) => n + PISA.questionIds(u).length, 0);
-    const hasTutorial = !!PISA.unit('tut');
+    const catalog = PISA.list();
+    const gold = catalog.filter((u) => colOf(u) === 'gold');
+    const goldQs = gold.reduce((n, u) => n + u.nq, 0);
+    const all = catalog.filter((u) => u.collection !== 'tutorial');
+    const allQs = all.reduce((n, u) => n + u.nq, 0);
+    const hasTutorial = PISA.known('tut');
     const goldIds = gold.map((u) => u.id);
 
     app.append(homeHeader(hasTutorial ? startTutorial : null));
+
+    // --- the top of the page: what this is, and one tap to begin
+    const doStart = (mode) => () => {
+      if (gold.length) start({ mode, unitIds: goldIds });
+      else document.getElementById('start').scrollIntoView({ behavior: 'smooth' });
+    };
+    const chip = (icon, text) => h('li', {}, h('span', { html: ic(icon) }), text);
+    const hero = h('section', { class: 'hm-hero' }, h('div', { class: 'hm-hero-in' },
+      h('div', { class: 'hm-hero-t' },
+        h('span', { class: 'hm-eyebrow' }, 'ហាត់ និងធ្វើតេស្តលើអេក្រង់'),
+        h('h1', {}, 'ហាត់គណិតវិទ្យា ', h('span', {}, 'តាមបែប PISA')),
+        h('p', { class: 'hm-lead' }, 'សំណួរតាមបែប PISA ជាភាសាខ្មែរ លើអេក្រង់ដែលរៀបចំដូចតេស្តពិត។ ហាត់ម្ដងមួយសំណួរ ហើយពិនិត្យចម្លើយភ្លាមៗ ឬធ្វើជាតេស្តដូចពិត។'),
+        h('div', { class: 'hm-cta' },
+          h('button', { type: 'button', class: 'hm-cta-main', onclick: doStart('practice') }, 'ចាប់ផ្ដើមហាត់ភ្លាម ', h('span', { 'aria-hidden': 'true' }, '→')),
+          h('button', { type: 'button', class: 'hm-cta-alt', onclick: doStart('test') }, 'ធ្វើតេស្តគំរូ'),
+          hasTutorial ? h('button', { type: 'button', class: 'hm-cta-link', onclick: startTutorial }, 'មេរៀនណែនាំ ៥ នាទី') : null),
+        h('ul', { class: 'hm-chips' },
+          chip('layers', PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ'), chip('free', 'ឥតគិតថ្លៃ'),
+          chip('phone', 'ប្រើលើទូរស័ព្ទបាន'), chip('check', 'ពិនិត្យចម្លើយភ្លាមៗ'), chip('globe', 'ប្រើពេលគ្មានអ៊ីនធឺណិតបាន'))),
+      h('div', { class: 'hm-hero-art', 'aria-hidden': 'true', html: HERO_ART })));
+    app.append(hero);
     const main = h('main', { id: 'main', class: 'hm-main' });
     const wrap = h('div', { class: 'hm-wrap' });
     main.append(wrap);
 
-    // --- what this is
-    wrap.append(h('section', { class: 'hm-intro' },
-      h('span', { class: 'hm-eyebrow' }, 'ហាត់ និងធ្វើតេស្តលើអេក្រង់'),
-      h('h1', {}, 'ហាត់គណិតវិទ្យា ', h('span', {}, 'តាមបែប PISA')),
-      h('p', { class: 'hm-lead' }, 'សំណួរតាមបែប PISA ជាភាសាខ្មែរ លើអេក្រង់ដែលរៀបចំដូចតេស្តពិត។ ហាត់ម្ដងមួយសំណួរ ហើយពិនិត្យចម្លើយភ្លាមៗ ឬធ្វើជាតេស្តដូចពិត។'),
-      h('p', { class: 'hm-facts' }, PISA.km(all.length) + ' ប្រធានបទ · ' + PISA.km(allQs) + ' សំណួរ · ឥតគិតថ្លៃ · ប្រើលើទូរស័ព្ទបាន · ប្រើពេលគ្មានអ៊ីនធឺណិតបាន')));
-
     // --- a session left unfinished comes first: the student can carry on in one tap
     // --- an unfinished or finished session on this computer
     const saved = PISA.saved();
-    if (saved && saved.unitIds && saved.unitIds.every((id) => PISA.unit(id))) {
+    if (saved && saved.unitIds && saved.unitIds.every((id) => PISA.known(id))) {
       const sw = saved.student && saved.student.name ? saved.student.name : 'មិនមានឈ្មោះ';
       const box = h('div', { class: 'hm-resume' });
       if (saved.finishedAt) {
         box.append(h('p', {}, 'វគ្គចុងក្រោយរបស់ ' + sw + ' បានបញ្ចប់រួចហើយ។'),
-          h('button', { type: 'button', class: 'hm-btn', onclick: () => PISA.resume(saved) }, 'មើលលទ្ធផល'),
+          h('button', { type: 'button', class: 'hm-btn', onclick: () => launch(saved.unitIds, () => PISA.resume(saved)) }, 'មើលលទ្ធផល'),
           h('button', { type: 'button', class: 'hm-link', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល'));
       } else {
-        const u = PISA.unit(saved.unitIds[saved.pos.u]);
+        const u = PISA.info(saved.unitIds[saved.pos.u]);
         box.append(h('p', {}, 'មានវគ្គមួយមិនទាន់បញ្ចប់៖ ' + sw + ' — ' + u.title + ' អេក្រង់ទី ' + PISA.km(saved.pos.s + 1) + '។'),
-          h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: () => PISA.resume(saved) }, 'បន្តវគ្គនេះ'),
+          h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: () => launch(saved.unitIds, () => PISA.resume(saved)) }, 'បន្តវគ្គនេះ'),
           h('button', { type: 'button', class: 'hm-link', onclick: () => { PISA.clearSaved(); home(); } }, 'លុបចោល ហើយចាប់ផ្ដើមថ្មី'));
       }
       wrap.append(box);
@@ -183,7 +225,7 @@
     } else {
       const list = h('ul', { class: 'hm-hist' });
       hist.slice(-5).reverse().forEach((x) => {
-        const first = PISA.unit(x.units[0] && x.units[0].id);
+        const first = PISA.info(x.units[0] && x.units[0].id);
         const more = x.units.length > 1 ? ' និង ' + PISA.km(x.units.length - 1) + ' ផ្សេងទៀត' : '';
         list.append(h('li', {}, h('span', { class: 'hm-hd' }, dateKm(x.t)), h('span', { class: 'hm-hm' }, MODE_WORDS[x.mode] || x.mode),
           h('span', { class: 'hm-ht' }, (first ? first.title : '—') + more),
@@ -194,12 +236,12 @@
       // topics to do again: the lowest shares over all the sessions
       const sum = new Map();
       hist.forEach((x) => x.units.forEach((u) => { const g = sum.get(u.id) || { got: 0, max: 0 }; g.got += u.got; g.max += u.max; sum.set(u.id, g); }));
-      const weak = [...sum.entries()].filter(([id, g]) => g.max > 0 && PISA.unit(id) && pctOf(g.got, g.max) < 60)
+      const weak = [...sum.entries()].filter(([id, g]) => g.max > 0 && PISA.known(id) && pctOf(g.got, g.max) < 60)
         .sort((a, b) => pctOf(a[1].got, a[1].max) - pctOf(b[1].got, b[1].max)).slice(0, 4);
       if (weak.length) {
         mine.append(h('h3', {}, 'ប្រធានបទដែលគួរហាត់ម្ដងទៀត'));
         const wl = h('ul', { class: 'hm-weak' });
-        weak.forEach(([id, g]) => wl.append(h('li', {}, h('span', {}, PISA.unit(id).title), h('em', {}, PISA.km(pctOf(g.got, g.max)) + '%'),
+        weak.forEach(([id, g]) => wl.append(h('li', {}, h('span', {}, PISA.info(id).title), h('em', {}, PISA.km(pctOf(g.got, g.max)) + '%'),
           h('button', { type: 'button', class: 'hm-link', onclick: () => start({ mode: 'practice', unitIds: [id] }) }, 'ហាត់'))));
         mine.append(wl);
       }
@@ -227,7 +269,7 @@
 
     // --- choose the topics: one tab per source; the choice is kept across tabs
     const chosen = new Set();           // nothing is ticked until the student chooses
-    const cols = COLLECTIONS.filter((c) => PISA.units.some((u) => colOf(u) === c.id));
+    const cols = COLLECTIONS.filter((c) => catalog.some((u) => colOf(u) === c.id));
     let tab = cols[0].id, find = '';
 
     const tabBar = h('div', { class: 'hm-tabs', role: 'tablist', 'aria-label': 'ប្រភេទប្រធានបទ' });
@@ -240,11 +282,10 @@
     function unitRow(u) {
       const inp = h('input', { type: 'checkbox' });
       inp.checked = chosen.has(u.id);
-      const qs = Object.values(u.questions);
       const li = h('label', { class: 'hm-unit' + (inp.checked ? ' on' : '') }, inp,
         h('span', { class: 'hm-no' }, u.label || PISA.km(u.no)),
         h('span', { class: 'hm-ut' }, h('b', {}, u.title), u.en ? h('small', {}, u.en) : null),
-        h('span', { class: 'hm-un' }, (u.grade ? 'ថ្នាក់ ' + PISA.km(u.grade) + ' · ' : '') + PISA.km(qs.length) + ' សំណួរ'),
+        h('span', { class: 'hm-un' }, (u.grade ? 'ថ្នាក់ ' + PISA.km(u.grade) + ' · ' : '') + PISA.km(u.nq) + ' សំណួរ'),
         PISA.comfort ? h('button', { type: 'button', class: 'hm-share', title: 'ចែករំលែកតំណ និង QR', 'aria-label': 'ចែករំលែកប្រធានបទនេះ',
           onclick: (e) => { e.preventDefault(); e.stopPropagation(); PISA.comfort.share([u.id]); } }, 'QR') : null);
       inp.addEventListener('change', () => {
@@ -263,7 +304,7 @@
     const matches = (u) => !find || (u.title + ' ' + (u.en || '') + ' ' + (u.lessonTitle || '') + ' ' + (u.blurb || '')).toLowerCase().includes(find);
     function drawPanel() {
       const col = cols.find((c) => c.id === tab);
-      let list = PISA.units.filter((u) => colOf(u) === col.id);
+      let list = catalog.filter((u) => colOf(u) === col.id);
       if (col.id === 'moeys') list.sort((a, b) => (Number(a.no) || 0) - (Number(b.no) || 0));
       const shown = list.filter(matches);
       panel.innerHTML = '';
@@ -288,7 +329,7 @@
     function drawTabs() {
       tabBar.innerHTML = '';
       cols.forEach((c, i) => {
-        const list = PISA.units.filter((u) => colOf(u) === c.id);
+        const list = catalog.filter((u) => colOf(u) === c.id);
         const picked = list.filter((u) => chosen.has(u.id)).length;
         tabBar.append(h('button', {
           type: 'button', role: 'tab', class: 'hm-tab' + (c.id === tab ? ' on' : ''), id: 'ctab-' + c.id,
@@ -310,26 +351,42 @@
       drawTabs(); drawPanel();
     }
     function refresh() {
-      const picked = PISA.units.filter((u) => chosen.has(u.id));
-      const nq = picked.reduce((n, u) => n + PISA.questionIds(u).length, 0);
+      const picked = catalog.filter((u) => chosen.has(u.id));
+      const nq = picked.reduce((n, u) => n + u.nq, 0);
       summary.textContent = picked.length ? 'បានជ្រើស ' + PISA.km(picked.length) + ' ប្រធានបទ · ' + PISA.km(nq) + ' សំណួរ' : 'មិនទាន់ជ្រើសប្រធានបទ';
       if (picked.length) err.textContent = '';
       drawTabs();
     }
     const go = (mode) => () => {
-      const ids = PISA.units.map((u) => u.id).filter((id) => chosen.has(id));
+      const ids = catalog.map((u) => u.id).filter((id) => chosen.has(id));
       if (!ids.length) { err.textContent = 'សូមជ្រើសរើសប្រធានបទយ៉ាងហោចណាស់មួយ។'; return; }
       start({ mode, unitIds: ids });
     };
     const bar = h('div', { class: 'hm-bar-start' }, summary, err,
       h('button', { type: 'button', class: 'hm-link', onclick: () => { chosen.clear(); drawPanel(); refresh(); } }, 'សម្អាត'),
       PISA.comfort ? h('button', { type: 'button', class: 'hm-link', onclick: () => {
-        const ids = PISA.units.map((u) => u.id).filter((id) => chosen.has(id));
+        const ids = catalog.map((u) => u.id).filter((id) => chosen.has(id));
         if (!ids.length) { err.textContent = 'សូមជ្រើសរើសប្រធានបទយ៉ាងហោចណាស់មួយ។'; return; }
         PISA.comfort.share(ids, { title: 'ចែករំលែកប្រធានបទដែលបានជ្រើស' });
       } }, 'ចែករំលែក / QR') : null,
       h('button', { type: 'button', class: 'hm-btn', onclick: go('test') }, 'ធ្វើជាតេស្ត'),
       h('button', { type: 'button', class: 'hm-btn hm-btn-main', onclick: go('practice') }, 'ហាត់រៀន'));
+    // --- the five kinds of topics, as cards: a tap opens that tab of the list below
+    const KIND = {
+      gold: ['target', 'a', 'ប្រធានបទដើមរបស់គម្រោង ថ្នាក់ទី ៧ ៨ ៩'], textbook: ['layers', 'b', 'លំហាត់ PISA តាមមេរៀននីមួយៗក្នុងសៀវភៅ'],
+      practice: ['chart', 'c', 'ប្រធានបទ ក–ឍ ពីសៀវភៅណែនាំគ្រូ'], moeys: ['school' in ICONS ? 'school' : 'check', 'd', 'ប្រធានបទ ៣៨ របស់ក្រសួងអប់រំ PISA ២០២៥'],
+      oecd: ['globe', 'e', 'ឧទាហរណ៍ ៧ ពី OECD បកប្រែជាខ្មែរ'],
+    };
+    const gallery = h('section', { class: 'hm-gallery', 'aria-label': 'ប្រភេទប្រធានបទ' },
+      h('div', { class: 'hm-gal-h' }, h('h2', {}, 'ជ្រើសតាមប្រភេទ'), h('p', {}, 'ចុចកាតណាមួយ ដើម្បីមើលប្រធានបទក្នុងប្រភេទនោះ')),
+      h('div', { class: 'hm-gal-grid' }, ...cols.map((c) => {
+        const list = catalog.filter((u) => colOf(u) === c.id);
+        const k = KIND[c.id] || ['layers', 'a', ''];
+        return h('button', { type: 'button', class: 'hm-kind tone-' + k[1], onclick: () => { select(c.id); document.getElementById('start').scrollIntoView({ behavior: 'smooth', block: 'start' }); } },
+          h('span', { class: 'hm-kind-ic', html: ic(k[0]) }), h('b', {}, c.tab), h('span', { class: 'hm-kind-d' }, k[2]),
+          h('span', { class: 'hm-kind-n' }, PISA.km(list.length) + ' ប្រធានបទ · ' + PISA.km(list.reduce((n, u) => n + u.nq, 0)) + ' សំណួរ'));
+      })));
+    wrap.append(gallery);
     wrap.append(h('section', { class: 'hm-topics', id: 'start' },
       h('div', { class: 'hm-topics-h' }, h('h2', {}, 'ជ្រើសប្រធានបទខ្លួនឯង'), finder),
       h('p', { class: 'hm-modes' }, h('b', {}, 'ហាត់រៀន៖'), ' ពិនិត្យចម្លើយបានភ្លាមៗ ព្យាយាមម្ដងទៀត និងចុចថយក្រោយបាន។ ', h('b', {}, 'ធ្វើជាតេស្ត៖'), ' ទៅមុខតែមួយផ្លូវ ដូចតេស្ត PISA ពិត។'),
@@ -347,7 +404,7 @@
         h('a', { href: SITE + 'cba.html#lab', ...ext }, 'របៀបប្រើក្នុងបន្ទប់កុំព្យូទ័រ'))));
 
     app.append(main, siteFooter((box) => {
-      const has = (c) => PISA.units.some((u) => (u.collection || 'oecd') === c);
+      const has = (c) => catalog.some((u) => (u.collection || 'oecd') === c);
       if (has('moeys')) {
         box.append(h('p', { class: 'notice', html:
           '<b>PISA TEST (MoEYS)៖</b> សំណួរពី «ឯកសារជំនួយស្មារតី PISA ២០២៥» របស់ក្រសួងអប់រំ យុវជន និងកីឡា រៀបចំឡើងវិញជាតេស្តលើកុំព្យូទ័រ។' }));
@@ -379,7 +436,7 @@
 
   // The tutorial (js/units/tutorial.js): practice mode, never saved.
   function startTutorial() {
-    PISA.start({ name: '', mode: 'practice', unitIds: ['tut'], preview: true });
+    launch(['tut'], () => PISA.start({ name: '', mode: 'practice', unitIds: ['tut'], preview: true }));
   }
 
   function boot() {
@@ -388,39 +445,51 @@
     // #unit=t0101 or #unit=t0101,t0102: open just those units in practice mode, e.g. from a
     // textbook lesson's «សាកធ្វើលំហាត់នេះ» button; #test=… runs them as one forward-only
     // test («តេស្តពេញ»). Like a preview, neither is saved.
-    if (/^#tutorial\b/.test(location.hash) && PISA.unit('tut')) { startTutorial(); return; }
+    if (/^#tutorial\b/.test(location.hash) && PISA.known('tut')) { startTutorial(); return; }
     // #certificate: the results page with a sample student, to see the certificate (teacher preview, never saved)
     if (/^#certificate\b/.test(location.hash)) {
-      const ids = PISA.units.filter((u) => u.collection === 'gold').map((u) => u.id);
-      PISA.start({ name: 'សុខ ដារ៉ា', klass: '៩ក', school: 'វិទ្យាល័យ ឧទាហរណ៍', teacher: 'លោកគ្រូ សាន សុខលី', mode: 'practice', unitIds: ids, preview: true });
-      const S = PISA.session();
-      S.finishedAt = Date.now();
-      PISA.resume(S);
-      if (/^#certificate-print/.test(location.hash)) document.body.classList.add('print-cert-only');      // for checking the printed page
+      const ids = PISA.list().filter((u) => u.collection === 'gold').map((u) => u.id);
+      launch(ids, () => {
+        PISA.start({ name: 'សុខ ដារ៉ា', klass: '៩ក', school: 'វិទ្យាល័យ ឧទាហរណ៍', teacher: 'លោកគ្រូ សាន សុខលី', mode: 'practice', unitIds: ids, preview: true });
+        const S = PISA.session();
+        S.finishedAt = Date.now();
+        PISA.resume(S);
+        if (/^#certificate-print/.test(location.hash)) document.body.classList.add('print-cert-only');      // for checking the printed page
+      });
       return;
     }
     const one = /(unit|test)=([a-z0-9,_-]+)/i.exec(location.hash);
-    const pick = one ? one[2].split(',').filter((id) => PISA.unit(id)) : [];
+    const pick = one ? one[2].split(',').filter((id) => PISA.known(id)) : [];
     if (pick.length && one[1] === 'test') {
-      PISA.start({ name: '', mode: 'test', unitIds: pick, preview: true });
-      PISA.dialog([
-        'តេស្តពេញ៖ ' + PISA.km(pick.length) + ' ប្រធានបទ' + ' ជាប់គ្នា តាមរបៀបតេស្ត PISA ពិត។',
-        'ឆ្លើយសំណួរនីមួយៗ រួចចុច «បន្ទាប់»។ អ្នកមិនអាចថយក្រោយ ដើម្បីកែចម្លើយវិញបានទេ។ ពេលចប់ អ្នកនឹងឃើញលទ្ធផល និងចម្លើយគំរូ។',
-      ], [{ label: 'ចាប់ផ្ដើម', primary: true }]);
+      launch(pick, () => {
+        PISA.start({ name: '', mode: 'test', unitIds: pick, preview: true });
+        PISA.dialog([
+          'តេស្តពេញ៖ ' + PISA.km(pick.length) + ' ប្រធានបទ' + ' ជាប់គ្នា តាមរបៀបតេស្ត PISA ពិត។',
+          'ឆ្លើយសំណួរនីមួយៗ រួចចុច «បន្ទាប់»។ អ្នកមិនអាចថយក្រោយ ដើម្បីកែចម្លើយវិញបានទេ។ ពេលចប់ អ្នកនឹងឃើញលទ្ធផល និងចម្លើយគំរូ។',
+        ], [{ label: 'ចាប់ផ្ដើម', primary: true }]);
+      });
       return;
     }
     if (pick.length) {
-      PISA.start({ name: '', mode: 'practice', unitIds: pick, preview: true });
+      launch(pick, () => PISA.start({ name: '', mode: 'practice', unitIds: pick, preview: true }));
       return;
     }
     const m = /preview=([a-z0-9_-]+)(?::(\d+))?/i.exec(location.hash);
     if (m) {
-      const ids = PISA.units.map((u) => u.id);
-      const ui = Math.max(0, ids.indexOf(m[1]));
-      const si = Math.min(Number(m[2] || 0), PISA.unit(ids[ui]).screens.length - 1);
-      PISA.start({ name: 'preview', mode: 'practice', unitIds: ids, u: ui, s: si, preview: true });
-      return;
+      // the whole list in a folder copy; in the public build only the topic asked for
+      const ids = PISA.catalog ? [m[1]].filter((id) => PISA.known(id)) : PISA.list().map((u) => u.id);
+      if (ids.length) {
+        launch(ids, () => {
+          const ui = Math.max(0, ids.indexOf(m[1]));
+          const si = Math.min(Number(m[2] || 0), PISA.unit(ids[ui]).screens.length - 1);
+          PISA.start({ name: 'preview', mode: 'practice', unitIds: ids, u: ui, s: si, preview: true });
+        });
+        return;
+      }
     }
+    // the heavy things (maths drawing) are fetched while the student reads the home page
+    const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1500));
+    idle(() => { if (PISA.ensureMath) PISA.ensureMath().catch(() => {}); });
     home();
   }
   document.addEventListener('DOMContentLoaded', boot);

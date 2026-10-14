@@ -74,6 +74,24 @@
   }
   const btn = (label, onclick, cls) => h('button', { type: 'button', class: 'btn' + (cls ? ' ' + cls : ''), onclick }, label);
 
+  // fetch every file of the public build once, so the service worker keeps it for use without the internet
+  function saveOffline(b) {
+    const list = PISA.offline || [];
+    let i = 0, done = 0, fail = 0;
+    b.disabled = true;
+    const next = () => {
+      const u = list[i++];
+      if (!u) return Promise.resolve();
+      return fetch(u).then((r) => { if (!r.ok) fail++; }, () => { fail++; })
+        .then(() => { done++; b.textContent = 'កំពុងរក្សាទុក… ' + km(Math.round((done / list.length) * 100)) + '%'; return next(); });
+    };
+    Promise.all([next(), next(), next(), next()]).then(() => {
+      b.textContent = fail ? 'រក្សាទុកបាន ប៉ុន្តែមាន ' + km(fail) + ' ឯកសារមិនបាន — ព្យាយាមម្ដងទៀត' : '✓ រក្សាទុករួចរាល់';
+      b.disabled = false;
+      toast(fail ? 'មិនទាន់ពេញលេញ — សូមព្យាយាមម្ដងទៀតពេលមានអ៊ីនធឺណិត' : 'ប្រើបានពេលគ្មានអ៊ីនធឺណិតហើយ', fail ? 'warn' : 'small', 3500);
+    });
+  }
+
   function settings() {
     sheet('ការកំណត់ និងជំនួយ', (box, close) => {
       const sizes = [['អក្សរធម្មតា', 0], ['ធំ', 1], ['ធំបំផុត', 2]];
@@ -99,6 +117,11 @@
           btn('មើលរយៈពេលដែលបានប្រើ', () => { close(); PISA.clock(); }),
           btn('ជំនួយ', () => { close(); PISA.help(); }));
         box.append(h('h4', {}, 'ក្នុងតេស្តនេះ'), q);
+      }
+      if (PISA.offline && PISA.offline.length && 'serviceWorker' in navigator) {
+        const b = btn('រក្សាទុកទាំងអស់ក្នុងឧបករណ៍នេះ (ប្រើពេលគ្មានអ៊ីនធឺណិត)', () => saveOffline(b));
+        box.append(h('h4', {}, 'ប្រើពេលគ្មានអ៊ីនធឺណិត'), h('div', { class: 'cm-quick' }, b),
+          h('p', { class: 'cm-note' }, 'ប្រធានបទដែលអ្នកបានបើករួច ប្រើបានពេលគ្មានអ៊ីនធឺណិតរួចហើយ។ ចុចប៊ូតុងនេះ ដើម្បីរក្សាទុកប្រធានបទ និងរូបភាពទាំងអស់ (ប្រហែល ' + km(Math.round(9)) + ' MB) ម្ដងជាសម្រាប់ជានិច្ច។'));
       }
       if (!touch()) {
         const rows = [['→', 'ឬ', 'N', 'បន្ទាប់ (ក្នុងប្រអប់វាយអក្សរ ប្រើ Alt + → ឬ Ctrl + Enter)'], ['←', 'ឬ', 'B', 'ថយក្រោយ (របៀបហាត់រៀន · Alt + ←)'], ['C', '', '', 'ម៉ាស៊ីនគិតលេខ'],
@@ -293,7 +316,7 @@
   // a link and a QR code for these topics (practice, or a whole test)
   function share(ids, opts) {
     opts = opts || {};
-    ids = ids.filter((id) => PISA.unit(id));
+    ids = ids.filter((id) => PISA.known(id));
     if (!ids.length) return;
     sheet(opts.title || 'ចែករំលែកប្រធានបទនេះ', (box) => {
       let mode = opts.mode === 'test' ? 'test' : 'practice';
@@ -309,7 +332,7 @@
         seg.innerHTML = '';
         [['ហាត់រៀន', 'practice'], ['តេស្ត', 'test']].forEach(([label, m]) => seg.append(h('button', { type: 'button', 'aria-pressed': mode === m ? 'true' : 'false', onclick: () => { mode = m; draw(); } }, label)));
       };
-      box.append(h('p', {}, ids.length === 1 ? PISA.unit(ids[0]).title : km(ids.length) + ' ប្រធានបទ'),
+      box.append(h('p', {}, ids.length === 1 ? PISA.info(ids[0]).title : km(ids.length) + ' ប្រធានបទ'),
         h('p', { class: 'cm-note' }, 'សិស្សបើកតំណ ឬស្កេន QR នឹងចូលទៅប្រធានបទនេះភ្លាម មិនបាច់ជ្រើសរើស។'),
         seg, h('div', { class: 'cm-url' }, url, btn('ចម្លង', () => copyText(url.value, url))), qr);
       const acts = h('div', { class: 'cm-quick' });
@@ -317,7 +340,7 @@
       acts.append(btn('ទាញយក QR (រូបភាព)', () => downloadQr(url.value)));
       box.append(acts);
       if (ids.length > 40) box.append(h('p', { class: 'cm-note' }, 'ជ្រើសច្រើនពេក QR អាចអានពិបាក។ ព្យាយាមចែករំលែកតិចជាង ៤០ ប្រធានបទ។'));
-      draw();
+      PISA.ensureQr().then(draw, draw);        // the QR coder is fetched the first time it is needed (public build)
     });
   }
   function svgToPng(svgText, size, cb) {
