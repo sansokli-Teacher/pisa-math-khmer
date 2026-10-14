@@ -477,13 +477,17 @@
     root.querySelector('.c2-name').textContent = name || 'សិស្សានុសិស្ស';
     root.querySelector('.c2-who').textContent = who;
     root.querySelector('.c2-topics').textContent = 'ប្រធានបទ៖ ' + titles;
-    wrap.append(root);
-    // 1 em = 1 % of the width
-    const fit = () => { const w = root.getBoundingClientRect().width; if (w) { root.style.fontSize = (w / 100) + 'px'; root.style.setProperty('--u', (w / 100) + 'px'); } };
-    if (window.ResizeObserver) new ResizeObserver(fit).observe(root); else window.addEventListener('resize', fit);
-    requestAnimationFrame(fit);
-    window.addEventListener('beforeprint', () => { root.style.fontSize = ''; root.style.removeProperty('--u'); });
-    window.addEventListener('afterprint', fit);
+    // small screens: the text is tiny at that size, so a tap opens the certificate large (scroll or pinch)
+    const open = () => zoomOpen(wrap, 'ប្រើម្រាមដៃពីរ ដើម្បីពង្រីក ឬរំកិល');
+    wrap.append(h('button', { type: 'button', class: 'cm-zoom-badge c2-zoom', onclick: open }, '🔍 ពង្រីកវិញ្ញាបនបត្រ'), root);
+    root.classList.add('cm-zoomable');
+    root.addEventListener('click', () => { if (phone()) open(); });
+    // 1 em = 1 % of the width: css/comfort.css does it with container units (1cqw); an old browser without them gets it from here
+    if (!(window.CSS && CSS.supports && CSS.supports('width', '1cqw'))) {
+      const fit = () => { const w = root.getBoundingClientRect().width; if (w) { root.style.fontSize = (w / 100) + 'px'; root.style.setProperty('--u', (w / 100) + 'px'); } };
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(root); else window.addEventListener('resize', fit);
+      requestAnimationFrame(fit);
+    }
     return wrap;
   }
 

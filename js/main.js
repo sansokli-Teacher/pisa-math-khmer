@@ -396,6 +396,7 @@
       const S = PISA.session();
       S.finishedAt = Date.now();
       PISA.resume(S);
+      if (/^#certificate-print/.test(location.hash)) document.body.classList.add('print-cert-only');      // for checking the printed page
       return;
     }
     const one = /(unit|test)=([a-z0-9,_-]+)/i.exec(location.hash);

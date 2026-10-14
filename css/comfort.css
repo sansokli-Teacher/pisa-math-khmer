@@ -167,8 +167,8 @@ button.cm-chip { cursor: pointer; }
 @font-face { font-family: 'Tinos'; font-style: italic; font-weight: 400; src: url('../fonts/tinos-latin-400-italic.woff2') format('woff2'); font-display: swap; }
 @font-face { font-family: 'Tinos'; font-style: normal; font-weight: 700; src: url('../fonts/tinos-latin-700-normal.woff2') format('woff2'); font-display: swap; }
 
-.pisa-cert-wrap { display: block; overflow: visible; padding: 4px; margin: 24px auto; max-width: 1000px; }
-.cert2 { position: relative; width: 100%; aspect-ratio: 2400 / 1696; overflow: hidden; background: #fff url('../assets/img/frame-certificate.png') center / 100% 100% no-repeat; color: #2a1f14; font-size: 9px; --u: 9px; line-height: 1.3; box-shadow: 0 14px 36px rgba(60, 20, 10, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06); text-align: center; }
+.pisa-cert-wrap { display: block; overflow: visible; padding: 4px; margin: 24px auto; max-width: 1000px; container-type: inline-size; }
+.cert2 { position: relative; width: 100%; aspect-ratio: 2400 / 1696; overflow: hidden; background: #fff url('../assets/img/frame-certificate.png') center / 100% 100% no-repeat; color: #2a1f14; font-size: 9px; --u: 9px; font-size: 1cqw; --u: 1cqw; line-height: 1.3; box-shadow: 0 14px 36px rgba(60, 20, 10, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06); text-align: center; }
 .cert2 * { box-sizing: border-box; }
 .cert2 .m1 { font-family: 'Khmer M1', 'Khmer OS Muol Light', 'Noto Sans Khmer Local', serif; font-weight: 400; }
 .cert2 .kh { font-family: 'Khmer OS Battambang', 'Noto Sans Khmer Local', 'Khmer Sangam MN', serif; }
@@ -182,7 +182,7 @@ button.cm-chip { cursor: pointer; }
 .c2-pres2 { top: calc(var(--u) * 25.8); font-size: 2.5em; line-height: 1.2; color: #3b2a1a; }
 .c2-name { top: calc(var(--u) * 29.4); line-height: 1.7; color: #9a5b13; white-space: nowrap; }
 .c2-rule { top: calc(var(--u) * 38.4); left: calc(var(--u) * 31) !important; right: calc(var(--u) * 31) !important; height: calc(var(--u) * 0.18); background: linear-gradient(90deg, transparent, #b7893a 15%, #b7893a 85%, transparent); }
-.c2-who { top: calc(var(--u) * 39.2); left: calc(var(--u) * 30) !important; right: calc(var(--u) * 30) !important; font-size: 2em; line-height: 1.5; color: #5a4632; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c2-who { top: calc(var(--u) * 39.2); left: calc(var(--u) * 34) !important; right: calc(var(--u) * 34) !important; font-size: 2em; line-height: 1.5; color: #5a4632; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .c2-body { top: calc(var(--u) * 43.2); left: calc(var(--u) * 13) !important; right: calc(var(--u) * 13) !important; font-size: 2.1em; line-height: 1.8; color: #2a1f14; }
 .c2-body b { font-weight: 700; color: #b3261e; }
 .c2-topics { top: calc(var(--u) * 50.6); left: calc(var(--u) * 13) !important; right: calc(var(--u) * 13) !important; font-size: 1.85em; line-height: 1.7; color: #5a4632; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -203,7 +203,21 @@ button.cm-chip { cursor: pointer; }
 .c2-badge b { font: 700 3.3em/1 'Times New Roman', Tinos, serif; color: #1a7f6b; }
 .c2-badge i { font: italic 700 2.4em/1.1 'Times New Roman', Tinos, serif; color: #b3261e; }
 @media print {
+  /* «បោះពុម្ពវិញ្ញាបនបត្រ»: the certificate alone, whatever else the results page holds. It fills the printable width
+     (A4 landscape, margins None: 297 x 210 mm; with the browser's default margins it is simply a little smaller). */
   @page { size: 297mm 210mm; margin: 0; }
-  .pisa-cert-wrap { width: 297mm !important; height: 210mm !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
-  .cert2 { width: 297mm !important; min-width: 0 !important; height: 210mm !important; aspect-ratio: auto !important; box-shadow: none !important; font-size: 2.97mm !important; --u: 2.97mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-inside: avoid; }
+  body.print-cert-only .results > :not(.pisa-cert-wrap) { display: none !important; }
+  body.print-cert-only, body.print-cert-only #app, body.print-cert-only .km-res-main { background: #fff !important; padding: 0 !important; }
+  body.print-cert-only .km-wrap { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+  body.print-cert-only, html:has(body.print-cert-only) { width: auto !important; height: auto !important; }
+  .pisa-cert-wrap { width: 100% !important; height: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; display: block !important; }
+  .cert2 { width: 100% !important; height: auto !important; min-width: 0 !important; aspect-ratio: 2400 / 1696 !important; box-shadow: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; break-inside: avoid; page-break-inside: avoid; }
 }
+
+/* the certificate opened large on a phone */
+.c2-zoom { display: none; }
+@media (max-width: 700px) { .c2-zoom { display: inline-flex; } .pisa-cert-wrap { text-align: center; } }
+.cm-zoom-body > .pisa-cert-wrap { width: 1000px; max-width: none; margin: 0 auto; padding: 0; background: transparent; }
+.cm-zoom-body .c2-zoom { display: none; }
+@media (max-width: 860px) { .res-unit, .km .rv-card { overflow-x: auto; } }
+@media print { .c2-zoom { display: none !important; } }
