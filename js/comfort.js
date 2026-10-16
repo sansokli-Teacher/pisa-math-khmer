@@ -577,7 +577,7 @@
         h('div', { class: 'rh-cta' },
           h('button', { type: 'button', class: 'rh-main', onclick: go('res-review') }, 'មើលចម្លើយ និងកំហុស ↓'),
           h('button', { type: 'button', class: 'rh-alt', onclick: info.again }, 'ហាត់ម្ដងទៀត'),
-          h('button', { type: 'button', class: 'rh-link', onclick: go('res-cert') }, 'វិញ្ញាបនបត្រ'),
+          PISA.noCert() ? null : h('button', { type: 'button', class: 'rh-link', onclick: go('res-cert') }, 'វិញ្ញាបនបត្រ'),
           h('button', { type: 'button', class: 'rh-link', onclick: info.home }, 'ទំព័រដើម')))));
     // a little life: the ring draws itself, the number counts up, and a top score gets confetti (not for «reduce motion»)
     const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -607,7 +607,7 @@
   function results(page, info) {
     const S = info.state;
     // the name, asked here: a student who left it empty gets it on the certificate
-    if (!S.student.name) {
+    if (!S.student.name && !PISA.noCert()) {
       const input = h('input', { type: 'text', autocomplete: 'name', placeholder: 'ឧ. សុខ ដារ៉ា', 'aria-label': 'ឈ្មោះសិស្ស' });
       const go = () => {
         const v = input.value.trim();

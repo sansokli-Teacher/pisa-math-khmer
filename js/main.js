@@ -271,6 +271,7 @@
     const chosen = new Set();           // nothing is ticked until the student chooses
     const cols = COLLECTIONS.filter((c) => catalog.some((u) => colOf(u) === c.id));
     let tab = cols[0].id, find = '';
+    if (/#moeys\b/.test(location.hash) && cols.some((c) => c.id === 'moeys')) tab = 'moeys';   // exam.khmermath.org links straight to the Ministry's PISA topics
 
     const tabBar = h('div', { class: 'hm-tabs', role: 'tablist', 'aria-label': 'ប្រភេទប្រធានបទ' });
     const panel = h('div', { class: 'hm-panel', role: 'tabpanel', id: 'ctab-panel' });

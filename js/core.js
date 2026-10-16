@@ -11,6 +11,14 @@
   'use strict';
 
   const PISA = (window.PISA = { units: [], W: {} });
+  // Students who come from the exam site (exam.khmermath.org) practise without a certificate: …?nocert=1 turns it off and the choice
+  // is kept for the browser tab, so it survives the move from the home page to a test and back.
+  PISA.noCert = function () {
+    try {
+      if (/[?&#]nocert\b/.test(location.search + location.hash)) sessionStorage.setItem('pisa_nocert', '1');
+      return sessionStorage.getItem('pisa_nocert') === '1';
+    } catch (e) { return /[?&#]nocert\b/.test(location.search + location.hash); }
+  };
 
   // ---------------------------------------------------------------- DOM ---
   function applyAttrs(el, attrs) {
@@ -931,7 +939,7 @@
     }
     const breakdown = topicBreakdown(units);
     if (breakdown) page.append(breakdown);
-    page.append(h('section', { class: 'res-sec', id: 'res-cert' }, h('h2', { class: 'res-sec-h' }, 'វិញ្ញាបនបត្ររបស់អ្នក'), certWrap));
+    if (!PISA.noCert()) page.append(h('section', { class: 'res-sec', id: 'res-cert' }, h('h2', { class: 'res-sec-h' }, 'វិញ្ញាបនបត្ររបស់អ្នក'), certWrap));
     const reviewNode = reviewSection(units);
     reviewNode.id = 'res-review';
     page.append(reviewNode);
@@ -975,7 +983,7 @@
       h('button', { type: 'button', class: 'btn', onclick: downloadCSV }, '📥 ទាញយកលទ្ធផល (CSV)'),
       h('button', { type: 'button', class: 'btn', onclick: downloadJSON }, 'ទាញយកទិន្នន័យពេញ (JSON)')));
     page.append(h('div', { class: 'res-actions res-actions-main' },
-      h('button', { type: 'button', class: 'btn btn-primary', onclick: printCertificateOnly }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ (A4)'),
+      PISA.noCert() ? null : h('button', { type: 'button', class: 'btn btn-primary', onclick: printCertificateOnly }, '🖨️ បោះពុម្ពវិញ្ញាបនបត្រ (A4)'),
       h('button', {
         type: 'button', class: 'btn btn-quiet', onclick: () => dialog(
           ['ចាប់ផ្ដើមវគ្គថ្មី? លទ្ធផលនេះនឹងត្រូវលុបចេញពីកុំព្យូទ័រនេះ។ សូមទាញយក CSV មុនសិន បើត្រូវការ។'],
